@@ -17,8 +17,9 @@ public class TicTacToe_View {
 	private TicTacToe_Model model;
 	private Stage stage;
 	protected Button[][] buttons = new Button[3][3];
-	protected Label lblStatus = new Label("X's turn to play");
-
+	protected MenuItem newGame = new MenuItem("New Game");
+	protected MenuItem closeGame = new MenuItem("Close");
+	
 	protected Button btnAuto = new Button("Auto");
 
 	
@@ -37,8 +38,6 @@ public class TicTacToe_View {
 		Menu menuFile = new Menu("File");
 		Menu menuEdit = new Menu("Edit");
 		Menu menuHelp = new Menu("Help");
-		MenuItem newGame = new MenuItem("New Game");
-		MenuItem closeGame = new MenuItem("Close");
 		
 		menuBar.getMenus().addAll(menuFile,menuEdit,menuHelp);
 		menuFile.getItems().addAll(newGame,closeGame);
