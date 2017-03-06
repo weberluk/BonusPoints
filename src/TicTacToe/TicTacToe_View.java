@@ -1,5 +1,6 @@
 package TicTacToe;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -78,6 +79,9 @@ public class TicTacToe_View {
 		stage.hide();
 	}
 	
+	/**
+	 * Block the buttons after pressed
+	 */
 	public void block() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {

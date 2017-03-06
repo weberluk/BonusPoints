@@ -74,19 +74,16 @@ public class TicTacToe_Model {
 				}
 			}
 		}
-
 		// check for anti-diagonal
 		Arrays.fill(winner, false);
-		if (i + j == DIMENSION - 1) {
 			for (int k = 0; k < DIMENSION; k++) {
-				if (board[k][(DIMENSION - 1) - k] == v) {
+				if (board[k][((DIMENSION - 1) - k)] == v) {
 					winner[k] = true;
 				}
 				if(!Arrays.toString(winner).contains("f")){
 					return true;
 				}
 			}
-		}
 		return false;
 	}
 

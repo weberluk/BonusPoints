@@ -1,5 +1,7 @@
 package TicTacToe;
 
+import java.util.Arrays;
+
 import TicTacToe.TicTacToe_Model.Value;
 import javafx.scene.control.Button;
 
@@ -55,7 +57,7 @@ public class TicTacToe_Controller {
 		
 		//Menu Items
 		view.newGame.setOnAction((event) -> {
-			view.start();
+			cleanUp();
 		});
 		view.closeGame.setOnAction((event) -> {
 			view.stop();
@@ -91,6 +93,16 @@ public class TicTacToe_Controller {
 		if (w == true){
 			System.out.println("You win!!");
 			view.block();
+		}
+	}
+	
+	public void cleanUp(){
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				view.buttons[i][j].setStyle(null);
+				view.buttons[i][j].setText(null);
+				view.buttons[i][j].setDisable(false);
+			}
 		}
 	}
 
