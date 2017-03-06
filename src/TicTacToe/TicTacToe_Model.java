@@ -1,5 +1,7 @@
 package TicTacToe;
 
+import java.util.Arrays;
+
 public class TicTacToe_Model {
 
 	enum Value {
@@ -18,8 +20,13 @@ public class TicTacToe_Model {
 		return this.user;
 	}
 
+	// set the board empty
+	public void setAllEmpty(int i, int j) {
+		board[i][j] = Value.Empty;
+	}
+
+	// sets cross or Point in the right place
 	public void setBoard(int i, int j) {
-		// sets cross or Point in the right place
 		if (board[i][j] == Value.Empty) {
 			if (user == false) {
 				board[i][j] = Value.Cross;
@@ -29,21 +36,58 @@ public class TicTacToe_Model {
 		}
 	}
 
-	public void checkWinner(int i, int j) {
-		boolean winner = false;
-				
-		
-		// check for winner in length
+	// check the board for a winner after button-click
+	public boolean checkWinner(int i, int j, Value v) {
+		Boolean[] winner = new Boolean[DIMENSION];
+
+		// check for winner in horizontal
+		Arrays.fill(winner, false);
 		for (int k = 0; k < DIMENSION; k++) {
-			for (int l = 0; l < DIMENSION; l++) {
-				if (board[k][l] == Value.Cross || board[k][l] == Value.Point) {
-					winner = true;
-				} else{
-					winner = false;
+			if (board[i][k] == v) {
+				winner[k] = true;
+			}
+			if(!Arrays.toString(winner).contains("f")){
+				return true;
+			}
+		}
+
+		// check for winner in vertical
+		Arrays.fill(winner, false);
+		for (int k = 0; k < DIMENSION; k++) {
+			if (board[k][j] == v) {
+				winner[k] = true;
+			}
+			if(!Arrays.toString(winner).contains("f")){
+				return true;
+			}
+		}
+
+		// check for winner in diagonal
+		Arrays.fill(winner, false);
+		if (i == j) {
+			for (int k = 0; k < DIMENSION; k++) {
+				if (board[k][k] == v) {
+					winner[k] = true;
+				}
+				if(!Arrays.toString(winner).contains("f")){
+					return true;
 				}
 			}
 		}
 
+		// check for anti-diagonal
+		Arrays.fill(winner, false);
+		if (i + j == DIMENSION - 1) {
+			for (int k = 0; k < DIMENSION; k++) {
+				if (board[k][(DIMENSION - 1) - k] == v) {
+					winner[k] = true;
+				}
+				if(!Arrays.toString(winner).contains("f")){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

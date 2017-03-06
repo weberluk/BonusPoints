@@ -1,5 +1,6 @@
 package TicTacToe;
 
+import TicTacToe.TicTacToe_Model.Value;
 import javafx.scene.control.Button;
 
 public class TicTacToe_Controller {
@@ -11,7 +12,14 @@ public class TicTacToe_Controller {
 	public TicTacToe_Controller(TicTacToe_Model model, TicTacToe_View view) {
 		this.view = view;
 		this.model = model;
-
+		
+		//set in the model all on the board empty
+		for (int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				model.setAllEmpty(i, j);
+			}
+		}
+		
 		
 		//Buttons set sign
 		view.btnAuto.setOnAction((event) -> {
@@ -52,9 +60,7 @@ public class TicTacToe_Controller {
 		view.closeGame.setOnAction((event) -> {
 			view.stop();
 		});
-		
-		
-		
+			
 	}
 
 	public void setButtonProperties(int i, int j) {
@@ -62,12 +68,15 @@ public class TicTacToe_Controller {
 			view.buttons[i][j].setStyle("-fx-background-color: #800000; -fx-font-size: 25pt");
 			view.buttons[i][j].setText("X");
 			view.buttons[i][j].setDisable(true);
-			model.checkWinner(i, j);
+			model.setBoard(i, j);
+			winProcedure(model.checkWinner(i, j, Value.Cross));
+			
 		} else {
 			view.buttons[i][j].setStyle("-fx-background-color: #0000FF; -fx-font-size: 25pt");
 			view.buttons[i][j].setText("O");
 			view.buttons[i][j].setDisable(true);
-			model.checkWinner(i, j);
+			model.setBoard(i, j);
+			winProcedure(model.checkWinner(i, j, Value.Point));
 		}
 		if (model.getUser() == false) {
 			model.setUser(true);
@@ -75,6 +84,14 @@ public class TicTacToe_Controller {
 			model.setUser(false);
 		}
 
+	}
+	
+	// give win statement and block the program
+	public void winProcedure(boolean w){
+		if (w == true){
+			System.out.println("You win!!");
+			view.block();
+		}
 	}
 
 }

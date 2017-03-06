@@ -77,6 +77,14 @@ public class TicTacToe_View {
 	public void stop() {
 		stage.hide();
 	}
+	
+	public void block() {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				buttons[i][j].setDisable(true);
+			}
+		}
+	}
 
 	/**
 	 * Getter for the stage, so that the controller can access window events
