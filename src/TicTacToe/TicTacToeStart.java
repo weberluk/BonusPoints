@@ -15,9 +15,10 @@ public class TicTacToeStart extends Application {
 	// Begin a new game
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		view = new TicTacToe_View(primaryStage, model);
+		view = new TicTacToe_View(primaryStage, model );
 		model = new TicTacToe_Model();
 		controller = new TicTacToe_Controller(model, view);
+
 		
 		view.start();
 		

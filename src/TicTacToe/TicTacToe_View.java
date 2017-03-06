@@ -21,7 +21,7 @@ public class TicTacToe_View {
 	protected MenuItem newGame = new MenuItem("New Game");
 	protected MenuItem closeGame = new MenuItem("Close");
 	
-	protected Button btnAuto = new Button("Auto");
+	protected Button btnComputer = new Button("Computer");
 
 	
 
@@ -31,8 +31,8 @@ public class TicTacToe_View {
 
 		stage.setTitle("Tic Tac Toe");
 
-		btnAuto.setPrefSize(240,40);
-		btnAuto.setStyle("-fx-text-fill: #0000ff");
+		btnComputer.setPrefSize(240,40);
+		btnComputer.setStyle("-fx-text-fill: #0000ff");
 
 		
 		MenuBar menuBar = new MenuBar();
@@ -45,7 +45,7 @@ public class TicTacToe_View {
 		
 		BorderPane root = new BorderPane();
 		HBox hbox = new HBox();
-		hbox.getChildren().addAll(btnAuto);
+		hbox.getChildren().addAll(btnComputer);
 
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);

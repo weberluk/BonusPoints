@@ -4,34 +4,67 @@ import java.util.Arrays;
 
 public class TicTacToe_Model {
 
+	TicTacToe_Computer computer = new TicTacToe_Computer();
+
 	enum Value {
 		Cross, Point, Empty
 	};
 
-	private Value[][] board = new Value[3][3];
-	private final int DIMENSION = 3;
-	private boolean user = false;
+	enum HumanPlayer {
+		Human, Computer
+	};
 
-	public void setUser(boolean user) {
-		this.user = user;
+
+	private Value[][] board = new Value[3][3];
+	public final int DIMENSION = 3;
+	private HumanPlayer player = HumanPlayer.Human;
+	private Value sign = Value.Cross;
+
+	public HumanPlayer getPlayer() {
+		return this.player;
 	}
 
-	public boolean getUser() {
-		return this.user;
+	public void setPlayer(HumanPlayer player) {
+		this.player = player;
+	}
+
+	// get position in board
+	public Value getBoardPosition(int i, int j) {
+		return board[i][j];
 	}
 
 	// set the board empty
 	public void setAllEmpty(int i, int j) {
 		board[i][j] = Value.Empty;
 	}
-
-	// sets cross or Point in the right place
+	public void setSign(Value sign){
+		this.sign = sign;
+	}
+	public Value getSign(){
+		return this.sign;
+	}
+	
+	// sets cross or Point in the right place and show is it Human or Computer
 	public void setBoard(int i, int j) {
-		if (board[i][j] == Value.Empty) {
-			if (user == false) {
-				board[i][j] = Value.Cross;
-			} else {
-				board[i][j] = Value.Point;
+		if (player == HumanPlayer.Human) {
+			if (board[i][j] == Value.Empty) {
+				if (sign == Value.Cross) {
+					board[i][j] = Value.Cross;
+				} else {
+					board[i][j] = Value.Point;
+				}
+			}
+		} else {
+			if(board[i][j] == Value.Empty){
+				if (player == HumanPlayer.Computer){
+					if (sign == Value.Cross) {
+						computer.getOpenPositionInBoard(i, j, Value.Cross);
+						board[i][j] = Value.Cross;
+					} else {
+						computer.getOpenPositionInBoard(i, j, Value.Point);
+						board[i][j] = Value.Point;
+					}
+				}
 			}
 		}
 	}
@@ -46,7 +79,7 @@ public class TicTacToe_Model {
 			if (board[i][k] == v) {
 				winner[k] = true;
 			}
-			if(!Arrays.toString(winner).contains("f")){
+			if (!Arrays.toString(winner).contains("f")) {
 				return true;
 			}
 		}
@@ -57,7 +90,7 @@ public class TicTacToe_Model {
 			if (board[k][j] == v) {
 				winner[k] = true;
 			}
-			if(!Arrays.toString(winner).contains("f")){
+			if (!Arrays.toString(winner).contains("f")) {
 				return true;
 			}
 		}
@@ -69,21 +102,21 @@ public class TicTacToe_Model {
 				if (board[k][k] == v) {
 					winner[k] = true;
 				}
-				if(!Arrays.toString(winner).contains("f")){
+				if (!Arrays.toString(winner).contains("f")) {
 					return true;
 				}
 			}
 		}
 		// check for anti-diagonal
 		Arrays.fill(winner, false);
-			for (int k = 0; k < DIMENSION; k++) {
-				if (board[k][((DIMENSION - 1) - k)] == v) {
-					winner[k] = true;
-				}
-				if(!Arrays.toString(winner).contains("f")){
-					return true;
-				}
+		for (int k = 0; k < DIMENSION; k++) {
+			if (board[k][((DIMENSION - 1) - k)] == v) {
+				winner[k] = true;
 			}
+			if (!Arrays.toString(winner).contains("f")) {
+				return true;
+			}
+		}
 		return false;
 	}
 
