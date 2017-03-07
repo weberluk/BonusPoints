@@ -14,7 +14,6 @@ public class TicTacToe_Model {
 		Human, Computer
 	};
 
-
 	private Value[][] board = new Value[3][3];
 	public final int DIMENSION = 3;
 	private HumanPlayer player = HumanPlayer.Human;
@@ -37,13 +36,15 @@ public class TicTacToe_Model {
 	public void setAllEmpty(int i, int j) {
 		board[i][j] = Value.Empty;
 	}
-	public void setSign(Value sign){
+
+	public void setSign(Value sign) {
 		this.sign = sign;
 	}
-	public Value getSign(){
+
+	public Value getSign() {
 		return this.sign;
 	}
-	
+
 	// sets cross or Point in the right place and show is it Human or Computer
 	public void setBoard(int i, int j) {
 		if (player == HumanPlayer.Human) {
@@ -55,8 +56,8 @@ public class TicTacToe_Model {
 				}
 			}
 		} else {
-			if(board[i][j] == Value.Empty){
-				if (player == HumanPlayer.Computer){
+			if (board[i][j] == Value.Empty) {
+				if (player == HumanPlayer.Computer) {
 					if (sign == Value.Cross) {
 						computer.getOpenPositionInBoard(i, j, Value.Cross);
 						board[i][j] = Value.Cross;
@@ -120,4 +121,37 @@ public class TicTacToe_Model {
 		return false;
 	}
 
+	public Value[][] getFreePositions() {
+		Value[][] positions = new Value[3][3];
+
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
+				if (board[i][j] == Value.Empty) {
+					positions[i][j] = board[i][j];
+				}
+
+			}
+		}
+		return positions;
+	}
+
+	public Value[][] getSameSignPositions() {
+		Value[][] positions = new Value[3][3];
+		for (int i = 0; i < DIMENSION; i++) {
+			for (int j = 0; j < DIMENSION; j++) {
+				if (getSign() == Value.Cross) {
+					if (board[i][j] == Value.Cross) {
+						positions[i][j] = board[i][j];
+					} else {
+						if (board[i][j] == Value.Point) {
+							positions[i][j] = board[i][j];
+						}
+					}
+
+				}
+
+			}
+		}
+		return positions;
+	}
 }
