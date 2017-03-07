@@ -34,7 +34,7 @@ public class TicTacToe_View {
 		btnComputer.setPrefSize(240,40);
 		btnComputer.setStyle("-fx-text-fill: #0000ff");
 
-		
+		//MenuBar in the top
 		MenuBar menuBar = new MenuBar();
 		Menu menuFile = new Menu("File");
 		Menu menuEdit = new Menu("Edit");
@@ -43,10 +43,11 @@ public class TicTacToe_View {
 		menuBar.getMenus().addAll(menuFile,menuEdit,menuHelp);
 		menuFile.getItems().addAll(newGame,closeGame);
 		
-		BorderPane root = new BorderPane();
+		//Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
 		hbox.getChildren().addAll(btnComputer);
 
+		//GridPane fill all Buttons in and show it in the center
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		for (int i = 0; i < 3; i++) {
@@ -57,6 +58,7 @@ public class TicTacToe_View {
 				pane.add(buttons[i][j], i, j);
 			}
 		}
+		BorderPane root = new BorderPane();
 		root.setTop(menuBar);
 		root.setBottom(hbox);
 		root.setCenter(pane);
