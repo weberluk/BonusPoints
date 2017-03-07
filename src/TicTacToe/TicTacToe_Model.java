@@ -15,7 +15,7 @@ public class TicTacToe_Model {
 	};
 
 	private Value[][] board = new Value[3][3];
-	public final int DIMENSION = 3;
+	public static final int DIMENSION = 3;
 	private HumanPlayer player = HumanPlayer.Human;
 	private Value sign = Value.Cross;
 

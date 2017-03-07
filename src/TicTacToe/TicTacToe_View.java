@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 public class TicTacToe_View {
 	private TicTacToe_Model model;
 	private Stage stage;
-	protected Button[][] buttons = new Button[3][3];
+	protected Button[][] buttons = new Button[model.DIMENSION][model.DIMENSION];
 	protected MenuItem newGame = new MenuItem("New Game");
 	protected MenuItem closeGame = new MenuItem("Close");
 	
@@ -50,10 +50,10 @@ public class TicTacToe_View {
 		//GridPane fill all Buttons in and show it in the center
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < model.DIMENSION; i++) {
+			for (int j = 0; j < model.DIMENSION; j++) {
 				buttons[i][j] = new Button();
-				buttons[i][j].setId(""+i);
+				buttons[i][j].setId(Integer.toString(i));
 				buttons[i][j].setPrefSize(80, 80);
 				pane.add(buttons[i][j], i, j);
 			}
