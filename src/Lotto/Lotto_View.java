@@ -17,13 +17,15 @@ public class Lotto_View {
 	
 	private Lotto_Model model;
 	private Stage stage;
-	protected Button btnStart = new Button("Start");
+	protected Button btnStart = new Button("Spielen");
 	protected Button btnGetChance = new Button("My Chance");
 	protected MenuItem newGame = new MenuItem("Restart");
 	protected MenuItem closeGame = new MenuItem("Close");
 	protected Button[][] regularButtons = new Button[model.LOTTOLENGTH][model.LOTTOHIGHT];
 	protected Button[] superButton = new Button[model.LOTTOLENGTH];
 	protected Label[] labelsForNumbers = new Label[model.LOTTOLENGTH];
+	protected Label sLabel = new Label();
+	protected Label superName = new Label("Die Superzahl ist");
 
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
@@ -98,11 +100,13 @@ public class Lotto_View {
 			vboxNumbers.getChildren().addAll(labelsForNumbers[i]);
 			
 		}
-		Label super1 = new Label();
-		super1.setStyle("-fx-font-size: 10pt; -fx-text-fill: red");
-		super1.setVisible(false);
+		sLabel.setStyle("-fx-font-size: 10pt; -fx-text-fill: red");
+		sLabel.setVisible(false);
 		vboxNumbers.setPrefSize(150, 200);
-		vboxNumbers.getChildren().addAll(super1);
+		superName.setStyle("-fx-font-size: 12pt; -fx-text-fill: red");
+		superName.setVisible(false);
+		Label separater1 = new Label();
+		vboxNumbers.getChildren().addAll(separater1, superName,sLabel);
 		
 		BorderPane root = new BorderPane();
 		root.setRight(vboxNumbers);
