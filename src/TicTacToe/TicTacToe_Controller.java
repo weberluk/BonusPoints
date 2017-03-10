@@ -128,7 +128,7 @@ public class TicTacToe_Controller {
 	// give win statement and block the program
 	public void winProcedure(boolean w) {
 		if (w == true) {
-			System.out.println("You win!!");
+			System.out.println("Finish!!");
 			view.block();
 		}
 	}
