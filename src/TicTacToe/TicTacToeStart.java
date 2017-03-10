@@ -7,6 +7,7 @@ public class TicTacToeStart extends Application {
 	TicTacToe_View view;
 	TicTacToe_Model model;
 	TicTacToe_Controller controller;
+	TicTacToe_Computer computer;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -18,6 +19,8 @@ public class TicTacToeStart extends Application {
 		view = new TicTacToe_View(primaryStage, model );
 		model = new TicTacToe_Model();
 		controller = new TicTacToe_Controller(model, view);
+		computer = new TicTacToe_Computer(model);
+		model.setComputer(computer);
 
 		
 		view.start();

@@ -4,7 +4,7 @@ public class Lotto_Controller {
 
 	final private Lotto_View view;
 	final private Lotto_Model model;
-	
+
 	protected Boolean[][] clicked = new Boolean[6][7];
 
 	public Lotto_Controller(Lotto_Model model, Lotto_View view) {
@@ -38,29 +38,15 @@ public class Lotto_Controller {
 		view.closeGame.setOnAction((event) -> {
 			view.stop();
 		});
-
-		view.regularButtons[0][0].setOnAction((event) -> {
-			setButtonPressed(0, 0);
-		});
-		view.regularButtons[0][1].setOnAction((event) -> {
-			setButtonPressed(0, 1);
-		});
-		view.regularButtons[0][2].setOnAction((event) -> {
-			setButtonPressed(0, 2);
-		});
-		view.regularButtons[0][3].setOnAction((event) -> {
-			setButtonPressed(0, 3);
-		});
-		view.regularButtons[0][4].setOnAction((event) -> {
-			setButtonPressed(0, 4);
-		});
-		view.regularButtons[0][5].setOnAction((event) -> {
-			setButtonPressed(0, 5);
-		});
-		view.regularButtons[0][6].setOnAction((event) -> {
-			setButtonPressed(0, 6);
-		});
-
+		for (int i = 0; i < model.UPPERBOUND; i++){
+			for (int j = 0; j < model.UPPERBOUND; j++){
+				view.regularButtons[i][j].setOnAction((event) -> {
+//					setButtonPressed();
+					//Button idendifizieren über den Text und so rückschlüssen ziehen
+					//event.getSource();
+				});
+			}
+		} 
 	}
 
 	public void setButtonPressed(int i, int j) {
@@ -75,10 +61,10 @@ public class Lotto_Controller {
 		}
 
 	}
-	
-	public void setAllButtonsFalse(){
-		for(int i = 0; i < model.LOTTOLENGTH; i++){
-			for (int j = 0; j < model.LOTTOHIGHT; j++){
+
+	public void setAllButtonsFalse() {
+		for (int i = 0; i < model.LOTTOLENGTH; i++) {
+			for (int j = 0; j < model.LOTTOHIGHT; j++) {
 				clicked[i][j] = new Boolean(false);
 			}
 		}

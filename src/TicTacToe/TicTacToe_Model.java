@@ -2,9 +2,18 @@ package TicTacToe;
 
 import java.util.Arrays;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class TicTacToe_Model {
 
-	TicTacToe_Computer computer = new TicTacToe_Computer();
+	private TicTacToe_Computer computer;
+
+	public void setComputer(TicTacToe_Computer computer) {
+		this.computer = computer;
+	}
+
+	// SimpleBooleanProperty for overwatching the model
+	private SimpleBooleanProperty value = new SimpleBooleanProperty();
 
 	enum Value {
 		Cross, Point, Empty
@@ -18,6 +27,47 @@ public class TicTacToe_Model {
 	public static final int DIMENSION = 3;
 	private HumanPlayer player = HumanPlayer.Human;
 	private Value sign = Value.Cross;
+
+	// the acutely Position
+	private int xPos = 0;
+	private int yPos = 0;
+
+	public void setXPos(int xPos) {
+		this.xPos = xPos;
+	}
+
+	public void setYPos(int yPos) {
+		this.yPos = yPos;
+	}
+
+	public int getXPos() {
+		computer.checkComputerPlay();
+		return this.xPos;
+	}
+
+	public int getYPos() {
+		//TODO Achtung Methode tauscchen
+		return this.yPos;
+	}
+
+	// setter for the SimpleBooleanProperty
+	public void setValue(Boolean newValue) {
+		try{
+			value.setValue(newValue);;
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
+
+	// getter for the SimpleBooleanProperty
+	public boolean getValue() {
+		return value.get();
+	}
+
+	public SimpleBooleanProperty getValueProperty() {
+		return value;
+	}
 
 	public HumanPlayer getPlayer() {
 		return this.player;
@@ -47,27 +97,14 @@ public class TicTacToe_Model {
 
 	// sets cross or Point in the right place and show is it Human or Computer
 	public void setBoard(int i, int j) {
-		if (player == HumanPlayer.Human) {
-			if (board[i][j] == Value.Empty) {
-				if (sign == Value.Cross) {
-					board[i][j] = Value.Cross;
-				} else {
-					board[i][j] = Value.Point;
-				}
+		if (board[i][j] == Value.Empty) {
+			if (sign == Value.Cross) {
+				board[i][j] = Value.Cross;
+			} else {
+				board[i][j] = Value.Point;
 			}
-		} else {
-			if (board[i][j] == Value.Empty) {
-				if (player == HumanPlayer.Computer) {
-					if (sign == Value.Cross) {
-						computer.getOpenPositionInBoard(i, j, Value.Cross);
-						board[i][j] = Value.Cross;
-					} else {
-						computer.getOpenPositionInBoard(i, j, Value.Point);
-						board[i][j] = Value.Point;
-					}
-				}
-			}
-		}
+
+		} 
 	}
 
 	// check the board for a winner after button-click
@@ -121,37 +158,4 @@ public class TicTacToe_Model {
 		return false;
 	}
 
-	public Value[][] getFreePositions() {
-		Value[][] positions = new Value[3][3];
-
-		for (int i = 0; i < DIMENSION; i++) {
-			for (int j = 0; j < DIMENSION; j++) {
-				if (board[i][j] == Value.Empty) {
-					positions[i][j] = board[i][j];
-				}
-
-			}
-		}
-		return positions;
-	}
-
-	public Value[][] getSameSignPositions() {
-		Value[][] positions = new Value[3][3];
-		for (int i = 0; i < DIMENSION; i++) {
-			for (int j = 0; j < DIMENSION; j++) {
-				if (getSign() == Value.Cross) {
-					if (board[i][j] == Value.Cross) {
-						positions[i][j] = board[i][j];
-					} else {
-						if (board[i][j] == Value.Point) {
-							positions[i][j] = board[i][j];
-						}
-					}
-
-				}
-
-			}
-		}
-		return positions;
-	}
 }
