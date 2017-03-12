@@ -50,11 +50,11 @@ public class Lotto_View {
 		//Regular Numbers in the Lotto
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
-				c++;
 				regularButtons[i][j] = new Button();
-				regularButtons[i][j].setText(Integer.toString(c));
+				regularButtons[i][j].setText(""+c);
 				regularButtons[i][j].setPrefSize(50, 50);
 				gPaneRegular.add(regularButtons[i][j], i, j);
+				c++;
 			}
 		}
 		//Super Numbers in the lotto
