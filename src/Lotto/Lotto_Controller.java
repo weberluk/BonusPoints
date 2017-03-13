@@ -35,12 +35,14 @@ public class Lotto_Controller {
 			model.fillLottoNumbers();
 
 			for (int i = 0; i < model.LOTTOLENGTH; i++) {
-				view.labelsForNumbers[i].setText(Integer.toString(model.getRegularNumbers(i)));
-				view.labelsForNumbers[i].setVisible(true);
+				view.lottoNumbersInButton[i].setText(Integer.toString(model.getRegularNumbers(i)));
+				view.lottoNumbersInButton[i].setVisible(true);
 			}
 			view.superName.setVisible(true);
 			view.sLabel.setText(Integer.toString(model.getsuperNumber()));
 			view.sLabel.setVisible(true);
+			view.superNumberButton.setText(Integer.toString(model.getsuperNumber()));
+			view.superNumberButton.setVisible(true);
 			model.checkWin();
 
 		});
@@ -62,7 +64,7 @@ public class Lotto_Controller {
 				final Button thisButton = view.regularButtons[i][j];
 				
 				view.regularButtons[i][j].setOnAction(( event) -> {
-					compareButton(thisButton.textProperty().getValue());
+					compareButton(Integer.parseInt(thisButton.getText()));
 					this.setButtonPressed(this.getXPos(), this.getYPos());
 				});
 			}
@@ -70,10 +72,11 @@ public class Lotto_Controller {
 	}
 	//event.getSource();
 	
-	public void compareButton(String btnTxt){
+	public void compareButton(int btnTxt){
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
-				if(view.regularButtons[i][j].equals(btnTxt)){
+				int k = Integer.parseInt(view.regularButtons[i][j].getText());
+				if(k == btnTxt){
 					this.setXPos(i);
 					this.setYPos(j);
 				}
@@ -85,7 +88,7 @@ public class Lotto_Controller {
 		if (clicked[i][j] == false) {
 			view.regularButtons[i][j].setStyle("-fx-background-color: #800000;");
 			clicked[i][j] = true;
-			model.userTipp.add(view.regularButtons[i][j].getText());
+			model.userTipp.add(Integer.parseInt(view.regularButtons[i][j].getText()));
 		} else {
 			view.regularButtons[i][j].setStyle(null);
 			clicked[i][j] = false;

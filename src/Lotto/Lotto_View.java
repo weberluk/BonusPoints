@@ -26,6 +26,8 @@ public class Lotto_View {
 	protected Label[] labelsForNumbers = new Label[model.LOTTOLENGTH];
 	protected Label sLabel = new Label();
 	protected Label superName = new Label("Die Superzahl ist");
+	protected Button superNumberButton = new Button();
+	protected Button[] lottoNumbersInButton = new Button[model.LOTTOLENGTH];
 
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
@@ -41,16 +43,24 @@ public class Lotto_View {
 		
 		menuBar.getMenus().addAll(menuFile,menuEdit,menuHelp);
 		menuFile.getItems().addAll(newGame,closeGame);
+		menuBar.getStyleClass().add("menu");
+		menuFile.getStyleClass().add("menu");
+		menuEdit.getStyleClass().add("menu");
+		menuHelp.getStyleClass().add("menu");
+		newGame.getStyleClass().add("menu");
+		closeGame.getStyleClass().add("menu");
 		
 		//GridPane in the center
 		GridPane gPaneRegular = new GridPane();
 		GridPane gPaneSuper = new GridPane();
+		gPaneSuper.setPrefSize(100, 100);
 		int c = 0;
 		
 		//Regular Numbers in the Lotto
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
 				regularButtons[i][j] = new Button();
+				regularButtons[i][j].getStyleClass().add("Buttons");
 				regularButtons[i][j].setText(""+c);
 				regularButtons[i][j].setPrefSize(50, 50);
 				gPaneRegular.add(regularButtons[i][j], i, j);
@@ -62,18 +72,26 @@ public class Lotto_View {
 		for (int i = 0; i < model.LOTTOLENGTH; i++){
 			c++;
 			superButton[i] = new Button();
+			superButton[i].getStyleClass().add("Buttons");
 			superButton[i].setText(Integer.toString(c));
 			superButton[i].setPrefSize(50, 50);
 			gPaneSuper.add(superButton[i], i, 0);
 		}
 		
-		//Empty Place
+		//Empty Place1 (Super)
 		HBox hboxEmpty = new HBox();
 		Label superLabel = new Label("Super Zahlen:");
-		superLabel.setStyle("-fx-font-size: 25pt");
-		hboxEmpty.setPrefSize(100, 50);
+		superLabel.getStyleClass().add("labelSuperZahlen");
+		hboxEmpty.setPrefSize(50, 50);
 		hboxEmpty.getChildren().addAll(superLabel);
 		
+		//Empty Place2 (Top)
+		HBox hboxEmpty2 = new HBox();
+		hboxEmpty2.setPrefSize(100, 50);
+		
+		//Empty Place2 (Left)
+		VBox vboxEmpty3 = new VBox();
+		vboxEmpty3.setPrefSize(50, 100);		
 		
 		//For adjustment the middle part
 		BorderPane bPane = new BorderPane();
@@ -84,14 +102,27 @@ public class Lotto_View {
 		//Buttons on bottom-line
 		HBox hbox = new HBox();
 		btnStart.setPrefSize(100, 50);
+		btnStart.getStyleClass().add("bigButtons");
 		btnGetChance.setPrefSize(100, 50);
+		btnGetChance.getStyleClass().add("bigButtons");
 		hbox.getChildren().addAll(btnStart,btnGetChance);
 		
 		//Numbers in a VBox on the right side
 		VBox vboxNumbers = new VBox();
 		Label nrTop = new Label("Die Zahlen sind:");
-		nrTop.setStyle("-fx-font-size: 15pt; -fx-text-fill: red");
+		nrTop.getStyleClass().add("nrTop");
+		//nrTop.setStyle("-fx-font-size: 15pt; -fx-text-fill: red");
 		vboxNumbers.getChildren().addAll(nrTop);
+		
+		//Fill Buttons for the Lotto-Numbers
+		for(int i = 0; i < model.LOTTOLENGTH; i++){
+			this.lottoNumbersInButton[i] = new Button();
+			this.lottoNumbersInButton[i].setVisible(false);
+			this.lottoNumbersInButton[i].getStyleClass().add("buttonLottoNumbers");
+			this.lottoNumbersInButton[i].setPrefSize(80, 80);
+			this.lottoNumbersInButton[i].setDisable(true);
+			vboxNumbers.getChildren().add(this.lottoNumbersInButton[i]);
+		}
 		
 		for(int i = 0; i < model.LOTTOLENGTH; i++){
 			labelsForNumbers[i] = new Label();
@@ -100,21 +131,31 @@ public class Lotto_View {
 			vboxNumbers.getChildren().addAll(labelsForNumbers[i]);
 			
 		}
-		sLabel.setStyle("-fx-font-size: 10pt; -fx-text-fill: red");
-		sLabel.setVisible(false);
-		vboxNumbers.setPrefSize(150, 200);
-		superName.setStyle("-fx-font-size: 12pt; -fx-text-fill: red");
+		vboxNumbers.setPrefSize(250, 300);
+		superName.getStyleClass().add("nrTop");
 		superName.setVisible(false);
 		Label separater1 = new Label();
-		vboxNumbers.getChildren().addAll(separater1, superName,sLabel);
+		superNumberButton.getStyleClass().add("buttonLottoNumbers");
+		superNumberButton.setPrefSize(100, 100);
+		superNumberButton.setVisible(false);
+		vboxNumbers.getChildren().addAll(superName, superNumberButton);
+		
+		//For the top in the top
+		BorderPane topPane = new BorderPane();
+		topPane.setTop(menuBar);
+		topPane.setCenter(hboxEmpty2);
 		
 		BorderPane root = new BorderPane();
+		root.getStyleClass().add("pane");
+		root.setPrefSize(700, 500);
 		root.setRight(vboxNumbers);
-		root.setTop(menuBar);
+		root.setLeft(vboxEmpty3);
+		root.setTop(topPane);
 		root.setCenter(bPane);
 		root.setBottom(hbox);
 		
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 		primaryStage.setScene(scene);
 	}
 

@@ -12,7 +12,7 @@ public class Lotto_Model {
 	public final int UPPERBOUND = 42;
 	Random rand = new Random();
 	
-	protected ArrayList<String>userTipp = new ArrayList<String>();
+	protected ArrayList<Integer>userTipp = new ArrayList<Integer>();
 	protected int userSuperTipp = 0;
 
 	private Integer[] regularNumbersLotto = new Integer[MAXLOTTO];
@@ -38,15 +38,17 @@ public class Lotto_Model {
 	}
 
 	public void checkWin() {
-		Integer[] userTip = new Integer[MAXLOTTO];
+		ArrayList<Integer> userTip = new ArrayList<Integer>();
 		for (int i = 0; i < MAXLOTTO; i++){
-			userTip[i] = Integer.parseInt(userTipp.get(i));
+			userTip.add(userTipp.get(i));
+			
+			if(userTip.contains(regularNumbersLotto[i])){
+				System.out.println("You win!");
+			} else {
+				System.out.println("Sorry");
+			}
 		}
-		if(userTip.equals(regularNumbersLotto)){
-			System.out.println("You win!");
-		} else {
-			System.out.println("Sorry");
-		}
+
 		
 	}
 }
