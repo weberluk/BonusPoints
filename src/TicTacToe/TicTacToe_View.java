@@ -32,13 +32,20 @@ public class TicTacToe_View {
 		stage.setTitle("Tic Tac Toe");
 
 		btnComputer.setPrefSize(240,40);
-		btnComputer.setStyle("-fx-text-fill: #0000ff");
+		//btnComputer.setStyle("-fx-text-fill: #0000ff");
+		btnComputer.getStyleClass().add("computerButton");
 
 		//MenuBar in the top
 		MenuBar menuBar = new MenuBar();
+		menuBar.getStyleClass().add("menu");
 		Menu menuFile = new Menu("File");
 		Menu menuEdit = new Menu("Edit");
 		Menu menuHelp = new Menu("Help");
+		menuFile.getStyleClass().add("menu");
+		menuEdit.getStyleClass().add("menu");
+		menuHelp.getStyleClass().add("menu");
+		newGame.getStyleClass().add("menu");
+		closeGame.getStyleClass().add("menu");
 		
 		menuBar.getMenus().addAll(menuFile,menuEdit,menuHelp);
 		menuFile.getItems().addAll(newGame,closeGame);
@@ -53,6 +60,7 @@ public class TicTacToe_View {
 		for (int i = 0; i < model.DIMENSION; i++) {
 			for (int j = 0; j < model.DIMENSION; j++) {
 				buttons[i][j] = new Button();
+				buttons[i][j].getStyleClass().add("buttons");
 				buttons[i][j].setId(Integer.toString(i));
 				buttons[i][j].setPrefSize(80, 80);
 				pane.add(buttons[i][j], i, j);
@@ -64,6 +72,7 @@ public class TicTacToe_View {
 		root.setCenter(pane);
 		
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 		primaryStage.setScene(scene);
 	}
 

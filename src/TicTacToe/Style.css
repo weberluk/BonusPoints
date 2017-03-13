@@ -1,0 +1,63 @@
+.buttons:hover {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+	#9d4024,
+	#d86e3a,
+	radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.buttons:pressed {
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+	}
+	
+.buttons {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #ffffe0 0%, #cd853f 100%),
+	#ffffe0,
+	#cd853f,
+	radial-gradient(center 50% 50%, radius 100%, #ffffe0, #cd853f);
+}
+
+.computerButton {
+	-fx-font-size: 20px;
+	-fx-font-family: "Arial Black";
+	-fx-fill: #818181;
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+	#9d4024,
+	#d86e3a,
+	radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}
+
+.computerButton:hover {
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.computerButton:pressed {
+	-fx-background-color: red;
+	-fx-text-fill: white;
+}
+
+.menu:hover{
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+	#9d4024,
+	#d86e3a,
+	radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.menu:pressed {
+	-fx-background-color: red;
+	-fx-text-fill: white;
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.menu {
+		-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+	#9d4024,
+	#d86e3a,
+	radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}
