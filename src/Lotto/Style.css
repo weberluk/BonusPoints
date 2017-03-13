@@ -1,0 +1,94 @@
+.Buttons {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #f0f8ff 0%, #8fbc8f 100%),
+	#f0f8ff,
+	#8fbc8f,
+	radial-gradient(center 50% 50%, radius 100%, #f0f8ff, #8fbc8f);
+}
+
+.Buttons:hover {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #8fbc8f 0%, #008b8b 100%),
+	#8fbc8f,
+	#008b8b,
+	radial-gradient(center 50% 50%, radius 100%, #8fbc8f, #008b8b);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.Buttons:pressed {
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+	}
+	
+.bigButtons{
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #f0f8ff 0%, #2f4f4f 100%),
+	#f0f8ff,
+	#2f4f4f,
+	radial-gradient(center 50% 50%, radius 100%, #f0f8ff, #2f4f4f);
+}
+
+.bigButtons:hover {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #8fbc8f 0%, #008b8b 100%),
+	#8fbc8f,
+	#008b8b,
+	radial-gradient(center 50% 50%, radius 100%, #8fbc8f, #008b8b);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.labelSuperZahlen{
+	-fx-font: "Arial Black";
+	-fx-font-size: 20pt;
+	-fx-font-weight: bolder;
+	-fx-text-fill: white;
+}
+
+.pane {
+	-fx-background-image: url("switzerland-lotto.jpg");
+	-fx-background-repeat: stretch;
+	-fx-background-size: cover;
+	-fx-background-position: center, center;
+	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0,0);
+}
+
+.nrTop {
+	-fx-font: "Arial Black";
+	-fx-font-size: 20pt;
+	-fx-font-weight: bolder;
+	-fx-text-fill: black;
+}
+
+.menu:hover{
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #8fbc8f 0%, #008b8b 100%),
+	#8fbc8f,
+	#008b8b,
+	radial-gradient(center 50% 50%, radius 100%, #8fbc8f, #008b8b);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.menu:pressed {
+	-fx-background-color: green;
+	-fx-text-fill: white;
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.menu {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #f0f8ff 0%, #2f4f4f 100%),
+	#f0f8ff,
+	#2f4f4f,
+	radial-gradient(center 50% 50%, radius 100%, #f0f8ff, #2f4f4f);
+}
+
+.buttonLottoNumbers {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #dc143c 0%, #a52a2a 100%),
+	#dc143c,
+	#a52a2a,
+	radial-gradient(center 50% 50%, radius 100%, #dc143c, #a52a2a);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+	-fx-text-fill: white;
+	-fx-font-size: 15pt;
+	-fx-font-weight: bolder;
+}

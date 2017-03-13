@@ -73,7 +73,7 @@ public class Lotto_View {
 			c++;
 			superButton[i] = new Button();
 			superButton[i].getStyleClass().add("Buttons");
-			superButton[i].setText(Integer.toString(c));
+			superButton[i].setText(""+c);
 			superButton[i].setPrefSize(50, 50);
 			gPaneSuper.add(superButton[i], i, 0);
 		}

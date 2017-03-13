@@ -13,6 +13,8 @@ public class Lotto_Controller {
 	private int xPos;
 	private int yPos;
 	
+	protected Boolean[] superclicked = new Boolean[6];
+	
 	public void setXPos(int xpos){
 		this.xPos = xpos;
 	}
@@ -26,6 +28,7 @@ public class Lotto_Controller {
 		return this.yPos;
 	}
 
+
 	public Lotto_Controller(Lotto_Model model, Lotto_View view) {
 		this.view = view;
 		this.model = model;
@@ -33,7 +36,6 @@ public class Lotto_Controller {
 
 		view.btnStart.setOnAction((event) -> {
 			model.fillLottoNumbers();
-
 			for (int i = 0; i < model.LOTTOLENGTH; i++) {
 				view.lottoNumbersInButton[i].setText(Integer.toString(model.getRegularNumbers(i)));
 				view.lottoNumbersInButton[i].setVisible(true);
@@ -52,7 +54,7 @@ public class Lotto_Controller {
 		});
 
 		view.newGame.setOnAction((event) -> {
-
+			this.cleanUp();
 		});
 
 		view.closeGame.setOnAction((event) -> {
@@ -69,7 +71,26 @@ public class Lotto_Controller {
 				});
 			}
 		}
+		view.superButton[0].setOnAction((event) -> {
+			setSuperButtonPressed(0);
+		});
+		view.superButton[1].setOnAction((event) -> {
+			setSuperButtonPressed(1);	
+		});
+		view.superButton[2].setOnAction((event) -> {
+			setSuperButtonPressed(2);
+		});
+		view.superButton[3].setOnAction((event) -> {
+			setSuperButtonPressed(3);
+		});
+		view.superButton[4].setOnAction((event) -> {
+			setSuperButtonPressed(4);
+		});
+		view.superButton[5].setOnAction((event) -> {
+			setSuperButtonPressed(5);
+		});
 	}
+		
 	//event.getSource();
 	
 	public void compareButton(int btnTxt){
@@ -83,6 +104,7 @@ public class Lotto_Controller {
 			}
 		}
 	}
+	
 
 	public void setButtonPressed(int i, int j) {
 		if (clicked[i][j] == false) {
@@ -96,17 +118,38 @@ public class Lotto_Controller {
 		}
 
 	}
+	
+	public void setSuperButtonPressed(int i){
+		if(this.superclicked[i] == false){
+			view.superButton[i].setStyle("-fx-background-color: #800000;");	
+			this.superclicked[i] = true;
+		} else {
+			view.superButton[i].setStyle(null);
+			this.superclicked[i] = false;
+		}
+
+	}
 
 	public void setAllButtonsFalse() {
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
 				clicked[i][j] = new Boolean(false);
+				superclicked[i] = false;
 			}
 		}
 
 	}
 
 	public void cleanUp() {
-
+		for (int i = 0; i < model.LOTTOLENGTH; i++) {
+			for (int j = 0; j < model.LOTTOHIGHT; j++) {
+				view.regularButtons[i][j].setStyle(null);
+				this.clicked[i][j] = false;
+				view.superButton[i].setStyle(null);
+				this.superclicked[i] = false;
+				view.lottoNumbersInButton[i].setVisible(false);
+			}
+		}
+		view.superNumberButton.setVisible(false);
 	}
 }

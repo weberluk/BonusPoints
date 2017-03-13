@@ -13,7 +13,7 @@ public class Lotto_Model {
 	Random rand = new Random();
 	
 	protected ArrayList<Integer>userTipp = new ArrayList<Integer>();
-	protected int userSuperTipp = 0;
+	private int userSuperTipp = 0;
 
 	private Integer[] regularNumbersLotto = new Integer[MAXLOTTO];
 	private int superNumber = 0;
@@ -31,6 +31,9 @@ public class Lotto_Model {
 	
 	public int getsuperNumber(){
 		return superNumber;
+	}
+	public void setsuperNumber(int superNumber){
+		this.userSuperTipp = superNumber;
 	}
 	
 	public void calculateChance(int[] input){
