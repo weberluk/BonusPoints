@@ -22,6 +22,7 @@ public class TicTacToe_View {
 	protected Button[][] buttons = new Button[model.DIMENSION][model.DIMENSION];
 	protected MenuItem newGame = new MenuItem("New Game");
 	protected MenuItem closeGame = new MenuItem("Close");
+	protected MenuItem documentation = new MenuItem("Dokumentation");
 	
 	protected Button btnComputer = new Button("Computer");
 	protected TextField tbox = new TextField();
@@ -42,16 +43,16 @@ public class TicTacToe_View {
 		MenuBar menuBar = new MenuBar();
 		menuBar.getStyleClass().add("menu");
 		Menu menuFile = new Menu("File");
-		Menu menuEdit = new Menu("Edit");
 		Menu menuHelp = new Menu("Help");
 		menuFile.getStyleClass().add("menu");
-		menuEdit.getStyleClass().add("menu");
 		menuHelp.getStyleClass().add("menu");
 		newGame.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
+		documentation.getStyleClass().add("menu");
 		
-		menuBar.getMenus().addAll(menuFile,menuEdit,menuHelp);
+		menuBar.getMenus().addAll(menuFile,menuHelp);
 		menuFile.getItems().addAll(newGame,closeGame);
+		menuHelp.getItems().add(documentation);
 		
 		//Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
