@@ -40,7 +40,7 @@
 	-fx-font: "Arial Black";
 	-fx-font-size: 25;
 	-fx-font-weight: bolder;
-	-fx-text-fill: white;
+	-fx-text-fill: #ff7f50;
 }
 
 .pane {
@@ -55,7 +55,7 @@
 	-fx-font: "Arial Black";
 	-fx-font-size: 25;
 	-fx-font-weight: bolder;
-	-fx-text-fill: black;
+	-fx-text-fill: #ff7f50;
 }
 
 .menu:hover{
