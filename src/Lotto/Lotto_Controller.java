@@ -55,6 +55,7 @@ public class Lotto_Controller {
 				view.lottoNumbersInButton[i].setVisible(true);
 			}
 			view.superName.setVisible(true);
+			view.nrTop.setVisible(true);
 			view.sLabel.setText(Integer.toString(model.getsuperNumber()));
 			view.sLabel.setVisible(true);
 			view.superNumberButton.setText(Integer.toString(model.getsuperNumber()));
@@ -67,8 +68,7 @@ public class Lotto_Controller {
 		view.btnGetChance.setOnAction((event) -> {
 			LottoStart.LOGGER.info("Calculating the chance for winning");
 			int coupons = 0;
-			
-			try{
+			try {
 				coupons = Integer.parseInt(view.tcoupons.getText());
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Gewinn Chance");
@@ -76,8 +76,8 @@ public class Lotto_Controller {
 				alert.setContentText(model.getChance(coupons, 49, 6));
 
 				alert.showAndWait();
-			} catch (Exception e){
-				view.tbox.setText("Bitte geben Sie Zahlen ein!");
+			} catch (Exception e) {
+				view.tbox.setText("Eingabe: Keine Zahl, oder Zahl zu gross!");
 			}
 		});
 
@@ -144,7 +144,8 @@ public class Lotto_Controller {
 				model.userTipp.add(Integer.parseInt(view.regularButtons[i][j].getText()));
 				this.clicksRegular++;
 			} else {
-				LottoStart.LOGGER.info("This number cannot add, because there is no place: " + view.regularButtons[i][j].getText());
+				LottoStart.LOGGER.info(
+						"This number cannot add, because there is no place: " + view.regularButtons[i][j].getText());
 			}
 		} else {
 			LottoStart.LOGGER.info("This button is no longer valid: " + view.regularButtons[i][j].getText());
@@ -181,8 +182,8 @@ public class Lotto_Controller {
 		}
 
 	}
-	
-	public void setTextBox(String input){
+
+	public void setTextBox(String input) {
 		view.tbox.setText(input);
 	}
 

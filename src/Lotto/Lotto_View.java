@@ -32,6 +32,7 @@ public class Lotto_View {
 	protected Button[] lottoNumbersInButton = new Button[model.LOTTOLENGTH];
 	protected TextField tbox = new TextField();
 	protected TextField tcoupons = new TextField();
+	protected Label nrTop = new Label("Die Zahlen sind:");
 
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
@@ -113,17 +114,16 @@ public class Lotto_View {
 		btnStart.getStyleClass().add("bigButtons");
 		btnGetChance.setPrefSize(100, 50);
 		btnGetChance.getStyleClass().add("bigButtons");
-		tcoupons.setPrefSize(100, 50);
-		Label lchance = new Label(" Lottoscheine: ");
+		tcoupons.setPrefSize(200, 50);
+		Label lchance = new Label("        Lottoscheine: ");
 		lchance.getStyleClass().add("nrTop");
 		tcoupons.getStyleClass().add("text-area");
 		hbox.getChildren().addAll(btnStart,btnGetChance,lchance,tcoupons);
 		
 		//Numbers in a VBox on the right side
 		VBox vboxNumbers = new VBox();
-		Label nrTop = new Label("Die Zahlen sind:");
 		nrTop.getStyleClass().add("nrTop");
-		//nrTop.setStyle("-fx-font-size: 15pt; -fx-text-fill: red");
+		nrTop.setVisible(false);
 		vboxNumbers.getChildren().addAll(nrTop);
 		
 		//Fill Buttons for the Lotto-Numbers
@@ -146,7 +146,6 @@ public class Lotto_View {
 		vboxNumbers.setPrefSize(250, 300);
 		superName.getStyleClass().add("nrTop");
 		superName.setVisible(false);
-		Label separater1 = new Label();
 		superNumberButton.getStyleClass().add("buttonLottoNumbers");
 		superNumberButton.setPrefSize(100, 100);
 		superNumberButton.setVisible(false);

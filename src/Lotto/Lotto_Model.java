@@ -123,58 +123,25 @@ public class Lotto_Model {
 
 	}
 	    
-	// The Chance for winning - the most popular numbers
-    private final NumberFormat nf = new DecimalFormat("#.#####");
-    
-    private int[][] getResult(int coupons, int maxNumbers, int choiceNumbers) {
-        Random rand = new Random();
-        int[][] lottos = new int[coupons+1][choiceNumbers];
- 
-        // O(numbersOfCoupons * k)
-        for (int coupon = 0; coupon < coupons+1; coupon++) {
-            int size = maxNumbers;
-            int[] possibleNumbers = new int[size];
-            int[] lottoNumbers = new int[choiceNumbers];
- 
-            // O(numbersRange * k)
-            // store possible numbers for random selection
-            for (int i = 0; i < possibleNumbers.length; i++)
-                possibleNumbers[i] = i + 1;
- 
-            // O(numbersOfuse * k)
-            // pick random numbersOfuse numbers not same
-            for (int i = 0; i < lottoNumbers.length; i++) {
-                int last = size - 1;
-                int next = rand.nextInt(size);
-                int temp = possibleNumbers[last];
-                int value = possibleNumbers[next];
-                possibleNumbers[next] = temp;
-                lottoNumbers[i] = value;
-                size--;
-            }
-            lottos[coupon] = lottoNumbers;
-        }
-        return lottos;
-    }
-     
-    public String getChance(int coupons, int n, int pickSize)
+	// The Chance for winning - the most popular numbers - this Method is written with some help with the Internet
+    public String getChance(int coupons, int maxNumbers, int choiceNumbers)
     {                       
-        HashSet<Integer> winnerNumbersLookup = new HashSet<Integer>();
+        HashSet<Integer> hWinner = new HashSet<Integer>();
                  
-        int[][] lotto = getResult(coupons, n, pickSize);
+        int[][] lotto = getResult(coupons, maxNumbers, choiceNumbers);
         int[] winnerNumbers = lotto[0];
         for (int i = 0; i < winnerNumbers.length; i++) {
-            winnerNumbersLookup.add( winnerNumbers[i] );
+            hWinner.add( winnerNumbers[i] );
         }
              
-        int[] countCorrect = new int[pickSize+1];
+        int[] countCorrect = new int[choiceNumbers+1];
          
         for (int i = 1; i < lotto.length; i++) {
             int numbersCorrect = 0;
             int[] coupon = lotto[i];
             for (int j = 0; j < coupon.length; j++) {
                 int number = coupon[j];
-                if(  winnerNumbersLookup.contains(number))
+                if(  hWinner.contains(number))
                     numbersCorrect++;
             }
             countCorrect[numbersCorrect]++;         
@@ -189,10 +156,10 @@ public class Lotto_Model {
         }
         
         //add the range
-        result += "\nNummerbereich ist 1 .. "+n;
+        result += "\nNummerbereich ist 1 .. "+maxNumbers;
         
         //add the pickSize
-        result += "\nGewählte Nummern: "+pickSize;
+        result += "\nGewählte Nummern: "+choiceNumbers;
         
         //add the coupons
         result += "\nGrösse der Berechnungssumme: "+coupons;
@@ -202,5 +169,36 @@ public class Lotto_Model {
            result += ("\n"+i+" Treffer: " +countCorrect[i] + " ~ "+nf.format(100*(countCorrect[i]/(double)coupons))+  "%");
         }  
         return result;
+    }
+	
+	
+    private final NumberFormat nf = new DecimalFormat("#.#####");
+    
+    private int[][] getResult(int coupons, int maxNumbers, int choiceNumbers) {
+        int[][] lottos = new int[coupons+1][choiceNumbers];
+ 
+        //prepare the range of possibilities
+        for (int coupon = 0; coupon < coupons+1; coupon++) {
+            int size = maxNumbers;
+            int[] possibleNumbers = new int[size];
+            int[] lottoNumbers = new int[choiceNumbers];
+ 
+            //these numbers are possible
+            for (int i = 0; i < possibleNumbers.length; i++)
+                possibleNumbers[i] = i + 1;
+ 
+            //generate random numbers
+            for (int i = 0; i < lottoNumbers.length; i++) {
+                int last = size - 1;
+                int next = rand.nextInt(size);
+                int temp = possibleNumbers[last];
+                int value = possibleNumbers[next];
+                possibleNumbers[next] = temp;
+                lottoNumbers[i] = value;
+                size--;
+            }
+            lottos[coupon] = lottoNumbers;
+        }
+        return lottos;
     }
 }
