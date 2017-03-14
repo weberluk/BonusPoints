@@ -123,23 +123,18 @@ public class Lotto_Model {
 
 	}
 	    
-    /**
-     * 
-     * Lotto simulation (combination of numbers not same) Check to see how often I win
-     * Pick random winner numbers, play with n coupons and use random numbers for each coupon
-     * First index is the winner numbers
-     */
+	// The Chance for winning - the most popular numbers
     private final NumberFormat nf = new DecimalFormat("#.#####");
     
-    private int[][] getResult(int numbersOfCoupons, int numbersRange, int numbersOfuse) {
+    private int[][] getResult(int coupons, int maxNumbers, int choiceNumbers) {
         Random rand = new Random();
-        int[][] lottos = new int[numbersOfCoupons+1][numbersOfuse];
+        int[][] lottos = new int[coupons+1][choiceNumbers];
  
         // O(numbersOfCoupons * k)
-        for (int coupon = 0; coupon < numbersOfCoupons+1; coupon++) {
-            int size = numbersRange;
+        for (int coupon = 0; coupon < coupons+1; coupon++) {
+            int size = maxNumbers;
             int[] possibleNumbers = new int[size];
-            int[] lottoNumbers = new int[numbersOfuse];
+            int[] lottoNumbers = new int[choiceNumbers];
  
             // O(numbersRange * k)
             // store possible numbers for random selection
@@ -162,13 +157,6 @@ public class Lotto_Model {
         return lottos;
     }
      
-     
-     
-    /**
-    *   buy any coupons with random numbers
-    *   lotto is possible numbers 1..n
-    *   I pick x random numbers where there are x winner numbers    
-    */ 
     public String getChance(int coupons, int n, int pickSize)
     {                       
         HashSet<Integer> winnerNumbersLookup = new HashSet<Integer>();
