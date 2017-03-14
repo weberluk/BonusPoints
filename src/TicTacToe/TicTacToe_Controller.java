@@ -151,7 +151,7 @@ public class TicTacToe_Controller {
 	public void winProcedure(boolean w) {
 		if (w == true) {
 			LOGGER.info("We have a winner!");
-			System.out.println("Finish!!");
+			view.tbox.setText("Finish");
 			view.block();
 		}
 	}

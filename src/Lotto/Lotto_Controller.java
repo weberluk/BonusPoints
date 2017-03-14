@@ -167,6 +167,7 @@ public class Lotto_Controller {
 				this.clicksSuper = 0;
 				model.clear();
 				view.btnStart.setDisable(false);
+				view.tbox.clear();
 			}
 		}
 		view.superNumberButton.setVisible(false);

@@ -96,11 +96,12 @@
 .text-area {
     -fx-font-family: Consolas;
     -fx-font-size: 25;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #000000;
     -fx-display-caret:true;
     -fx-font-weight: bolder;
+    -fx-alignment: center-left;
 }
 
 .text-area .content {
-    -fx-background-color: #000000;
+    -fx-background-color: #f0e68c;
 }

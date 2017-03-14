@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,6 +24,7 @@ public class TicTacToe_View {
 	protected MenuItem closeGame = new MenuItem("Close");
 	
 	protected Button btnComputer = new Button("Computer");
+	protected TextField tbox = new TextField();
 
 	
 
@@ -53,6 +56,14 @@ public class TicTacToe_View {
 		//Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
 		hbox.getChildren().addAll(btnComputer);
+		
+		//Pane for the Buttom 
+		BorderPane bottomPane = new BorderPane();
+		bottomPane.setTop(hbox);
+		tbox.setPrefSize(20, 20);
+		tbox.setDisable(true);
+		tbox.getStyleClass().add("text-area");
+		bottomPane.setCenter(tbox);
 
 		//GridPane fill all Buttons in and show it in the center
 		GridPane pane = new GridPane();
@@ -68,7 +79,7 @@ public class TicTacToe_View {
 		}
 		BorderPane root = new BorderPane();
 		root.setTop(menuBar);
-		root.setBottom(hbox);
+		root.setBottom(bottomPane);
 		root.setCenter(pane);
 		
 		Scene scene = new Scene(root);
