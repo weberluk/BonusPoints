@@ -10,6 +10,8 @@ import java.util.Random;
 import com.sun.media.jfxmedia.logging.Logger;
 
 public class Lotto_Model {
+	
+	ServiceLocator servicelocator = ServiceLocator.getServiceLocator();
 
 	public static final int LOTTOLENGTH = 6;
 	public static final int LOTTOHIGHT = 7;
@@ -34,7 +36,7 @@ public class Lotto_Model {
 		return superNumber;
 	}
 	public void clear(){
-		LottoStart.LOGGER.info("Clear all");
+		servicelocator.getLogger().info("Clear all");
 		this.regularNumbersLotto.clear();
 		this.superNumber = 0;
 		this.rightRegualarChecker = 0;
@@ -101,22 +103,22 @@ public class Lotto_Model {
 		switch (this.rightRegualarChecker) {
 
 		case 1:
-			LottoStart.LOGGER.info("1 Choice is equal");
+			servicelocator.getLogger().info("1 Choice is equal");
 			return "You win 1";
 		case 2:
-			LottoStart.LOGGER.info("2 Choice is equal");
+			servicelocator.getLogger().info("2 Choice is equal");
 			return "You win 2";
 		case 3:
-			LottoStart.LOGGER.info("3 Choice is equal");
+			servicelocator.getLogger().info("3 Choice is equal");
 			return "You win 3";
 		case 4:
-			LottoStart.LOGGER.info("4 Choice is equal");
+			servicelocator.getLogger().info("4 Choice is equal");
 			return "You win 4";
 		case 5:
-			LottoStart.LOGGER.info("5 Choice is equal");
+			servicelocator.getLogger().info("5 Choice is equal");
 			return "You win 5";
 		case 6:
-			LottoStart.LOGGER.info("6 Choice is equal");
+			servicelocator.getLogger().info("6 Choice is equal");
 			return "You win 6";
 		}
 		return "Nothing is right";
