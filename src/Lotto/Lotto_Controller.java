@@ -1,11 +1,13 @@
 package Lotto;
 
-import java.util.logging.FileHandler;
+import java.awt.Desktop;
+import java.io.File;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import TicTacToe.TicTacToe_Controller;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -16,7 +18,7 @@ public class Lotto_Controller {
 
 	final private Lotto_View view;
 	final private Lotto_Model model;
-
+	
 	protected Boolean[][] clicked = new Boolean[6][7];
 	private int clicksRegular = 0;
 	private int xPos;
@@ -88,6 +90,17 @@ public class Lotto_Controller {
 		view.closeGame.setOnAction((event) -> {
 			LottoStart.LOGGER.info("terminating the program");
 			view.stop();
+		});
+		
+		view.documentation.setOnAction((event) -> {
+			LottoStart.LOGGER.info("Dokumentation");
+			if(Desktop.isDesktopSupported()) {
+			     try {
+			          Desktop.getDesktop().open(new File("%t/" +"DokumentationLotto" + ".pdf"));
+			     } catch(Exception e) {
+			    	 LottoStart.LOGGER.warning("Opening the file is not possible");
+			     }
+			}
 		});
 
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {

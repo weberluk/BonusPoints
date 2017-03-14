@@ -23,6 +23,7 @@ public class Lotto_View {
 	protected Button btnGetChance = new Button("My Chance");
 	protected MenuItem newGame = new MenuItem("Restart");
 	protected MenuItem closeGame = new MenuItem("Close");
+	protected MenuItem documentation = new MenuItem("Dokumentation");
 	protected Button[][] regularButtons = new Button[model.LOTTOLENGTH][model.LOTTOHIGHT];
 	protected Button[] superButton = new Button[model.LOTTOLENGTH];
 	protected Label[] labelsForNumbers = new Label[model.LOTTOLENGTH];
@@ -34,6 +35,7 @@ public class Lotto_View {
 	protected TextField tcoupons = new TextField();
 	protected Label nrTop = new Label("Die Zahlen sind:");
 
+
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
 		this.stage = primaryStage;
@@ -43,17 +45,16 @@ public class Lotto_View {
 		//MenuBar in the top
 		MenuBar menuBar = new MenuBar();
 		Menu menuFile = new Menu("File");
-		Menu menuEdit = new Menu("Edit");
 		Menu menuHelp = new Menu("Help");
-		
-		menuBar.getMenus().addAll(menuFile,menuEdit,menuHelp);
+		menuBar.getMenus().addAll(menuFile,menuHelp);
 		menuFile.getItems().addAll(newGame,closeGame);
+		menuHelp.getItems().add(documentation);
 		menuBar.getStyleClass().add("menu");
 		menuFile.getStyleClass().add("menu");
-		menuEdit.getStyleClass().add("menu");
 		menuHelp.getStyleClass().add("menu");
 		newGame.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
+		documentation.getStyleClass().add("menu");
 		
 		//GridPane in the center
 		GridPane gPaneRegular = new GridPane();
