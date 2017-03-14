@@ -38,7 +38,7 @@
 
 .labelSuperZahlen{
 	-fx-font: "Arial Black";
-	-fx-font-size: 20pt;
+	-fx-font-size: 25;
 	-fx-font-weight: bolder;
 	-fx-text-fill: white;
 }
@@ -53,7 +53,7 @@
 
 .nrTop {
 	-fx-font: "Arial Black";
-	-fx-font-size: 20pt;
+	-fx-font-size: 25;
 	-fx-font-weight: bolder;
 	-fx-text-fill: black;
 }
@@ -91,4 +91,16 @@
 	-fx-text-fill: white;
 	-fx-font-size: 15pt;
 	-fx-font-weight: bolder;
+}
+
+.text-area {
+    -fx-font-family: Consolas;
+    -fx-font-size: 25;
+    -fx-text-fill: #ffffff;
+    -fx-display-caret:true;
+    -fx-font-weight: bolder;
+}
+
+.text-area .content {
+    -fx-background-color: #000000;
 }

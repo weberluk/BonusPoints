@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -28,6 +29,7 @@ public class Lotto_View {
 	protected Label superName = new Label("Die Superzahl ist");
 	protected Button superNumberButton = new Button();
 	protected Button[] lottoNumbersInButton = new Button[model.LOTTOLENGTH];
+	protected TextArea tbox = new TextArea();
 
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
@@ -88,6 +90,10 @@ public class Lotto_View {
 		//Empty Place2 (Top)
 		HBox hboxEmpty2 = new HBox();
 		hboxEmpty2.setPrefSize(100, 50);
+		this.tbox.setDisable(true);
+		this.tbox.setPrefSize(700,50);
+		this.tbox.getStyleClass().add("text-area");
+		hboxEmpty2.getChildren().add(tbox);
 		
 		//Empty Place2 (Left)
 		VBox vboxEmpty3 = new VBox();
@@ -138,6 +144,7 @@ public class Lotto_View {
 		superNumberButton.getStyleClass().add("buttonLottoNumbers");
 		superNumberButton.setPrefSize(100, 100);
 		superNumberButton.setVisible(false);
+		superNumberButton.setDisable(true);
 		vboxNumbers.getChildren().addAll(superName, superNumberButton);
 		
 		//For the top in the top
