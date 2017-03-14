@@ -1,7 +1,15 @@
 package Lotto;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import TicTacToe.TicTacToe_Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 
 public class Lotto_Controller {
@@ -41,6 +49,7 @@ public class Lotto_Controller {
 
 		view.btnStart.setOnAction((event) -> {
 			model.fillLottoNumbers();
+			LottoStart.LOGGER.info("Calculating the Lotto-Numbers");
 			for (int i = 0; i < model.LOTTOLENGTH; i++) {
 				view.lottoNumbersInButton[i].setText(Integer.toString(model.getRegularNumbers(i)));
 				view.lottoNumbersInButton[i].setVisible(true);
@@ -50,12 +59,26 @@ public class Lotto_Controller {
 			view.sLabel.setVisible(true);
 			view.superNumberButton.setText(Integer.toString(model.getsuperNumber()));
 			view.superNumberButton.setVisible(true);
+			LottoStart.LOGGER.info("Check for winner now");
 			view.tbox.setText(model.checkWin());
 			view.btnStart.setDisable(true);
 		});
 
 		view.btnGetChance.setOnAction((event) -> {
+			LottoStart.LOGGER.info("Calculating the chance for winning");
+			int coupons = 0;
+			
+			try{
+				coupons = Integer.parseInt(view.tcoupons.getText());
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Gewinn Chance");
+				alert.setHeaderText("Hier ist deine Gewinn Chance");
+				alert.setContentText(model.getChance(coupons, 49, 6));
 
+				alert.showAndWait();
+			} catch (Exception e){
+				view.tbox.setText("Bitte geben Sie Zahlen ein!");
+			}
 		});
 
 		view.newGame.setOnAction((event) -> {
@@ -63,6 +86,7 @@ public class Lotto_Controller {
 		});
 
 		view.closeGame.setOnAction((event) -> {
+			LottoStart.LOGGER.info("terminating the program");
 			view.stop();
 		});
 
@@ -112,13 +136,18 @@ public class Lotto_Controller {
 
 	public void setButtonPressed(int i, int j) {
 		if (clicked[i][j] == false) {
+			LottoStart.LOGGER.info("New Regular Button is pressed: " + view.regularButtons[i][j].getText());
 			if (this.clicksRegular < model.LOTTOLENGTH) {
+				LottoStart.LOGGER.info("There are place for another number: " + view.regularButtons[i][j].getText());
 				view.regularButtons[i][j].setStyle("-fx-background-color: #800000;");
 				clicked[i][j] = true;
 				model.userTipp.add(Integer.parseInt(view.regularButtons[i][j].getText()));
 				this.clicksRegular++;
+			} else {
+				LottoStart.LOGGER.info("This number cannot add, because there is no place: " + view.regularButtons[i][j].getText());
 			}
 		} else {
+			LottoStart.LOGGER.info("This button is no longer valid: " + view.regularButtons[i][j].getText());
 			view.regularButtons[i][j].setStyle(null);
 			clicked[i][j] = false;
 			model.userTipp.remove(view.regularButtons[i][j].getText());
@@ -128,12 +157,14 @@ public class Lotto_Controller {
 
 	public void setSuperButtonPressed(int i) {
 		if (this.superclicked[i] == false) {
+			LottoStart.LOGGER.info("New Super-Button is pressed: " + view.superButton[i].getText());
 			if (this.clicksSuper < this.superclicks) {
 				view.superButton[i].setStyle("-fx-background-color: #800000;");
 				this.superclicked[i] = true;
 				this.clicksSuper++;
 			}
 		} else {
+			LottoStart.LOGGER.info("This Super-Button is no longer valid: " + view.superButton[i].getText());
 			view.superButton[i].setStyle(null);
 			this.superclicked[i] = false;
 			this.clicksSuper--;
@@ -156,6 +187,7 @@ public class Lotto_Controller {
 	}
 
 	public void cleanUp() {
+		LottoStart.LOGGER.info("Clean all up");
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
 				view.regularButtons[i][j].setStyle(null);

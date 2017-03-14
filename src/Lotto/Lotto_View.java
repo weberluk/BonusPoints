@@ -31,6 +31,7 @@ public class Lotto_View {
 	protected Button superNumberButton = new Button();
 	protected Button[] lottoNumbersInButton = new Button[model.LOTTOLENGTH];
 	protected TextField tbox = new TextField();
+	protected TextField tcoupons = new TextField();
 
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
@@ -112,7 +113,11 @@ public class Lotto_View {
 		btnStart.getStyleClass().add("bigButtons");
 		btnGetChance.setPrefSize(100, 50);
 		btnGetChance.getStyleClass().add("bigButtons");
-		hbox.getChildren().addAll(btnStart,btnGetChance);
+		tcoupons.setPrefSize(100, 50);
+		Label lchance = new Label(" Lottoscheine: ");
+		lchance.getStyleClass().add("nrTop");
+		tcoupons.getStyleClass().add("text-area");
+		hbox.getChildren().addAll(btnStart,btnGetChance,lchance,tcoupons);
 		
 		//Numbers in a VBox on the right side
 		VBox vboxNumbers = new VBox();
