@@ -9,7 +9,6 @@ import Lotto.ServiceLocator;
 
 public class Translator {
     private ServiceLocator sl = ServiceLocator.getServiceLocator();
-    private Logger logger = sl.getLogger();
     
     protected Locale currentLocale;
     private ResourceBundle resourceBundle;
@@ -34,7 +33,7 @@ public class Translator {
         Locale.setDefault(locale); // Change VM default (for dialogs, etc.)
         currentLocale = locale;
         
-        logger.info("Loaded resources for " + locale.getLanguage());
+        sl.getLogger().info("Loaded resources for " + locale.getLanguage());
     }
     
     /**
@@ -51,7 +50,7 @@ public class Translator {
         try {
             return resourceBundle.getString(key);
         } catch (MissingResourceException e) {
-            logger.warning("Missing string: " + key);
+        	sl.getLogger().warning("Missing string: " + key);
             return "--";
         }
     }

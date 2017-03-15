@@ -25,7 +25,7 @@ public class LottoStart extends Application {
 		// Begin a new game
 		@Override
 		public void start(Stage primaryStage) throws Exception {
-			view = new Lotto_View(primaryStage, model );
+			view = new Lotto_View(primaryStage, model);
 			model = new Lotto_Model();
 			controller = new Lotto_Controller(model, view);
 

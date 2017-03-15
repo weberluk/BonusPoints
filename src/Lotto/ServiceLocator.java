@@ -26,7 +26,7 @@ public class ServiceLocator {
 
     // Application-global constants
     final private Class<?> APP_CLASS = LottoStart.class;
-    final private String APP_NAME = "JavaFX_App_Template";
+    final private String APP_NAME = "LottoStart";
     
     // Supported locales (for translations)
     final private Locale[] locales = new Locale[] { new Locale("en"), new Locale("de") };
