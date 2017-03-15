@@ -21,7 +21,8 @@ public class Lotto_Controller {
 	
 	final private Lotto_View view;
 	final private Lotto_Model model;
-	final private ServiceLocator servicelocator;
+	final private ServiceLocator servicelocator = ServiceLocator.getServiceLocator();
+	private Logger logger = servicelocator.getLogger();
 	
     private Desktop desktop = Desktop.getDesktop();
     final FileChooser fileChooser = new FileChooser();
@@ -55,11 +56,10 @@ public class Lotto_Controller {
 		this.view = view;
 		this.model = model;
 		setAllButtonsFalse();
-		servicelocator = ServiceLocator.getServiceLocator();
 
 		view.btnStart.setOnAction((event) -> {
 			model.fillLottoNumbers();
-			servicelocator.getLogger().info("Calculating the Lotto-Numbers");
+			logger.info("Calculating the Lotto-Numbers");
 			for (int i = 0; i < model.LOTTOLENGTH; i++) {
 				view.lottoNumbersInButton[i].setText(Integer.toString(model.getRegularNumbers(i)));
 				view.lottoNumbersInButton[i].setVisible(true);
@@ -70,13 +70,13 @@ public class Lotto_Controller {
 			view.sLabel.setVisible(true);
 			view.superNumberButton.setText(Integer.toString(model.getsuperNumber()));
 			view.superNumberButton.setVisible(true);
-			servicelocator.getLogger().info("Check for winner now");
+			logger.info("Check for winner now");
 			view.tbox.setText(model.checkWin());
 			view.btnStart.setDisable(true);
 		});
 
 		view.btnGetChance.setOnAction((event) -> {
-			servicelocator.getLogger().info("Calculating the chance for winning");
+			logger.info("Calculating the chance for winning");
 			int coupons = 0;
 			try {
 				coupons = Integer.parseInt(view.tcoupons.getText());
@@ -96,16 +96,16 @@ public class Lotto_Controller {
 		});
 
 		view.closeGame.setOnAction((event) -> {
-			servicelocator.getLogger().info("terminating the program");
+			logger.info("terminating the program");
 			view.stop();
 		});
 		
 		view.documentation.setOnAction((event) -> {
-			servicelocator.getLogger().info("Dokumentation");
-            File file = fileChooser.showOpenDialog(null);
-            if (file != null) {
-                openFile(file);
-            }
+			logger.info("Dokumentation");
+            String file = fileChooser.getInitialFileName();
+//            if (file != null) {
+//                openFile(file);
+//            }
 		});
 
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
@@ -154,19 +154,19 @@ public class Lotto_Controller {
 
 	public void setButtonPressed(int i, int j) {
 		if (clicked[i][j] == false) {
-			servicelocator.getLogger().info("New Regular Button is pressed: " + view.regularButtons[i][j].getText());
+			logger.info("New Regular Button is pressed: " + view.regularButtons[i][j].getText());
 			if (this.clicksRegular < model.LOTTOLENGTH) {
-				servicelocator.getLogger().info("There are place for another number: " + view.regularButtons[i][j].getText());
+				logger.info("There are place for another number: " + view.regularButtons[i][j].getText());
 				view.regularButtons[i][j].setStyle("-fx-background-color: #800000;");
 				clicked[i][j] = true;
 				model.userTipp.add(Integer.parseInt(view.regularButtons[i][j].getText()));
 				this.clicksRegular++;
 			} else {
-				servicelocator.getLogger().info(
+				logger.info(
 						"This number cannot add, because there is no place: " + view.regularButtons[i][j].getText());
 			}
 		} else {
-			servicelocator.getLogger().info("This button is no longer valid: " + view.regularButtons[i][j].getText());
+			logger.info("This button is no longer valid: " + view.regularButtons[i][j].getText());
 			view.regularButtons[i][j].setStyle(null);
 			clicked[i][j] = false;
 			model.userTipp.remove(view.regularButtons[i][j].getText());
@@ -176,14 +176,14 @@ public class Lotto_Controller {
 
 	public void setSuperButtonPressed(int i) {
 		if (this.superclicked[i] == false) {
-			servicelocator.getLogger().info("New Super-Button is pressed: " + view.superButton[i].getText());
+			logger.info("New Super-Button is pressed: " + view.superButton[i].getText());
 			if (this.clicksSuper < this.superclicks) {
 				view.superButton[i].setStyle("-fx-background-color: #800000;");
 				this.superclicked[i] = true;
 				this.clicksSuper++;
 			}
 		} else {
-			servicelocator.getLogger().info("This Super-Button is no longer valid: " + view.superButton[i].getText());
+			logger.info("This Super-Button is no longer valid: " + view.superButton[i].getText());
 			view.superButton[i].setStyle(null);
 			this.superclicked[i] = false;
 			this.clicksSuper--;
@@ -206,7 +206,7 @@ public class Lotto_Controller {
 	}
 
 	public void cleanUp() {
-		servicelocator.getLogger().info("Clean all up");
+		logger.info("Clean all up");
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
 				view.regularButtons[i][j].setStyle(null);
@@ -228,7 +228,7 @@ public class Lotto_Controller {
         try {
             desktop.open(file);
         } catch (IOException ex) {
-        	servicelocator.getLogger().info("File cannot open");
+        	logger.info("File cannot open");
         }
     }
 }

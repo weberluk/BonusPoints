@@ -6,11 +6,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.security.auth.login.Configuration;
-
-import com.sun.java.accessibility.util.Translator;
-
-import TicTacToe.TicTacToe_Controller;
+import Lotto.Lotto_Controller;
+import Lotto.Configuration;
+import Lotto.Translator;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code
@@ -36,8 +34,8 @@ public class ServiceLocator {
 
     // Resources
     private Logger logger;
-    private Configuration configuration;
-    private Translator translator;
+    private Lotto.Configuration configuration;
+    private Lotto.Translator translator;
     
 	//Logger
     Logger configureLogging() {
@@ -54,7 +52,7 @@ public class ServiceLocator {
         
         // Add a file handler, putting the rotating files in the tmp directory
         try {
-            Handler logHandler = new FileHandler("%t/"
+            Handler logHandler = new FileHandler("%h/"
                     + serviceLocator.getAPP_NAME() + "_%u" + "_%g" + ".log",
                     1000000, 9);
             logHandler.setLevel(Level.FINEST);
@@ -66,6 +64,7 @@ public class ServiceLocator {
 
         return ourLogger;
     }
+    
 
     /**
      * Factory method for returning the singleton
@@ -103,23 +102,23 @@ public class ServiceLocator {
         this.logger = logger;
     }
 
-    public Configuration getConfiguration() {
+    public Lotto.Configuration getConfiguration() {
         return configuration;
     }
 
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
+    public void setConfiguration(Lotto.Configuration config) {
+        this.configuration = config;
     }
 
     public Locale[] getLocales() {
         return locales;
     }
 
-    public Translator getTranslator() {
+    public Lotto.Translator getTranslator() {
         return translator;
     }
     
-    public void setTranslator(Translator translator) {
+    public void setTranslator(Lotto.Translator translator) {
         this.translator = translator;
     }
 }

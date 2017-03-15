@@ -4,6 +4,10 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Lotto.ServiceLocator;
+import Lotto.Configuration;
+import Lotto.Translator;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -24,18 +28,20 @@ public class LottoStart extends Application {
 			view = new Lotto_View(primaryStage, model );
 			model = new Lotto_Model();
 			controller = new Lotto_Controller(model, view);
-			sl = ServiceLocator.getServiceLocator();
-			
-            // Create the service locator to hold our resources
+
+	          // Create the service locator to hold our resources
             sl = ServiceLocator.getServiceLocator();
-            
+
             // Initialize the resources in the service locator
             sl.setLogger(sl.configureLogging());
+
+            sl.setConfiguration(new Configuration());
+
+            String language = sl.getConfiguration().getOption("Language");
+            sl.setTranslator(new Translator(language));
 			
 			view.start();
 			
 		}
-		
-		
 
 	}
