@@ -6,34 +6,30 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import TicTacToe.TicTacToe_Computer;
+import TicTacToe.TicTacToe_Model;
+import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Model.HumanPlayer;
 import TicTacToe.TicTacToe_Model.Value;
+import TicTacToe.ServiceLocator;
 
 public class TicTacToe_Controller {
 	final private TicTacToe_Model model;
 	final private TicTacToe_View view;
-
-	private static final Logger LOGGER = Logger.getLogger( TicTacToe_Controller.class.getName() );
+	final ServiceLocator sl;
 	
 	private boolean computerPlayer = false;
 	
 	public TicTacToe_Controller(TicTacToe_Model model, TicTacToe_View view) {
 		this.view = view;
 		this.model = model;
+		this.sl = ServiceLocator.getServiceLocator();
 
 		// set in the model all on the board empty
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				model.setAllEmpty(i, j);
 			}
-		}
-		
-		try {
-			Handler logHandler = new FileHandler("%t/" + "TicTacToe_Logging" + "_%u" + "_%g" + ".log");
-			logHandler.setLevel(Level.INFO);
-			LOGGER.addHandler(logHandler);
-		} catch (Exception e){
-			throw new RuntimeException("Unable to initialize log files " + e.toString());
 		}
 		
 		// Buttons set sign
@@ -71,17 +67,17 @@ public class TicTacToe_Controller {
 
 		// Menu Items
 		view.newGame.setOnAction((event) -> {
-			LOGGER.info("Start a new Game");
+			sl.getLogger().info("Start a new Game");
 			cleanUp();
 		});
 		view.closeGame.setOnAction((event) -> {
-			LOGGER.info("Application terminated");
+			sl.getLogger().info("Application terminated");
 			view.stop();
 		});
 
 		// Watch the model for changing
 		model.getValueProperty().addListener((obervable, oldValue, newValue) -> {
-			LOGGER.info("ComputerLogicIsRunning");
+			sl.getLogger().info("ComputerLogicIsRunning");
 			if(model.getPlayer() == HumanPlayer.Computer){
 				this.checkComputerPlayBevorWorkFlow(model.getXPos(), model.getYPos());
 			}
@@ -92,21 +88,21 @@ public class TicTacToe_Controller {
 	public void checkComputerPlayBevorWorkFlow(int i, int j) {
 		if (this.computerPlayer == true) {
 			if (model.getPlayer() == HumanPlayer.Human) {
-				LOGGER.info("Player is a human");
+				sl.getLogger().info("Player is a human");
 				if (model.getValue() == false) {
 					workFlow(i, j);
 					model.setValue(true);
 				}
 
 			} else {
-				LOGGER.info("Player is a computer");
+				sl.getLogger().info("Player is a computer");
 				if (model.getValue() == true) {
 					workFlow(i, j);
 					model.setValue(false);
 				}
 			}
 		} else {
-			LOGGER.info("There is no Computer-Player activated");
+			sl.getLogger().info("There is no Computer-Player activated");
 			workFlow(i, j);
 		}
 	}
@@ -150,7 +146,7 @@ public class TicTacToe_Controller {
 	// give win statement and block the program
 	public void winProcedure(boolean w) {
 		if (w == true) {
-			LOGGER.info("We have a winner!");
+			sl.getLogger().info("We have a winner!");
 			view.tbox.setText("Finish");
 			view.block();
 		}

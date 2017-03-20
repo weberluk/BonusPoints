@@ -1,0 +1,22 @@
+#splash{
+    -fx-background-image: url("TicTacToeBackground.jpg");
+    -fx-background-color: transparent;
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 300 300;
+    -fx-background-position: center center;
+}
+
+.progress-bar > .bar {
+	-fx-background-color: green;
+}
+
+#progressbox  {
+	-fx-alignment: center;
+}
+
+.label {
+	-fx-font: "Arial Black";
+	-fx-font-size: 25;
+	-fx-font-weight: bolder;
+	-fx-text-fill: #ff7f50;
+}

@@ -39,7 +39,7 @@ public class TicTacToe_View {
 		//btnComputer.setStyle("-fx-text-fill: #0000ff");
 		btnComputer.getStyleClass().add("computerButton");
 
-		//MenuBar in the top
+		//MenuBar in the topSplash_Model
 		MenuBar menuBar = new MenuBar();
 		menuBar.getStyleClass().add("menu");
 		Menu menuFile = new Menu("File");

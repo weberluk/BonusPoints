@@ -2,6 +2,7 @@ package TicTacToe;
 
 import java.util.Arrays;
 
+import TicTacToe.TicTacToe_Model;
 import TicTacToe.TicTacToe_Model.Value;
 
 public class TicTacToe_Computer {
