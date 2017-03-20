@@ -74,11 +74,7 @@ public class Lotto_Model {
 		this.userSuperTipp = superNumber;
 	}
 
-	public void calculateChance(int[] input) {
-
-	}
-
-	public String checkWin() {
+	public String checkWinRegular() {
 		ArrayList<Integer> userTip = new ArrayList<Integer>();
 		for (int i = 0; i < LOTTOLENGTH; i++) {
 			userTip.add(userTipp.get(i));
@@ -89,10 +85,10 @@ public class Lotto_Model {
 				this.checkSumRegular[i] = false;
 			}
 		}
-		String result = this.checkHowManyRight();
-		result += " ";
-		result += this.checkSuper();
-		return result;
+		return this.checkHowManyRight();
+	}
+	public String checkWinSuper() {
+		return this.checkSuper();
 	}
 
 	
@@ -130,7 +126,7 @@ public class Lotto_Model {
 			return "You have 6 correct";
 //			return t.getString("program.text.win6");
 		}
-		return "";
+		return "Nothing is correct";
 //		return t.getString("program.text.winNothing");
 
 	}
@@ -139,12 +135,12 @@ public class Lotto_Model {
 	private String checkSuper(){
 		servicelocator.getLogger().info("Check the SuperNumber");
 		if(this.userSuperTipp == superNumber){
-			return " and the Super Number is right";
+			return "The Supernumber is not correct";
 //			String result = " ";
 //			result += t.getString("program.text.superwin");
 //			return result;
 		}
-		return "";
+		return "The Supernumber is correct";
 	}
 	
 	    

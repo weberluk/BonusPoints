@@ -34,7 +34,8 @@ public class Lotto_View {
 	protected Label superName;
 	protected Button superNumberButton;
 	protected Button[] lottoNumbersInButton;
-	protected TextField tbox;
+	protected TextField tbox1;
+	protected TextField tbox2;
 	protected TextField tcoupons;
 	protected Label nrTop;
 	protected Menu menuFileLanguage;
@@ -74,7 +75,8 @@ public class Lotto_View {
 		sLabel = new Label();
 		superNumberButton = new Button();
 		lottoNumbersInButton = new Button[model.LOTTOLENGTH];
-		tbox = new TextField();
+		tbox1 = new TextField();
+		tbox2 = new TextField();
 		tcoupons = new TextField();
 		
 		//Labels
@@ -115,7 +117,8 @@ public class Lotto_View {
 //		sLabel = new Label();
 //		superNumberButton = new Button();
 //		lottoNumbersInButton = new Button[model.LOTTOLENGTH];
-//		tbox = new TextField();
+//		tbox1 = new TextField();
+//		tbox2 = new TextField();
 //		tcoupons = new TextField();
 		
 		//Labels
@@ -140,7 +143,7 @@ public class Lotto_View {
 		GridPane gPaneRegular = new GridPane();
 		GridPane gPaneSuper = new GridPane();
 		gPaneSuper.setPrefSize(100, 100);
-		int c = 0;
+		int c = 1;
 
 		// Regular Numbers in the Lotto
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
@@ -171,12 +174,15 @@ public class Lotto_View {
 			hboxEmpty.getChildren().addAll(superLabel);
 
 			// Empty Place2 (Top)
-			HBox hboxEmpty2 = new HBox();
-			hboxEmpty2.setPrefSize(100, 50);
-			this.tbox.setDisable(true);
-			this.tbox.setPrefSize(700, 20);
-			this.tbox.getStyleClass().add("text-area");
-			hboxEmpty2.getChildren().add(tbox);
+			VBox vboxEmpty2 = new VBox();
+			vboxEmpty2.setPrefSize(100, 50);
+			this.tbox1.setDisable(true);
+			this.tbox2.setDisable(true);
+			this.tbox1.setPrefSize(700, 20);
+			this.tbox2.setPrefSize(700, 20);
+			this.tbox1.getStyleClass().add("text-area");
+			this.tbox2.getStyleClass().add("text-area");
+			vboxEmpty2.getChildren().addAll(tbox1, tbox2);
 
 			// Empty Place2 (Left)
 			VBox vboxEmpty3 = new VBox();
@@ -234,7 +240,7 @@ public class Lotto_View {
 			// For the top in the top
 			BorderPane topPane = new BorderPane();
 			topPane.setTop(menuBar);
-			topPane.setCenter(hboxEmpty2);
+			topPane.setCenter(vboxEmpty2);
 
 			BorderPane root = new BorderPane();
 			root.getStyleClass().add("pane");

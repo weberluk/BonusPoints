@@ -64,7 +64,8 @@ public class Lotto_Controller {
 			view.superNumberButton.setText(Integer.toString(model.getsuperNumber()));
 			view.superNumberButton.setVisible(true);
 			sl.getLogger().info("Check for winner now");
-			view.tbox.setText(model.checkWin());
+			view.tbox1.setText(model.checkWinRegular());
+			view.tbox2.setText(model.checkWinSuper());
 			view.btnStart.setDisable(true);
 		});
 
@@ -80,7 +81,7 @@ public class Lotto_Controller {
 
 				alert.showAndWait();
 			} catch (Exception e) {
-				view.tbox.setText("Eingabe: Keine Zahl, oder Zahl zu gross!");
+				view.tbox1.setText("Eingabe: Keine Zahl, oder Zahl zu gross!");
 			}
 		});
 
@@ -195,8 +196,11 @@ public class Lotto_Controller {
 
 	}
 
-	public void setTextBox(String input) {
-		view.tbox.setText(input);
+	public void setTextBox1(String input) {
+		view.tbox1.setText(input);
+	}
+	public void setTextBox2(String input){
+		view.tbox2.setText(input);
 	}
 
 	public void cleanUp() {
@@ -212,7 +216,8 @@ public class Lotto_Controller {
 				this.clicksSuper = 0;
 				model.clear();
 				view.btnStart.setDisable(false);
-				view.tbox.clear();
+				view.tbox1.clear();
+				view.tbox2.clear();
 			}
 		}
 		view.superNumberButton.setVisible(false);
