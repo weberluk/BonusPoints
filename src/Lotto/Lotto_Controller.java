@@ -172,12 +172,14 @@ public class Lotto_Controller {
 			if (this.clicksSuper < this.superclicks) {
 				view.superButton[i].setStyle("-fx-background-color: #800000;");
 				this.superclicked[i] = true;
+				model.userSuperTipp = Integer.parseInt(view.superButton[i].getText());
 				this.clicksSuper++;
 			}
 		} else {
 			sl.getLogger().info("This Super-Button is no longer valid: " + view.superButton[i].getText());
 			view.superButton[i].setStyle(null);
 			this.superclicked[i] = false;
+			model.userSuperTipp = 0;
 			this.clicksSuper--;
 		}
 

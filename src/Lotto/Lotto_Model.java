@@ -12,6 +12,7 @@ import com.sun.media.jfxmedia.logging.Logger;
 public class Lotto_Model {
 	
 	ServiceLocator servicelocator = ServiceLocator.getServiceLocator();
+    Translator t = servicelocator.getTranslator();
 
 	public static final int LOTTOLENGTH = 6;
 	public static final int LOTTOHIGHT = 7;
@@ -24,7 +25,7 @@ public class Lotto_Model {
 	private boolean checkSuper = false;
 
 	protected ArrayList<Integer> userTipp = new ArrayList<Integer>();
-	private int userSuperTipp = 0;
+	protected int userSuperTipp = 0;
 
 	private ArrayList<Integer> regularNumbersLotto = new ArrayList<Integer>();
 	private int superNumber = 0;
@@ -88,12 +89,14 @@ public class Lotto_Model {
 				this.checkSumRegular[i] = false;
 			}
 		}
-		if (this.userSuperTipp == superNumber) {
-			this.checkSuper = true;
-		}
-		return checkHowManyRight();
+		String result = this.checkHowManyRight();
+		result += " ";
+		result += this.checkSuper();
+		return result;
 	}
 
+	
+	//check de Regular
 	private String checkHowManyRight() {
 		for (int i = 0; i < LOTTOLENGTH; i++) {
 			if (this.checkSumRegular[i] == true) {
@@ -104,26 +107,46 @@ public class Lotto_Model {
 
 		case 1:
 			servicelocator.getLogger().info("1 Choice is equal");
-			return "You win 1";
+			return "You have 1 correct";
+//			return t.getString("program.text.win1");
 		case 2:
 			servicelocator.getLogger().info("2 Choice is equal");
-			return "You win 2";
+			return "You have 2 correct";
+//			return t.getString("program.text.win2");
 		case 3:
 			servicelocator.getLogger().info("3 Choice is equal");
-			return "You win 3";
+			return "You have 3 correct";
+//			return t.getString("program.text.win3");
 		case 4:
 			servicelocator.getLogger().info("4 Choice is equal");
-			return "You win 4";
+			return "You have 4 correct";
+//			return t.getString("program.text.win4");
 		case 5:
 			servicelocator.getLogger().info("5 Choice is equal");
-			return "You win 5";
+			return "You have 5 correct";
+//			return t.getString("program.text.win5");
 		case 6:
 			servicelocator.getLogger().info("6 Choice is equal");
-			return "You win 6";
+			return "You have 6 correct";
+//			return t.getString("program.text.win6");
 		}
-		return "Nothing is right";
+		return "";
+//		return t.getString("program.text.winNothing");
 
 	}
+	
+	//check the super
+	private String checkSuper(){
+		servicelocator.getLogger().info("Check the SuperNumber");
+		if(this.userSuperTipp == superNumber){
+			return " and the Super Number is right";
+//			String result = " ";
+//			result += t.getString("program.text.superwin");
+//			return result;
+		}
+		return "";
+	}
+	
 	    
 	// The Chance for winning - the most popular numbers - this Method is written with some help with the Internet
     public String getChance(int coupons, int maxNumbers, int choiceNumbers)

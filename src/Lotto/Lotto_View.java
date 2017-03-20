@@ -40,50 +40,89 @@ public class Lotto_View {
 	protected Menu menuFileLanguage;
 	protected Menu menuFile;
 	protected Menu menuHelp;
+	protected Label lchance;
+	Label superLabel;
 
 	public Lotto_View(Stage primaryStage, Lotto_Model model) {
 		this.model = model;
 		this.stage = primaryStage;
 		
+	    ServiceLocator sl = ServiceLocator.getServiceLocator();  
+	    Translator t = sl.getTranslator();
+		
+	    //Title
 		stage.setTitle("***Lotto***");
-
-		btnStart = new Button("Start");
-		btnGetChance = new Button("My Chance");
+		
+		//MenuStrings
+		menuFile = new Menu("File");
+		menuHelp = new Menu("Help");
 		newGame = new MenuItem("New Game");
 		closeGame = new MenuItem("Close");
+		menuFileLanguage = new Menu("Language");
 		documentation = new MenuItem("Documentation");
+		
+		//Other Controls
+		superName = new Label("The super number is");
+		nrTop = new Label("The numbers are:");		
+		btnStart = new Button("Start");
+		btnGetChance = new Button("My Chance");
+
+		//Without Text to translate
 		regularButtons = new Button[model.LOTTOLENGTH][model.LOTTOHIGHT];
 		superButton = new Button[model.LOTTOLENGTH];
 		labelsForNumbers = new Label[model.LOTTOLENGTH];
+		sLabel = new Label();
 		superNumberButton = new Button();
 		lottoNumbersInButton = new Button[model.LOTTOLENGTH];
 		tbox = new TextField();
 		tcoupons = new TextField();
-		nrTop = new Label("The numbers are:");
-		menuFileLanguage = new Menu("Language");
-		menuFile = new Menu("File");
-		menuHelp = new Menu("Help");
-		superName = new Label("The super number is");
 		
+		//Labels
+		lchance = new Label("         Lottotickets: ");
+		superLabel = new Label("Supernumbers: ");
+
+		 for (Locale locale : sl.getLocales()) {
+	           MenuItem language = new MenuItem(locale.getLanguage());
+	           menuFileLanguage.getItems().add(language);
+	           language.setOnAction( event -> {
+					sl.getConfiguration().setLocalOption("Language", locale.getLanguage());
+	                sl.setTranslator(new Translator(locale.getLanguage()));
+	                updateTexts();
+	            });
+		 }
+
+		//Title
 //		stage.setTitle(t.getString("program.name"));
-//
-//		btnStart = new Button(t.getString("program.button.btnStart"));
-//		btnGetChance = new Button("My Chance");
+		
+		//MenuStrings
+//		menuFile = new Menu(t.getString("program.menu.file"));
+//		menuHelp = new Menu(t.getString("program.menu.help"));
 //		newGame = new MenuItem(t.getString("program.menu.file.newGame"));
 //		closeGame = new MenuItem(t.getString("program.menu.file.close"));
 //		documentation = new MenuItem(t.getString("program.menu.help.documentation"));
+//		menuFileLanguage = new Menu(t.getString("program.menu.file.language"));
+		
+		//Other Controls
+//		superName = new Label(t.getString("program.label.superName"));
+//		nrTop = new Label(t.getString("program.label.nrTop"));
+//		btnStart = new Button(t.getString("program.button.btnStart"));
+//		btnGetChance = new Button("My Chance");
+
+		//Without Text to translate
 //		regularButtons = new Button[model.LOTTOLENGTH][model.LOTTOHIGHT];
 //		superButton = new Button[model.LOTTOLENGTH];
 //		labelsForNumbers = new Label[model.LOTTOLENGTH];
+//		sLabel = new Label();
 //		superNumberButton = new Button();
 //		lottoNumbersInButton = new Button[model.LOTTOLENGTH];
 //		tbox = new TextField();
 //		tcoupons = new TextField();
-//		nrTop = new Label(t.getString("program.label.nrTop"));
-//		menuFileLanguage = new Menu(t.getString("program.menu.file.language"));
-//		menuFile = new Menu(t.getString("program.menu.file"));
-//		menuHelp = new Menu(t.getString("program.menu.help"));
-
+		
+		//Labels
+//		lchance = new Label(t.getString("program.label.lchance"));
+//		superLabel = new Label(t.getString("program.label.superLabel"));
+//		superName = new Label(t.getString("program.label.superName"));
+		
 		// MenuBar in the top
 		MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().addAll(menuFile, menuHelp);
@@ -95,6 +134,7 @@ public class Lotto_View {
 		newGame.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
 		documentation.getStyleClass().add("menu");
+	
 
 		// GridPane in the center
 		GridPane gPaneRegular = new GridPane();
@@ -126,7 +166,6 @@ public class Lotto_View {
 
 			// Empty Place1 (Super)
 			HBox hboxEmpty = new HBox();
-			Label superLabel = new Label("Super Zahlen:");
 			superLabel.getStyleClass().add("labelSuperZahlen");
 			hboxEmpty.setPrefSize(50, 50);
 			hboxEmpty.getChildren().addAll(superLabel);
@@ -156,7 +195,6 @@ public class Lotto_View {
 			btnGetChance.setPrefSize(100, 50);
 			btnGetChance.getStyleClass().add("bigButtons");
 			tcoupons.setPrefSize(200, 50);
-			Label lchance = new Label("        Lottoscheine: ");
 			lchance.getStyleClass().add("nrTop");
 			tcoupons.getStyleClass().add("text-area");
 			hbox.getChildren().addAll(btnStart, btnGetChance, lchance, tcoupons);
@@ -239,20 +277,29 @@ public class Lotto_View {
 	protected void updateTexts() {
 		
 	    Translator t = ServiceLocator.getServiceLocator().getTranslator();
+	    
+	    //Title
+	    stage.setTitle(t.getString("program.name"));
 
 		// The menu entries
-		newGame.setText(t.getString("program.menu.file"));
+		newGame.setText(t.getString("program.menu.file.newGame"));
 		menuFileLanguage.setText(t.getString("program.menu.file.language"));
 		menuHelp.setText(t.getString("program.menu.help"));
 		closeGame.setText(t.getString("program.menu.file.close"));
 		documentation.setText(t.getString("program.menu.help.documentation"));
-		menuFileLanguage.setText(t.getString("program.menu.file.language"));
 		menuFile.setText(t.getString("program.menu.file"));
 		menuHelp.setText(t.getString("program.menu.help"));
+		
 		// Other controls
 		nrTop.setText(t.getString("program.label.nrTop"));
 		superName.setText(t.getString("program.label.superName"));
 		btnStart.setText(t.getString("program.button.btnStart"));
-		btnGetChance.setText(t.getString("program.button.btnChance"));
+		btnGetChance.setText(t.getString("program.button.btnChance"));		
+		
+		//Labels
+		String chance = "         ";
+		chance += t.getString("program.label.lchance");
+		lchance.setText(chance);
+		superLabel.setText(t.getString("program.label.superLabel"));
 	}
 }
