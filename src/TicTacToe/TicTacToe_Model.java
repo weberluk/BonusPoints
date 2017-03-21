@@ -16,7 +16,7 @@ public class TicTacToe_Model {
 	private SimpleBooleanProperty value = new SimpleBooleanProperty();
 
 	enum Value {
-		Cross, Point, Empty
+		Cross, Point, Empty, Danger
 	};
 
 	enum HumanPlayer {

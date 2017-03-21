@@ -159,9 +159,11 @@ public class TicTacToe_Controller {
 				view.buttons[i][j].setText(null);
 				view.buttons[i][j].setDisable(false);
 				view.btnComputer.setStyle(null);
+				view.tbox.clear();
 				model.setAllEmpty(i, j);
 				model.setPlayer(HumanPlayer.Human);
 				model.setSign(Value.Cross);
+				computerPlayer = false;
 			}
 		}
 	}

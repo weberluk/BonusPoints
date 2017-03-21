@@ -22,13 +22,8 @@ public class LottoStart extends Application {
 			launch(args);
 		}
 		
-		// Begin a new game
 		@Override
-		public void start(Stage primaryStage) throws Exception {
-			view = new Lotto_View(primaryStage, model);
-			model = new Lotto_Model();
-			controller = new Lotto_Controller(model, view);
-
+		public void init() {
 	          // Create the service locator to hold our resources
             sl = ServiceLocator.getServiceLocator();
 
@@ -39,7 +34,15 @@ public class LottoStart extends Application {
 
             String language = sl.getConfiguration().getOption("Language");
             sl.setTranslator(new Translator(language));
-			
+		}
+		
+		// Begin a new game
+		@Override
+		public void start(Stage primaryStage) throws Exception {
+			view = new Lotto_View(primaryStage, model);
+			model = new Lotto_Model();
+			controller = new Lotto_Controller(model, view);
+
 			view.start();
 			
 		}

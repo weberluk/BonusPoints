@@ -22,7 +22,7 @@ public class ServiceLocator {
 
     // Application-global constants
     final private Class<?> APP_CLASS = TicTacToeStart.class;
-    final private String APP_NAME = "TicTacToe";
+    final private String APP_NAME = "TicTacToeStart";
     
     // Supported locales (for translations)
     final private Locale[] locales = new Locale[] { new Locale("en"), new Locale("de") };

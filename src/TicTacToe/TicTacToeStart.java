@@ -26,6 +26,11 @@ public class TicTacToeStart extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	@Override
+	public void init() {
+		
+	}
+	
 	
 	// Begin a new game
     @Override
