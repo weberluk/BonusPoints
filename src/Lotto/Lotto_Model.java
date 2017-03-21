@@ -135,12 +135,12 @@ public class Lotto_Model {
 	private String checkSuper(){
 		servicelocator.getLogger().info("Check the SuperNumber");
 		if(this.userSuperTipp == superNumber){
-			return "The Supernumber is not correct";
+			return "The Supernumber is correct";
 //			String result = " ";
 //			result += t.getString("program.text.superwin");
 //			return result;
 		}
-		return "The Supernumber is correct";
+		return "The Supernumber is not correct";
 	}
 	
 	    
