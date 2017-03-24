@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -13,6 +14,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import TicTacToe.TicTacToe_View;
 
 
 enum Value {
@@ -79,13 +82,22 @@ class ConnectionHandler implements Runnable {
 	public void run() {
 		try{
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			Integer[] message = (Integer[]) ois.readObject();
-			printArray(message);
-			if(message.length == 3){
-				getPlayInputs(message);
-			} else {
-				getWinInputs(message);
-				printXML(id,points, player);
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			Object object = ois.readObject();
+			if(testObject(object) == 1){
+				Integer[] message = (Integer[]) object;
+				printArray(message);
+				if(message.length == 3){
+					getPlayInputs(message);
+				} else {
+					getWinInputs(message);
+					printXML(id,points, player);
+				}
+			}
+			if(testObject(object) == 2){
+				String message = (String) object;
+				out.println(message);
+				System.out.println(message);
 			}
 			ois.close();
 			socket.close();
@@ -96,6 +108,17 @@ class ConnectionHandler implements Runnable {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public int testObject(Object value){
+		if(value.getClass() == Integer[].class){
+			return 1;
+		} else {
+			if(value.getClass() == String.class){
+				return 2;
+			}
+		}
+		return id;
 	}
 	
 //	private void b(Integer message) {

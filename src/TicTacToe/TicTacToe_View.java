@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TicTacToe_View {
@@ -33,6 +34,10 @@ public class TicTacToe_View {
 
 	protected Button btnComputer;
 	protected TextField tbox;
+	protected TextField points;
+	protected TextField input;
+	protected TextArea chat;
+	protected Button btnSend;
 
 	public TicTacToe_View(Stage primaryStage, TicTacToe_Model model) {
 		this.stage = primaryStage;
@@ -48,10 +53,16 @@ public class TicTacToe_View {
 		menuHelp = new Menu();
 		btnComputer = new Button();
 		tbox = new TextField();
+		points = new TextField();
+		input = new TextField();
+		chat = new TextArea();
+		btnSend = new Button();
 
 		btnComputer.setPrefSize(240, 40);
+		btnSend.setPrefSize(200,40);
 		// btnComputer.setStyle("-fx-text-fill: #0000ff");
 		btnComputer.getStyleClass().add("computerButton");
+		btnSend.getStyleClass().add("computerButton");
 
 		// MenuBar in the topSplash_Model
 		MenuBar menuBar = new MenuBar();
@@ -79,7 +90,7 @@ public class TicTacToe_View {
 
 		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
-		hbox.getChildren().addAll(btnComputer);
+		hbox.getChildren().addAll(btnComputer,btnSend);
 
 		// Pane for the Buttom
 		BorderPane bottomPane = new BorderPane();
@@ -88,6 +99,20 @@ public class TicTacToe_View {
 		tbox.setDisable(true);
 		tbox.getStyleClass().add("text-area");
 		bottomPane.setCenter(tbox);
+		
+		// Pane for the right Side
+		BorderPane rightPane = new BorderPane();
+		points.getStyleClass().add("text-area");
+		points.setPrefSize(100, 20);
+		points.setDisable(true);
+		chat.getStyleClass().add("text-area");
+		chat.setPrefSize(200, 100);
+		chat.setDisable(true);
+		input.setPrefSize(100, 20);
+		rightPane.setBottom(input);
+		rightPane.setCenter(chat);
+		rightPane.setTop(points);
+		
 
 		// GridPane fill all Buttons in and show it in the center
 		GridPane pane = new GridPane();
@@ -105,6 +130,7 @@ public class TicTacToe_View {
 		root.setTop(menuBar);
 		root.setBottom(bottomPane);
 		root.setCenter(pane);
+		root.setRight(rightPane);
 
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
@@ -155,14 +181,15 @@ public class TicTacToe_View {
 		stage.setTitle(t.getString("program.name"));
 		
 		//Menu string
-		newGame.setText(t.getString("newGame"));
-		closeGame.setText(t.getString("closeGame"));
-		documentation.setText(t.getString("documentation"));
-		menuFile.setText(t.getString("file"));
-		menuHelp.setText(t.getString("help"));
+		newGame.setText(t.getString("program.menu.newGame"));
+		closeGame.setText(t.getString("program.menu.closeGame"));
+		documentation.setText(t.getString("program.menu.documentation"));
+		menuFile.setText(t.getString("program.menu.file"));
+		menuHelp.setText(t.getString("program.menu.help"));
 		
 		//Other controls
-		btnComputer.setText(t.getString("computer"));
+		btnComputer.setText(t.getString("program.button.computer"));
+		btnSend.setText(t.getString("program.button.send"));
 
 	}
 

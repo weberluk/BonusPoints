@@ -49,7 +49,9 @@ public class TicTacToe_XMLWriter {
 
 	}
 
-	public void readXML() {
+	public String readXML() {
+		
+		String response = "nicht geladen";
 
 		try {
 
@@ -69,22 +71,15 @@ public class TicTacToe_XMLWriter {
 			System.out.println("Id: " + elements.getId());
 			System.out.println("Name: " + elements.name);
 			System.out.println("Points: " + elements.getPoints());
-
-			ArrayList<Elements> elementList = new ArrayList<Elements>();
-			for (int i = 0; i < elementList.size(); i++) {
-				System.out.println("Detail --->");
-				Elements element = elementList.get(i);
-				System.out.println("Id: " + elements.getId());
-				System.out.println("Name: " + elements.getName());
-				System.out.println("Poinst: " + elements.getPoints());
-
-			}
-
+			
+			response = "Points: " + elements.getPoints();
+			
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		return response;
 
 	}
 

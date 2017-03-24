@@ -11,6 +11,7 @@ import TicTacToe.TicTacToe_Model;
 import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Model.HumanPlayer;
 import TicTacToe.TicTacToe_Model.Value;
+import TicTacToe_Server.TicTacToe_XMLWriter;
 import TicTacToe.ServiceLocator;
 import TicTacToe.TicTacToe_Client;
 
@@ -34,6 +35,10 @@ public class TicTacToe_Controller {
 				model.setAllEmpty(i, j);
 			}
 		}
+		
+		//get Points
+		TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
+		view.points.setText(xml.readXML());
 		
 		// Buttons set sign
 		view.btnComputer.setOnAction((event) -> {
@@ -76,6 +81,9 @@ public class TicTacToe_Controller {
 		view.closeGame.setOnAction((event) -> {
 			sl.getLogger().info("Application terminated");
 			view.stop();
+		});
+		view.btnSend.setOnAction((event) -> {
+			client.writeChatMessageToServer(view.input.getText());
 		});
 
 		// Watch the model for changing
