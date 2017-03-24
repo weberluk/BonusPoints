@@ -152,6 +152,7 @@ public class TicTacToe_Model {
 				winner[k] = true;
 			}
 			if (!Arrays.toString(winner).contains("f")) {
+				if(this.getPlayer() == HumanPlayer.Human)
 				return true;
 			}
 		}

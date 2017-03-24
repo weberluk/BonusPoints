@@ -1,5 +1,9 @@
 package TicTacToe;
 
+import java.util.Locale;
+
+import Lotto.ServiceLocator;
+import Lotto.Translator;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,46 +23,65 @@ import javafx.stage.Stage;
 public class TicTacToe_View {
 	private TicTacToe_Model model;
 	private Stage stage;
-	protected Button[][] buttons = new Button[model.DIMENSION][model.DIMENSION];
-	protected MenuItem newGame = new MenuItem("New Game");
-	protected MenuItem closeGame = new MenuItem("Close");
-	protected MenuItem documentation = new MenuItem("Dokumentation");
-	
-	protected Button btnComputer = new Button("Computer");
-	protected TextField tbox = new TextField();
+	protected Button[][] buttons;
+	protected MenuItem newGame;
+	protected MenuItem closeGame;
+	protected MenuItem documentation;
+	protected Menu menuFile;
+	protected Menu menuHelp;
+    protected Menu menuFileLanguage;
 
-	
+	protected Button btnComputer;
+	protected TextField tbox;
 
 	public TicTacToe_View(Stage primaryStage, TicTacToe_Model model) {
 		this.stage = primaryStage;
 		this.model = model;
 
 		stage.setTitle("Tic Tac Toe");
+		
+		buttons = new Button[model.DIMENSION][model.DIMENSION];
+		newGame = new MenuItem();
+		closeGame = new MenuItem();
+		documentation = new MenuItem();
+		menuFile = new Menu();
+		menuHelp = new Menu();
+		btnComputer = new Button();
+		tbox = new TextField();
 
-		btnComputer.setPrefSize(240,40);
-		//btnComputer.setStyle("-fx-text-fill: #0000ff");
+		btnComputer.setPrefSize(240, 40);
+		// btnComputer.setStyle("-fx-text-fill: #0000ff");
 		btnComputer.getStyleClass().add("computerButton");
 
-		//MenuBar in the topSplash_Model
+		// MenuBar in the topSplash_Model
 		MenuBar menuBar = new MenuBar();
 		menuBar.getStyleClass().add("menu");
-		Menu menuFile = new Menu("File");
-		Menu menuHelp = new Menu("Help");
 		menuFile.getStyleClass().add("menu");
 		menuHelp.getStyleClass().add("menu");
 		newGame.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
 		documentation.getStyleClass().add("menu");
-		
-		menuBar.getMenus().addAll(menuFile,menuHelp);
-		menuFile.getItems().addAll(newGame,closeGame);
+
+		menuBar.getMenus().addAll(menuFile, menuHelp);
+		menuFile.getItems().addAll(newGame, closeGame);
 		menuHelp.getItems().add(documentation);
 		
-		//Hbox for the buttons on the bottomline
+		
+//	       for (Locale locale : ServiceLocator.getServiceLocator().getLocales()) {
+//	           MenuItem language = new MenuItem(locale.getLanguage());
+//	           menuFileLanguage.getItems().add(language);
+//	           language.setOnAction( event -> {
+//					ServiceLocator.getServiceLocator().getConfiguration().setLocalOption("Language", locale.getLanguage());
+//					ServiceLocator.getServiceLocator().setTranslator(new Translator(locale.getLanguage()));
+//	                updateTexts();
+//	            });
+//	       }
+
+		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
 		hbox.getChildren().addAll(btnComputer);
-		
-		//Pane for the Buttom 
+
+		// Pane for the Buttom
 		BorderPane bottomPane = new BorderPane();
 		bottomPane.setTop(hbox);
 		tbox.setPrefSize(20, 20);
@@ -66,7 +89,7 @@ public class TicTacToe_View {
 		tbox.getStyleClass().add("text-area");
 		bottomPane.setCenter(tbox);
 
-		//GridPane fill all Buttons in and show it in the center
+		// GridPane fill all Buttons in and show it in the center
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		for (int i = 0; i < model.DIMENSION; i++) {
@@ -82,10 +105,12 @@ public class TicTacToe_View {
 		root.setTop(menuBar);
 		root.setBottom(bottomPane);
 		root.setCenter(pane);
-		
+
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 		primaryStage.setScene(scene);
+		
+		//updateTexts();
 	}
 
 	/**
@@ -101,7 +126,7 @@ public class TicTacToe_View {
 	public void stop() {
 		stage.hide();
 	}
-	
+
 	/**
 	 * Block the buttons after pressed
 	 */
@@ -120,6 +145,25 @@ public class TicTacToe_View {
 	 */
 	public Stage getStage() {
 		return stage;
+	}
+
+	protected void updateTexts() {
+
+		Translator t = ServiceLocator.getServiceLocator().getTranslator();
+
+		// Title
+		stage.setTitle(t.getString("program.name"));
+		
+		//Menu string
+		newGame.setText(t.getString("newGame"));
+		closeGame.setText(t.getString("closeGame"));
+		documentation.setText(t.getString("documentation"));
+		menuFile.setText(t.getString("file"));
+		menuHelp.setText(t.getString("help"));
+		
+		//Other controls
+		btnComputer.setText(t.getString("computer"));
+
 	}
 
 }

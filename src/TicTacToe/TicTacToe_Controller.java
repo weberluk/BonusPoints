@@ -12,18 +12,21 @@ import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Model.HumanPlayer;
 import TicTacToe.TicTacToe_Model.Value;
 import TicTacToe.ServiceLocator;
+import TicTacToe.TicTacToe_Client;
 
 public class TicTacToe_Controller {
 	final private TicTacToe_Model model;
 	final private TicTacToe_View view;
 	final ServiceLocator sl;
+	private TicTacToe_Client client;
 	
 	private boolean computerPlayer = false;
-	
-	public TicTacToe_Controller(TicTacToe_Model model, TicTacToe_View view) {
+
+	public TicTacToe_Controller(TicTacToe_Model model, TicTacToe_View view, TicTacToe_Client client) {
 		this.view = view;
 		this.model = model;
 		this.sl = ServiceLocator.getServiceLocator();
+		this.client = client;
 
 		// set in the model all on the board empty
 		for (int i = 0; i < 3; i++) {
@@ -110,9 +113,18 @@ public class TicTacToe_Controller {
 	public void workFlow(int i, int j) {
 		this.setButtonProperties(i, j);
 		model.setBoard(i, j);
+		client.writePlayMessageToServer(i, j, getValueContructor());
 		this.winProcedure(model.checkWinner(i, j, model.getSign()));
 		this.setOtherSign();
 		this.setOtherPlayer();
+	}
+	
+	public int getValueContructor(){
+		if(model.getSign() == Value.Cross){
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 
 	public void setButtonProperties(int i, int j) {
@@ -148,7 +160,16 @@ public class TicTacToe_Controller {
 		if (w == true) {
 			sl.getLogger().info("We have a winner!");
 			view.tbox.setText("Finish");
+			client.writeWinMessageToServer(getUserConvert(), 30);
 			view.block();
+		}
+	}
+	
+	public int getUserConvert(){
+		if(model.getPlayer() == HumanPlayer.Human){
+			return 1;
+		} else {
+			return 2;
 		}
 	}
 
