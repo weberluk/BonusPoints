@@ -29,7 +29,8 @@ public class TicTacToeStart extends Application {
 	private TicTacToe_View view;
 	private TicTacToe_Model model;
 	private TicTacToe_Controller controller;
-	private TicTacToe_Computer computer;
+	//private TicTacToe_Computer computer;
+	private TicTacToe_MiniMax ticTacToe_MiniMax;
 	private ServiceLocator serviceLocator;
 	private TicTacToe_Client client;
 
@@ -71,8 +72,10 @@ public class TicTacToeStart extends Application {
 		view = new TicTacToe_View(stage, model);
 		client = new TicTacToe_Client();
 		new TicTacToe_Controller(model, view, client);
-		computer = new TicTacToe_Computer(model);
-		model.setComputer(computer);
+		//computer = new TicTacToe_Computer(model);
+		ticTacToe_MiniMax = new TicTacToe_MiniMax(model);
+		//model.setComputer(computer);
+		model.setMiniMax(ticTacToe_MiniMax);
 		client.setController(controller);
 
 		// Resources are now initialized

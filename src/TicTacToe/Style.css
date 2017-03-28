@@ -74,3 +74,16 @@
 .text-area .content {
     -fx-background-color: #cd853f;
 }
+
+.text-point {
+	    -fx-font-family: Consolas;
+    -fx-font-size: 15;
+    -fx-text-fill: #000000;
+    -fx-display-caret:true;
+    -fx-font-weight: bolder;
+    -fx-alignment: center-left;
+}
+
+.text-point .content {
+    -fx-background-color: #cd853f;
+}

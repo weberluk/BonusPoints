@@ -7,9 +7,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 public class TicTacToe_Model {
 
 	private TicTacToe_Computer computer;
+	private TicTacToe_MiniMax ticTacToe_MiniMax;
 
 	public void setComputer(TicTacToe_Computer computer) {
 		this.computer = computer;
+	}
+	public void setMiniMax(TicTacToe_MiniMax ticTacToe_MiniMax){
+		this.ticTacToe_MiniMax = ticTacToe_MiniMax;
 	}
 
 	// SimpleBooleanProperty for overwatching the model
@@ -31,6 +35,19 @@ public class TicTacToe_Model {
 	// the acutely Position
 	private int xPos = 0;
 	private int yPos = 0;
+	
+	// the index for MiniMax
+	private int index;
+	
+	// the score that return from the miniMax
+	private int score;
+	
+	public int getScore(){
+		return score;
+	}
+	public void setScore(int score){
+		this.score = score;
+	}
 
 	public void setXPos(int xPos) {
 		this.xPos = xPos;
@@ -39,14 +56,44 @@ public class TicTacToe_Model {
 	public void setYPos(int yPos) {
 		this.yPos = yPos;
 	}
+	
+	public void setIndexForMiniMax(int i, int j){
+		if(i == 0 && j == 0){
+			index = 0;
+		}
+		if(i == 0 && j == 1){
+			index = 1;
+		}
+		if(i == 0 && j == 2){
+			index = 2;
+		}
+		if(i == 1 && j == 0){
+			index = 3;
+		}
+		if(i == 1 && j == 1){
+			index = 4;
+		}
+		if(i == 1 && j == 2){
+			index = 5;
+		}
+		if(i == 2 && j == 0){
+			index = 6;
+		}
+		if(i == 2 && j == 1){
+			index = 7;
+		}
+		if(i == 2 && j == 2){
+			index = 8;
+		}
+		
+	}
 
 	public int getXPos() {
-		computer.checkComputerPlay();
+		score = ticTacToe_MiniMax.makeMove(index);
 		return this.xPos;
 	}
 
 	public int getYPos() {
-		//TODO Achtung Methode tauscchen
 		return this.yPos;
 	}
 
@@ -85,6 +132,7 @@ public class TicTacToe_Model {
 	// set the board empty
 	public void setAllEmpty(int i, int j) {
 		board[i][j] = Value.Empty;
+		TicTacToe_MiniMax ticTacToe_MiniMax = new TicTacToe_MiniMax(this);
 	}
 
 	public void setSign(Value sign) {
@@ -118,6 +166,7 @@ public class TicTacToe_Model {
 				winner[k] = true;
 			}
 			if (!Arrays.toString(winner).contains("f")) {
+				this.setScore(20);
 				return true;
 			}
 		}
@@ -129,7 +178,9 @@ public class TicTacToe_Model {
 				winner[k] = true;
 			}
 			if (!Arrays.toString(winner).contains("f")) {
+				this.setScore(20);
 				return true;
+				
 			}
 		}
 
@@ -141,6 +192,7 @@ public class TicTacToe_Model {
 					winner[k] = true;
 				}
 				if (!Arrays.toString(winner).contains("f")) {
+					this.setScore(20);
 					return true;
 				}
 			}
@@ -153,6 +205,7 @@ public class TicTacToe_Model {
 			}
 			if (!Arrays.toString(winner).contains("f")) {
 				if(this.getPlayer() == HumanPlayer.Human)
+					this.setScore(20);
 				return true;
 			}
 		}

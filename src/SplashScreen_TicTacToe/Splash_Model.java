@@ -36,10 +36,10 @@ public class Splash_Model {
             serviceLocator.getLogger().info("Loading Configuration");
             this.updateProgress(4,  6);
 
-//            String language = serviceLocator.getConfiguration().getOption("Language");
-//            serviceLocator.getLogger().info("Loading language");
-//            serviceLocator.setTranslator(new Translator(language));
-//            this.updateProgress(5,  6);
+            String language = serviceLocator.getConfiguration().getOption("Language");
+            serviceLocator.getLogger().info("Loading language");
+            serviceLocator.setTranslator(new Translator(language));
+            this.updateProgress(5,  6);
             
             // ... more resources would go here...
             // First, take some time, update progress

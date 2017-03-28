@@ -1,6 +1,7 @@
 package TicTacToe;
 
 
+import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -11,6 +12,7 @@ import TicTacToe.TicTacToe_Model;
 import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Model.HumanPlayer;
 import TicTacToe.TicTacToe_Model.Value;
+import TicTacToe_Server.TicTacToe_H2;
 import TicTacToe_Server.TicTacToe_XMLWriter;
 import TicTacToe.ServiceLocator;
 import TicTacToe.TicTacToe_Client;
@@ -37,8 +39,13 @@ public class TicTacToe_Controller {
 		}
 		
 		//get Points
-		TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
-		view.points.setText(xml.readXML());
+//		TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
+		TicTacToe_H2 h2 = new TicTacToe_H2();
+		try {
+			view.points.setText(h2.selectPreparedStatement("select * from PERSON"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		// Buttons set sign
 		view.btnComputer.setOnAction((event) -> {
@@ -121,6 +128,7 @@ public class TicTacToe_Controller {
 	public void workFlow(int i, int j) {
 		this.setButtonProperties(i, j);
 		model.setBoard(i, j);
+		model.setIndexForMiniMax(i, j);
 		client.writePlayMessageToServer(i, j, getValueContructor());
 		this.winProcedure(model.checkWinner(i, j, model.getSign()));
 		this.setOtherSign();
@@ -168,7 +176,10 @@ public class TicTacToe_Controller {
 		if (w == true) {
 			sl.getLogger().info("We have a winner!");
 			view.tbox.setText("Finish");
-			client.writeWinMessageToServer(getUserConvert(), 30);
+			//Score Model from the TicTacToe_miniMax
+			// + 20 if win 
+			// -30 if even
+			client.writeWinMessageToServer(getUserConvert(), model.getScore());
 			view.block();
 		}
 	}

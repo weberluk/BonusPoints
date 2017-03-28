@@ -46,17 +46,18 @@ public class TicTacToe_View {
 		stage.setTitle("Tic Tac Toe");
 		
 		buttons = new Button[model.DIMENSION][model.DIMENSION];
-		newGame = new MenuItem();
-		closeGame = new MenuItem();
-		documentation = new MenuItem();
-		menuFile = new Menu();
-		menuHelp = new Menu();
-		btnComputer = new Button();
+		newGame = new MenuItem("new Game");
+		closeGame = new MenuItem("Close Game");
+		documentation = new MenuItem("Documentation");
+		menuFile = new Menu("File");
+		menuHelp = new Menu("Help");
+		btnComputer = new Button("Computer");
 		tbox = new TextField();
 		points = new TextField();
 		input = new TextField();
 		chat = new TextArea();
-		btnSend = new Button();
+		btnSend = new Button("Send");
+		menuFileLanguage = new Menu("Language");
 
 		btnComputer.setPrefSize(240, 40);
 		btnSend.setPrefSize(200,40);
@@ -74,19 +75,8 @@ public class TicTacToe_View {
 		documentation.getStyleClass().add("menu");
 
 		menuBar.getMenus().addAll(menuFile, menuHelp);
-		menuFile.getItems().addAll(newGame, closeGame);
+		menuFile.getItems().addAll(newGame, closeGame,menuFileLanguage);
 		menuHelp.getItems().add(documentation);
-		
-		
-//	       for (Locale locale : ServiceLocator.getServiceLocator().getLocales()) {
-//	           MenuItem language = new MenuItem(locale.getLanguage());
-//	           menuFileLanguage.getItems().add(language);
-//	           language.setOnAction( event -> {
-//					ServiceLocator.getServiceLocator().getConfiguration().setLocalOption("Language", locale.getLanguage());
-//					ServiceLocator.getServiceLocator().setTranslator(new Translator(locale.getLanguage()));
-//	                updateTexts();
-//	            });
-//	       }
 
 		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
@@ -102,7 +92,7 @@ public class TicTacToe_View {
 		
 		// Pane for the right Side
 		BorderPane rightPane = new BorderPane();
-		points.getStyleClass().add("text-area");
+		points.getStyleClass().add("text-point");
 		points.setPrefSize(100, 20);
 		points.setDisable(true);
 		chat.getStyleClass().add("text-area");
@@ -126,6 +116,17 @@ public class TicTacToe_View {
 				pane.add(buttons[i][j], i, j);
 			}
 		}
+		
+	       for (Locale locale : ServiceLocator.getServiceLocator().getLocales()) {
+	           MenuItem language = new MenuItem(locale.getLanguage());
+	           menuFileLanguage.getItems().add(language);
+	           language.setOnAction( event -> {
+					ServiceLocator.getServiceLocator().getConfiguration().setLocalOption("Language", locale.getLanguage());
+					ServiceLocator.getServiceLocator().setTranslator(new Translator(locale.getLanguage()));
+	                updateTexts();
+	            });
+	       }
+	       
 		BorderPane root = new BorderPane();
 		root.setTop(menuBar);
 		root.setBottom(bottomPane);
@@ -135,6 +136,8 @@ public class TicTacToe_View {
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
 		primaryStage.setScene(scene);
+		
+		
 		
 		//updateTexts();
 	}
@@ -186,10 +189,12 @@ public class TicTacToe_View {
 		documentation.setText(t.getString("program.menu.documentation"));
 		menuFile.setText(t.getString("program.menu.file"));
 		menuHelp.setText(t.getString("program.menu.help"));
+		menuFileLanguage.setText(t.getString("program.menu.language"));
 		
 		//Other controls
 		btnComputer.setText(t.getString("program.button.computer"));
 		btnSend.setText(t.getString("program.button.send"));
+		
 
 	}
 

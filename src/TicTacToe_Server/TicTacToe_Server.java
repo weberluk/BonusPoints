@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,6 +93,7 @@ class ConnectionHandler implements Runnable {
 				} else {
 					getWinInputs(message);
 					printXML(id,points, player);
+					this.safeInDB(id, player, points);
 				}
 			}
 			if(testObject(object) == 2){
@@ -139,6 +141,22 @@ class ConnectionHandler implements Runnable {
 		xml.writeXML(id,points,player);
 	}
 	
+	public void safeInDB(int id, String name, int points){
+		TicTacToe_H2 h2 = new TicTacToe_H2();
+		
+		try {
+			if(h2.isTheEntryThere("select * from PERSON where id =" + id)){
+				int oldPoints = Integer.parseInt(h2.selectPreparedStatement("select * from PERSON where id =" + id));
+				int newPoints = oldPoints + points;
+				h2.updateWithPreparedStatement("update PERSON set points =" + newPoints);
+			} else {
+				h2.insertWithPreparedStatement(id, name, points);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void getPlayInputs(Integer[] arr){
 		Value[][] board = Board.getBoard();
 		int x = arr[0];
@@ -158,8 +176,19 @@ class ConnectionHandler implements Runnable {
 	}
 	
 	private void getWinInputs(Integer[] arr){
+		TicTacToe_H2 h2 = new TicTacToe_H2();
+		
 		int user = arr[0];
-		points = arr[1];
+		int tempPoints = arr[1];
+		int tempPoints1 = 0;
+		try {
+			tempPoints1 = Integer.parseInt(h2.selectPreparedStatement("select points from PERSON"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		points = tempPoints + tempPoints1;
 		
 		if(user == 1){
 			player = "Human";
