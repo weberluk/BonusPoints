@@ -5,6 +5,11 @@ import java.util.Arrays;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class TicTacToe_Model {
+	
+	//Actual name
+	private String name = "default";
+	//Actual id
+	private int Id = 741;
 
 	private TicTacToe_Computer computer;
 	private TicTacToe_MiniMax ticTacToe_MiniMax;
@@ -53,6 +58,22 @@ public class TicTacToe_Model {
 		this.xPos = xPos;
 	}
 
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public int getId(){
+		return this.Id;
+	}
+	
+	public void setId(int id){
+		this.Id = id;
+	}
+	
 	public void setYPos(int yPos) {
 		this.yPos = yPos;
 	}

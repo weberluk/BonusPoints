@@ -1,46 +1,62 @@
 package TicTacToe;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import TicTacToe.TicTacToe_Model.Value;
-import TicTacToe.TicTacToe_Model;
+import javafx.beans.property.SimpleStringProperty;
 import TicTacToe.TicTacToe_Controller;
 
-public class TicTacToe_Client {
+public class TicTacToe_Client implements Runnable {
 	private TicTacToe_Controller controller;
 	private ServiceLocator sl = ServiceLocator.getServiceLocator();
-
-	public TicTacToe_Client() {
+	private Socket client;
+	
+	// SimpleBooleanProperty for overwatching the chat
+	private SimpleStringProperty chatMessage = new SimpleStringProperty();
+	
+	public TicTacToe_Client() throws UnknownHostException, IOException {
+		client = new Socket("localhost", 5555);
+		sl.getLogger().info("Client gestartet, localhost, Port: 5555");
+		Thread t = new Thread(this);
+		t.start();
 	}
 
 	public void setController(TicTacToe_Controller controller) {
 		this.controller = controller;
 	}
+	
+	//Get the MessageProperty from the chat
+	public SimpleStringProperty getChatMessageProperty() {
+		return this.chatMessage;
+	}
+	//Get the MessageProperty from the chat
+	public void setChatMessageProperty(String newValue) {
+		try {
+			this.chatMessage.setValue(newValue);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
+	
+	public String getChatMessageInString() {
+		return chatMessage.get();
+	}
+
+	
 
 	public void writePlayMessageToServer(int x, int y, int valueConstructor) {
 
 		try {
-			Socket client = new Socket("localhost", 5555);
-			sl.getLogger().info("Client gestartet, localhost, Port: 5555");
-
 			// Streams
 
 			// OutputStream writing
 			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 			Integer[] message = { x, y, valueConstructor };
 
-			// Input from client
-			InputStream input = client.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 			// ---------------------------------
 
 			oos.writeObject(message);
@@ -49,7 +65,7 @@ public class TicTacToe_Client {
 			oos.flush();
 
 			// close reader
-			oos.close();
+			// oos.close();
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -62,18 +78,12 @@ public class TicTacToe_Client {
 
 	public void writeWinMessageToServer(int user, int points) {
 		try {
-			Socket client = new Socket("localhost", 5555);
-			sl.getLogger().info("Client gestartet, localhost, Port: 5555");
-
 			// Streams
 
 			// OutputStream writing
 			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 			Integer[] message = { user, points };
 
-			// Input from client
-			InputStream input = client.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 			// ---------------------------------
 
 			oos.writeObject(message);
@@ -82,7 +92,7 @@ public class TicTacToe_Client {
 			oos.flush();
 
 			// close reader
-			oos.close();
+			// oos.close();
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -95,18 +105,10 @@ public class TicTacToe_Client {
 
 	public void writeChatMessageToServer(String message) {
 		try {
-			Socket client = new Socket("localhost", 5555);
-			sl.getLogger().info("Client gestartet, localhost, Port: 5555");
-
 			// Streams
 
 			// OutputStream writing
 			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-
-			// Input from client
-			InputStream input = client.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-			// ---------------------------------
 
 			oos.writeObject(message);
 
@@ -114,7 +116,7 @@ public class TicTacToe_Client {
 			oos.flush();
 
 			// close reader
-			oos.close();
+			// oos.close();
 
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -125,16 +127,19 @@ public class TicTacToe_Client {
 		}
 	}
 
-}
-
-
-class Point {
-	int x, y;
-	Value value;
-
-	public Point(int x, int y, Value value) {
-		this.x = x;
-		this.y = y;
-		this.value = value;
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+				Object object = ois.readObject();
+				String chatMessage = (String) object;
+				this.chatMessage.setValue(chatMessage);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

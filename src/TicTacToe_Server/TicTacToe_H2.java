@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.h2.tools.DeleteDbFiles;
 
@@ -19,10 +16,10 @@ public class TicTacToe_H2 {
 	private static final String DB_PASSWORD = "";
 
 	public static void main(String[] args) throws Exception {
-		// deleteDB();
-		// createTableWithPreparedStatement();
-		// insertWithPreparedStatement(1,"Lukas",30);
-		// selectPreparedStatement("select * from PERSON");
+//		 deleteDB();
+//		 createTableWithPreparedStatement();
+//		 insertWithPreparedStatement(741,"default",00);
+//		 selectPreparedStatement("select * from PERSON");
 		// updateWithPreparedStatement("update PERSON set points = 40 where id =
 		// 1");
 		// if(isTheEntryThere("select * from PERSON where id = 1")){
@@ -35,16 +32,16 @@ public class TicTacToe_H2 {
 	public TicTacToe_H2() {
 	}
 
-	public void deleteDB() {
+	public static void deleteDB() {
 		// delete the H2 database named 'test' in the user home directory
 		DeleteDbFiles.execute("~", "TicTacToe", true);
 	}
 
 	// H2 SQL Prepared Statement Example Create
-	public void createTableWithPreparedStatement() throws SQLException {
+	public static void createTableWithPreparedStatement() throws SQLException {
 		Connection connection = getDBConnection();
 		PreparedStatement createPreparedStatement = null;
-		String CreateQuery = "CREATE TABLE PERSON(id int primary key, name varchar(255), points int)";
+		String CreateQuery = "CREATE TABLE PERSON(id int, name varchar(255) primary key, points int)";
 
 		try {
 			connection.setAutoCommit(false);
@@ -65,7 +62,7 @@ public class TicTacToe_H2 {
 	}
 
 	// H2 SQL Prepared Statement Example Select
-	public String selectPreparedStatement(String statement) throws SQLException {
+	public static String selectPreparedStatement(String statement) throws SQLException {
 		Connection connection = getDBConnection();
 		PreparedStatement selectPreparedStatement = null;
 		String SelectQuery = statement;
@@ -78,7 +75,8 @@ public class TicTacToe_H2 {
 			ResultSet rs = selectPreparedStatement.executeQuery();
 			System.out.println("H2 Database inserted through PreparedStatement");
 			while (rs.next()) {
-				System.out.println("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				System.out.println(
+						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
 				answer = rs.getString("name");
 				answer += " hat ";
 				answer += rs.getString("points".toString());
@@ -98,15 +96,48 @@ public class TicTacToe_H2 {
 	}
 
 	// H2 SQL Prepared Statement Example Select
-	public boolean isTheEntryThere(String statement) throws SQLException {
+	public int selectPreparedStatementForPoints(int id) throws SQLException {
 		Connection connection = getDBConnection();
 		PreparedStatement selectPreparedStatement = null;
-		String SelectQuery = statement;
+		String SelectQuery = ("SELECT * FROM PERSON WHERE ID = ?");
+		int answer = 0;
 
 		try {
 			connection.setAutoCommit(false);
 
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
+			selectPreparedStatement.setInt(1, id);
+			ResultSet rs = selectPreparedStatement.executeQuery();
+			System.out.println("H2 Database inserted through PreparedStatement");
+			while (rs.next()) {
+				System.out.println(
+						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				answer = rs.getInt("points");
+			}
+			selectPreparedStatement.close();
+
+			connection.commit();
+		} catch (SQLException e) {
+			System.out.println("Exception Message " + e.getLocalizedMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connection.close();
+		}
+		return answer;
+	}
+
+	// H2 SQL Prepared Statement Example Select
+	public boolean isTheEntryThere(int id) throws SQLException {
+		Connection connection = getDBConnection();
+		PreparedStatement selectPreparedStatement = null;
+		String SelectQuery = ("SELECT * FROM PERSON WHERE ID = ?");
+
+		try {
+			connection.setAutoCommit(false);
+
+			selectPreparedStatement = connection.prepareStatement(SelectQuery);
+			selectPreparedStatement.setInt(1, id);
 			ResultSet rs = selectPreparedStatement.executeQuery();
 			selectPreparedStatement.close();
 			connection.commit();
@@ -123,7 +154,7 @@ public class TicTacToe_H2 {
 	}
 
 	// H2 SQL Prepared Statement Example Insert
-	public void insertWithPreparedStatement(int id, String name, int points) throws SQLException {
+	public static void insertWithPreparedStatement(int id, String name, int points) throws SQLException {
 		Connection connection = getDBConnection();
 
 		PreparedStatement insertPreparedStatement = null;
@@ -185,5 +216,74 @@ public class TicTacToe_H2 {
 			System.out.println(e.getMessage());
 		}
 		return dbConnection;
+	}
+
+	// H2 SQL Prepared Statement Select for Name and Points
+	public static String selectPreparedStatementPrep(int id) throws SQLException {
+		Connection connection = getDBConnection();
+		PreparedStatement selectPreparedStatement = null;
+		String SelectQuery = ("SELECT * FROM PERSON WHERE ID = ?");
+		String answer = null;
+
+		try {
+			connection.setAutoCommit(false);
+
+			selectPreparedStatement = connection.prepareStatement(SelectQuery);
+			selectPreparedStatement.setInt(1, id);
+			ResultSet rs = selectPreparedStatement.executeQuery();
+			System.out.println("H2 Database inserted through PreparedStatement");
+			while (rs.next()) {
+				System.out.println(
+						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				answer = rs.getString("name");
+				answer += " hat ";
+				answer += rs.getString("points".toString());
+				answer += " Punkte";
+			}
+			selectPreparedStatement.close();
+
+			connection.commit();
+
+		} catch (SQLException e) {
+			System.out.println("Exception Message " + e.getLocalizedMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connection.close();
+		}
+		return answer;
+	}
+	
+	// H2 SQL Prepared Statement Select for Name and Points
+	public static int selectPreparedStatementPoints(int id) throws SQLException {
+		Connection connection = getDBConnection();
+		PreparedStatement selectPreparedStatement = null;
+		String SelectQuery = ("SELECT * FROM PERSON WHERE ID = ?");
+		int answer = 0;
+
+		try {
+			connection.setAutoCommit(false);
+
+			selectPreparedStatement = connection.prepareStatement(SelectQuery);
+			selectPreparedStatement.setInt(1, id);
+			ResultSet rs = selectPreparedStatement.executeQuery();
+			System.out.println("H2 Database inserted through PreparedStatement");
+			while (rs.next()) {
+				System.out.println(
+						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				answer = rs.getInt("points");
+			}
+			selectPreparedStatement.close();
+
+			connection.commit();
+
+		} catch (SQLException e) {
+			System.out.println("Exception Message " + e.getLocalizedMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connection.close();
+		}
+		return answer;
 	}
 }

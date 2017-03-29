@@ -1,19 +1,16 @@
 package TicTacToe;
 
-
 import java.sql.SQLException;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Optional;
 
-import TicTacToe.TicTacToe_Computer;
 import TicTacToe.TicTacToe_Model;
 import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Model.HumanPlayer;
 import TicTacToe.TicTacToe_Model.Value;
 import TicTacToe_Server.TicTacToe_H2;
-import TicTacToe_Server.TicTacToe_XMLWriter;
+import TicTacToe_Server.TicTacToe_Server;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.KeyCode;
 import TicTacToe.ServiceLocator;
 import TicTacToe.TicTacToe_Client;
 
@@ -22,7 +19,7 @@ public class TicTacToe_Controller {
 	final private TicTacToe_View view;
 	final ServiceLocator sl;
 	private TicTacToe_Client client;
-	
+
 	private boolean computerPlayer = false;
 
 	public TicTacToe_Controller(TicTacToe_Model model, TicTacToe_View view, TicTacToe_Client client) {
@@ -37,16 +34,19 @@ public class TicTacToe_Controller {
 				model.setAllEmpty(i, j);
 			}
 		}
-		
-		//get Points
-//		TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
+
+		// get Points
+		// TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
 		TicTacToe_H2 h2 = new TicTacToe_H2();
+		int id = this.generateId(model.getName());
 		try {
-			view.points.setText(h2.selectPreparedStatement("select * from PERSON"));
+			
+			//view.points.setText(h2.selectPreparedStatement("select * from PERSON where id = ?") + id);
+			view.points.setText(h2.selectPreparedStatementPrep(id));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Buttons set sign
 		view.btnComputer.setOnAction((event) -> {
 			changeComputer();
@@ -84,21 +84,52 @@ public class TicTacToe_Controller {
 		view.newGame.setOnAction((event) -> {
 			sl.getLogger().info("Start a new Game");
 			cleanUp();
+			try {
+				view.points.setText(h2.selectPreparedStatementPrep(id));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		});
 		view.closeGame.setOnAction((event) -> {
 			sl.getLogger().info("Application terminated");
 			view.stop();
 		});
 		view.btnSend.setOnAction((event) -> {
-			client.writeChatMessageToServer(view.input.getText());
+			client.writeChatMessageToServer("\n" + model.getName() + ": " + view.input.getText());
+		});
+		view.input.setOnKeyPressed(e -> {
+			if (e.getCode() == KeyCode.ENTER)
+				client.writeChatMessageToServer("\n" + model.getName() + ": " + view.input.getText());
+		});
+
+		view.changeUser.setOnAction((event) -> {
+			TextInputDialog dialog = new TextInputDialog("default");
+			dialog.setTitle("Change User");
+			dialog.setHeaderText("We need your name");
+			dialog.setContentText("Please enter your name: ");
+			Optional<String> result = dialog.showAndWait();
+
+			result.ifPresent(name ->  {
+			model.setName(name);
+			model.setId(this.generateId(model.getName()));
+			});
 		});
 
 		// Watch the model for changing
 		model.getValueProperty().addListener((obervable, oldValue, newValue) -> {
 			sl.getLogger().info("ComputerLogicIsRunning");
-			if(model.getPlayer() == HumanPlayer.Computer){
+			if (model.getPlayer() == HumanPlayer.Computer) {
 				this.checkComputerPlayBevorWorkFlow(model.getXPos(), model.getYPos());
 			}
+		});
+
+		// Watch the client for Message
+		client.getChatMessageProperty().addListener((obervable, oldValue, newValue) -> {
+			sl.getLogger().info("Message from Chat is arrived");
+			view.chat.setScrollLeft(Double.MAX_VALUE);
+			view.chat.appendText(client.getChatMessageInString());
+			view.input.clear();
 		});
 
 	}
@@ -134,9 +165,9 @@ public class TicTacToe_Controller {
 		this.setOtherSign();
 		this.setOtherPlayer();
 	}
-	
-	public int getValueContructor(){
-		if(model.getSign() == Value.Cross){
+
+	public int getValueContructor() {
+		if (model.getSign() == Value.Cross) {
 			return 1;
 		} else {
 			return 2;
@@ -176,16 +207,16 @@ public class TicTacToe_Controller {
 		if (w == true) {
 			sl.getLogger().info("We have a winner!");
 			view.tbox.setText("Finish");
-			//Score Model from the TicTacToe_miniMax
-			// + 20 if win 
+			// Score Model from the TicTacToe_miniMax
+			// + 20 if win
 			// -30 if even
 			client.writeWinMessageToServer(getUserConvert(), model.getScore());
 			view.block();
 		}
 	}
-	
-	public int getUserConvert(){
-		if(model.getPlayer() == HumanPlayer.Human){
+
+	public int getUserConvert() {
+		if (model.getPlayer() == HumanPlayer.Human) {
 			return 1;
 		} else {
 			return 2;
@@ -204,6 +235,7 @@ public class TicTacToe_Controller {
 				model.setPlayer(HumanPlayer.Human);
 				model.setSign(Value.Cross);
 				computerPlayer = false;
+				view.points.clear();
 			}
 		}
 	}
@@ -216,4 +248,18 @@ public class TicTacToe_Controller {
 		}
 	}
 
+	public int generateId(String name) {
+
+		TicTacToe_Model model = new TicTacToe_Model();
+		TicTacToe_Server server = new TicTacToe_Server();
+		char[] charArray;
+		int i = 0;
+
+		charArray = name.toCharArray();
+
+		for (char a : charArray) {
+			i += (int) a;
+		}
+		return i;
+	}
 }

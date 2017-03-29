@@ -4,12 +4,9 @@ import java.util.Locale;
 
 import Lotto.ServiceLocator;
 import Lotto.Translator;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -18,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TicTacToe_View {
@@ -28,9 +24,11 @@ public class TicTacToe_View {
 	protected MenuItem newGame;
 	protected MenuItem closeGame;
 	protected MenuItem documentation;
+	protected MenuItem changeUser;
 	protected Menu menuFile;
 	protected Menu menuHelp;
     protected Menu menuFileLanguage;
+    protected Menu menuUser;
 
 	protected Button btnComputer;
 	protected TextField tbox;
@@ -58,6 +56,8 @@ public class TicTacToe_View {
 		chat = new TextArea();
 		btnSend = new Button("Send");
 		menuFileLanguage = new Menu("Language");
+		menuUser = new Menu("User");
+		changeUser = new MenuItem("Change User");
 
 		btnComputer.setPrefSize(240, 40);
 		btnSend.setPrefSize(200,40);
@@ -71,12 +71,15 @@ public class TicTacToe_View {
 		menuFile.getStyleClass().add("menu");
 		menuHelp.getStyleClass().add("menu");
 		newGame.getStyleClass().add("menu");
+		changeUser.getStyleClass().add("menu");
+		menuUser.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
 		documentation.getStyleClass().add("menu");
 
-		menuBar.getMenus().addAll(menuFile, menuHelp);
+		menuBar.getMenus().addAll(menuFile, menuHelp,menuUser);
 		menuFile.getItems().addAll(newGame, closeGame,menuFileLanguage);
 		menuHelp.getItems().add(documentation);
+		menuUser.getItems().add(changeUser);
 
 		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
@@ -95,9 +98,12 @@ public class TicTacToe_View {
 		points.getStyleClass().add("text-point");
 		points.setPrefSize(100, 20);
 		points.setDisable(true);
-		chat.getStyleClass().add("text-area");
+		chat.getStyleClass().add("text-point");
 		chat.setPrefSize(200, 100);
-		chat.setDisable(true);
+		chat.setDisable(false);
+		chat.setPrefColumnCount(10);
+		chat.setPrefRowCount(10);
+		chat.setWrapText(true);
 		input.setPrefSize(100, 20);
 		rightPane.setBottom(input);
 		rightPane.setCenter(chat);
@@ -121,6 +127,7 @@ public class TicTacToe_View {
 	           MenuItem language = new MenuItem(locale.getLanguage());
 	           menuFileLanguage.getItems().add(language);
 	           language.setOnAction( event -> {
+	        	    ServiceLocator sl = ServiceLocator.getServiceLocator();
 					ServiceLocator.getServiceLocator().getConfiguration().setLocalOption("Language", locale.getLanguage());
 					ServiceLocator.getServiceLocator().setTranslator(new Translator(locale.getLanguage()));
 	                updateTexts();
@@ -190,6 +197,8 @@ public class TicTacToe_View {
 		menuFile.setText(t.getString("program.menu.file"));
 		menuHelp.setText(t.getString("program.menu.help"));
 		menuFileLanguage.setText(t.getString("program.menu.language"));
+		menuUser.setText(t.getString("program.menu.user"));
+		changeUser.setText(t.getString("program.menu.changeUser"));
 		
 		//Other controls
 		btnComputer.setText(t.getString("program.button.computer"));

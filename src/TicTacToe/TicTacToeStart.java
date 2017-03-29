@@ -10,6 +10,8 @@ import TicTacToe.TicTacToe_Computer;
 import TicTacToe.Translator;
 import TicTacToe.Configuration;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -61,7 +63,7 @@ public class TicTacToeStart extends Application {
 
 	}
 
-	public void startApp() {
+	public void startApp(){
 		Stage stage = new Stage();
 		;
 		
@@ -70,7 +72,13 @@ public class TicTacToeStart extends Application {
 		// resources initialized by the splash screen
 		model = new TicTacToe_Model();
 		view = new TicTacToe_View(stage, model);
-		client = new TicTacToe_Client();
+		try {
+			client = new TicTacToe_Client();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		new TicTacToe_Controller(model, view, client);
 		//computer = new TicTacToe_Computer(model);
 		ticTacToe_MiniMax = new TicTacToe_MiniMax(model);
