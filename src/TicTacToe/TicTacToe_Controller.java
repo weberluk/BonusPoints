@@ -35,19 +35,16 @@ public class TicTacToe_Controller {
 			}
 		}
 
-		// get Points
-		// TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
-		TicTacToe_H2 h2 = new TicTacToe_H2();
-		int id = this.generateId(model.getName());
+		// get Points from the Database with the name in the model
+		TicTacToe_H2 h2 = TicTacToe_H2.getDB();
+		int id = model.generateId(model.getName());
 		try {
-			
-			//view.points.setText(h2.selectPreparedStatement("select * from PERSON where id = ?") + id);
-			view.points.setText(h2.selectPreparedStatementPrep(id));
+			view.points.setText(h2.selectPreparedStatementForDisplayTheNameAndPoints(id));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		// Buttons set sign
+		// Buttons set sign for the whole board
 		view.btnComputer.setOnAction((event) -> {
 			changeComputer();
 			view.btnComputer.setStyle("-fx-background-color: #800000; -fx-text-fill: white");
@@ -81,38 +78,53 @@ public class TicTacToe_Controller {
 		});
 
 		// Menu Items
+		// NewGame Button to Start a new Game also get the Name and the Points new 
 		view.newGame.setOnAction((event) -> {
 			sl.getLogger().info("Start a new Game");
 			cleanUp();
 			try {
-				view.points.setText(h2.selectPreparedStatementPrep(id));
+				int idRestart = model.generateId(model.getName());
+				view.points.setText(h2.selectPreparedStatementForDisplayTheNameAndPoints(idRestart));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
 		});
+		
+		//Close Game
 		view.closeGame.setOnAction((event) -> {
 			sl.getLogger().info("Application terminated");
 			view.stop();
 		});
+		
+		// Chat-Message-Button to send
 		view.btnSend.setOnAction((event) -> {
 			client.writeChatMessageToServer("\n" + model.getName() + ": " + view.input.getText());
 		});
+		
+		// The input-Field can also send a Chat-Message with Enter
 		view.input.setOnKeyPressed(e -> {
 			if (e.getCode() == KeyCode.ENTER)
 				client.writeChatMessageToServer("\n" + model.getName() + ": " + view.input.getText());
 		});
 
+		// Menu change user for set a new user
 		view.changeUser.setOnAction((event) -> {
-			TextInputDialog dialog = new TextInputDialog("default");
+			TextInputDialog dialog = new TextInputDialog();
 			dialog.setTitle("Change User");
 			dialog.setHeaderText("We need your name");
 			dialog.setContentText("Please enter your name: ");
 			Optional<String> result = dialog.showAndWait();
 
-			result.ifPresent(name ->  {
-			model.setName(name);
-			model.setId(this.generateId(model.getName()));
+			// When you give a new Name it set a new Name and calculate a new Id for the Model
+			result.ifPresent(name -> {
+				model.setName(name);
+				model.setId(model.generateId(model.getName()));
+				//write Entry in DB
+				try {
+					h2.insertWithPreparedStatement(model.getId(), model.getName(), 0);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 			});
 		});
 
@@ -134,6 +146,7 @@ public class TicTacToe_Controller {
 
 	}
 
+	// Is it a a computer-Player or a human and go to the Workflow
 	public void checkComputerPlayBevorWorkFlow(int i, int j) {
 		if (this.computerPlayer == true) {
 			if (model.getPlayer() == HumanPlayer.Human) {
@@ -156,6 +169,8 @@ public class TicTacToe_Controller {
 		}
 	}
 
+	// The Workflow for the game becomes to int and set this in the board
+	// also writing messages to the server
 	public void workFlow(int i, int j) {
 		this.setButtonProperties(i, j);
 		model.setBoard(i, j);
@@ -166,6 +181,7 @@ public class TicTacToe_Controller {
 		this.setOtherPlayer();
 	}
 
+	// For messaging to the server - for the int-array
 	public int getValueContructor() {
 		if (model.getSign() == Value.Cross) {
 			return 1;
@@ -174,6 +190,7 @@ public class TicTacToe_Controller {
 		}
 	}
 
+	// The Buttons for the game
 	public void setButtonProperties(int i, int j) {
 		if (model.getSign() == Value.Cross) {
 			view.buttons[i][j].setStyle("-fx-background-color: #800000; -fx-font-size: 25pt");
@@ -186,6 +203,7 @@ public class TicTacToe_Controller {
 		}
 	}
 
+	// Change the Sign after every board-setting
 	public void setOtherSign() {
 		if (model.getSign() == Value.Cross) {
 			model.setSign(Value.Point);
@@ -194,6 +212,7 @@ public class TicTacToe_Controller {
 		}
 	}
 
+	// Change the player after every board-setting
 	public void setOtherPlayer() {
 		if (model.getPlayer() == HumanPlayer.Human) {
 			model.setPlayer(HumanPlayer.Computer);
@@ -207,22 +226,17 @@ public class TicTacToe_Controller {
 		if (w == true) {
 			sl.getLogger().info("We have a winner!");
 			view.tbox.setText("Finish");
-			// Score Model from the TicTacToe_miniMax
-			// + 20 if win
-			// -30 if even
-			client.writeWinMessageToServer(getUserConvert(), model.getScore());
+			// write a winMessage to the server user: 1 for human 2 for computer and also the score from the model
+			if(model.getPlayer() == HumanPlayer.Computer){
+				model.setName("computer");
+				model.setId(model.generateId(model.getName()));
+			} 
+			client.writeWinMessageToServer(model.getId(), model.getScore());
 			view.block();
 		}
 	}
-
-	public int getUserConvert() {
-		if (model.getPlayer() == HumanPlayer.Human) {
-			return 1;
-		} else {
-			return 2;
-		}
-	}
-
+	
+	// Cleans all up
 	public void cleanUp() {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -240,6 +254,7 @@ public class TicTacToe_Controller {
 		}
 	}
 
+	// Is it a computer-turn or not
 	public void changeComputer() {
 		if (this.computerPlayer == true) {
 			this.computerPlayer = false;
@@ -247,19 +262,6 @@ public class TicTacToe_Controller {
 			this.computerPlayer = true;
 		}
 	}
+	
 
-	public int generateId(String name) {
-
-		TicTacToe_Model model = new TicTacToe_Model();
-		TicTacToe_Server server = new TicTacToe_Server();
-		char[] charArray;
-		int i = 0;
-
-		charArray = name.toCharArray();
-
-		for (char a : charArray) {
-			i += (int) a;
-		}
-		return i;
-	}
 }

@@ -42,12 +42,19 @@ public class TicTacToe_Client implements Runnable {
 
 	}
 	
+	// transform the simpleStringProperty to a normal string to give it back to the controller and then to the view
 	public String getChatMessageInString() {
 		return chatMessage.get();
 	}
 
 	
-
+	/**
+	 * This methode sends only play-informations to the server and this hidden-board
+	 * the info goes with a Integer-Array and 3 params
+	 * @param x - for the x-coordinate
+	 * @param y - for the y-coordinate
+	 * @param valueConstructor - which value is given X / O
+	 */
 	public void writePlayMessageToServer(int x, int y, int valueConstructor) {
 
 		try {
@@ -58,24 +65,24 @@ public class TicTacToe_Client implements Runnable {
 			Integer[] message = { x, y, valueConstructor };
 
 			// ---------------------------------
-
 			oos.writeObject(message);
 
 			// Actualize
 			oos.flush();
 
-			// close reader
-			// oos.close();
-
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * This methode sends a win-message to the server - this is also for the DB
+	 * the info goes with a Integer-Array and 2 params
+	 * @param user - which user is the winner
+	 * @param points - how many points for winning
+	 */
 	public void writeWinMessageToServer(int user, int points) {
 		try {
 			// Streams
@@ -83,7 +90,6 @@ public class TicTacToe_Client implements Runnable {
 			// OutputStream writing
 			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
 			Integer[] message = { user, points };
-
 			// ---------------------------------
 
 			oos.writeObject(message);
@@ -91,18 +97,18 @@ public class TicTacToe_Client implements Runnable {
 			// Actualize
 			oos.flush();
 
-			// close reader
-			// oos.close();
-
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * For the chatting - send a message to the chat
+	 * This information goes with a string
+	 * @param message - normal string
+	 */
 	public void writeChatMessageToServer(String message) {
 		try {
 			// Streams
@@ -115,18 +121,17 @@ public class TicTacToe_Client implements Runnable {
 			// Actualize
 			oos.flush();
 
-			// close reader
-			// oos.close();
-
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Client goes open an wait for a message back from the server to give it to a simpleStringProperty
+	 * the property is overwatching and send it to the controller and view
+	 */
 	@Override
 	public void run() {
 		while (true) {

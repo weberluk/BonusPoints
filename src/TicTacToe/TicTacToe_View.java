@@ -123,6 +123,7 @@ public class TicTacToe_View {
 			}
 		}
 		
+		// Language Menus
 	       for (Locale locale : ServiceLocator.getServiceLocator().getLocales()) {
 	           MenuItem language = new MenuItem(locale.getLanguage());
 	           menuFileLanguage.getItems().add(language);
@@ -133,7 +134,8 @@ public class TicTacToe_View {
 	                updateTexts();
 	            });
 	       }
-	       
+	    
+	    //Set the root, set the scene   
 		BorderPane root = new BorderPane();
 		root.setTop(menuBar);
 		root.setBottom(bottomPane);

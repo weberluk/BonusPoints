@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
+import Lotto.ServiceLocator;
 import TicTacToe.TicTacToe_Model;
 
 enum Value {
@@ -19,6 +22,7 @@ enum HumanPlayer {
 
 public class TicTacToe_Server {
 
+	// socket and port
 	private ServerSocket server;
 	private int port = 5555;
 
@@ -55,7 +59,8 @@ public class TicTacToe_Server {
 }
 
 class ConnectionHandler implements Runnable {
-	private static int ID = 0;
+	private TicTacToe_H2 h2 = TicTacToe_H2.getDB();
+	private TicTacToe_Model model = TicTacToe_Model.getModel();
 	private Socket socket;
 	private int valueConstructor;
 	private String player;
@@ -72,6 +77,7 @@ class ConnectionHandler implements Runnable {
 		t.start();
 	}
 
+	// goes open and wait for a message from the client
 	@Override
 	public void run() {
 		while (true) {
@@ -82,12 +88,13 @@ class ConnectionHandler implements Runnable {
 				if (testObject(object) == 1) {
 					Integer[] message = (Integer[]) object;
 					printArray(message);
-					if (message.length == 3) {
-						getPlayInputs(message);
-					} else {
+					if (message.length == 2){
 						getWinInputs(message);
 						printXML(id, points, player);
 						this.safeInDB(id, player, points);
+					}
+					if (message.length == 3) {
+						getPlayInputs(message);
 					}
 				}
 				if (testObject(object) == 2) {
@@ -95,21 +102,27 @@ class ConnectionHandler implements Runnable {
 					out.writeObject(object);
 					System.out.println(message);
 				}
-				// ois.close();
-				// socket.close();
 				System.out.println("Waiting for client message is...");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
 	}
 
+	/**
+	 * This method controls the incomes if it a Integer-Array it must be a
+	 * Ingame-Message - two possibles: normal game message or a winner message
+	 * if it a String it must be a chat-message
+	 * 
+	 * @param value
+	 *            - the incoming Object from the object-reader
+	 * @return - 1 for ingame - 2 for chat
+	 */
 	public int testObject(Object value) {
 		if (value.getClass() == Integer[].class) {
 			return 1;
@@ -121,41 +134,77 @@ class ConnectionHandler implements Runnable {
 		return id;
 	}
 
-	// private void b(Integer message) {
-	// List<Integer> list = new ArrayList<Integer>();
-	// Integer[] arr = list.toArray(new Integer[0]);
-	// System.out.println("Array is " + Arrays.toString(arr));
-	// }
-
 	private void printArray(Integer[] arr) {
 		for (Integer i : arr) {
 			System.out.println(i);
 		}
 	}
 
+	/**
+	 * prints a XML for external
+	 * 
+	 * @param id
+	 *            - the generate id from the model
+	 * @param points
+	 *            - the points from the model
+	 * @param player
+	 *            - the player from the model
+	 */
 	public void printXML(int id, int points, String player) {
 		TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
 		xml.writeXML(id, points, player);
 	}
 
+	/**
+	 * safes the wins in the DB for internal
+	 * 
+	 * @param id
+	 *            - the generate id from the model
+	 * @param points
+	 *            - the points from the model
+	 * @param player
+	 *            - the player from the model
+	 */
 	public void safeInDB(int id, String name, int points) {
-		TicTacToe_H2 h2 = new TicTacToe_H2();
+		TicTacToe_H2 h2 = TicTacToe_H2.getDB();
 
 		try {
+			// is the id in the DB?
 			if (h2.isTheEntryThere(id)) {
+				// get old points
 				int oldPoints = h2.selectPreparedStatementPoints(id);
+				// summ the points
 				int newPoints = oldPoints + points;
+				// set the new points (calculatet)
 				h2.updateWithPreparedStatement("update PERSON set points =" + newPoints);
 			} else {
-				if(name == null){
+				// when the name is null
+				if (name == "noName") {
+					name = model.getName();
 				}
+				// when the id is null
+				if (id == 0) {
+					id = model.getId();
+				}
+				if(points == 0){
+					points = model.getScore();
+				}
+				// create a new row in the DB
 				h2.insertWithPreparedStatement(id, name, points);
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * for the normal play-inputs set the board entry and also the sign on the
+	 * board for more function on the server
+	 * 
+	 * @param arr
+	 *            - incoming Integer-Array
+	 */
 	private void getPlayInputs(Integer[] arr) {
 		Value[][] board = Board.getBoard();
 		int x = arr[0];
@@ -170,37 +219,35 @@ class ConnectionHandler implements Runnable {
 		}
 
 		board[x][y] = value;
-
 		System.out.println("These are Inputs: " + x + " " + y + " " + value.toString());
 	}
 
+	/**
+	 * for the win inputs - and transform the Integer-Array so the correct
+	 * informations
+	 * 
+	 * @param arr
+	 * @throws SQLException
+	 */
 	private void getWinInputs(Integer[] arr) throws SQLException {
-		TicTacToe_H2 h2 = new TicTacToe_H2();
-		TicTacToe_Model model = new TicTacToe_Model();
-
 		int user = arr[0];
 		int tempPoints = arr[1];
-		int tempPoints1 = 0;
-		try {
-			tempPoints1 = h2.selectPreparedStatementForPoints(model.getId());
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		points = tempPoints + tempPoints1;
-
-		if (user == 1) {
-			String name = model.getName();
-			if (h2.isTheEntryThere(id)) {
-				player = name;
-				id = model.getId();
+		if (user != 879) { //Code for Computer 
+			if (h2.isTheEntryThere(user)) {
+				player = h2.selectPreparedStatementName(user);
+				id = user;
+				points = tempPoints;
+			} else {
+				player = "noName";
+				id = user;
+				points = tempPoints;
 			}
 		} else {
-			player = "default";
-			id = 99;
+			player = "computer";
+			model.setName("computer");
+			id = model.generateId(model.getName());
+			
 		}
-
 		System.out.println("User: " + player + " Points: " + points);
 	}
 
@@ -213,7 +260,7 @@ class Board {
 	}
 
 	/**
-	 * Factory method for returning the singleton
+	 * Factory method for returning the singleton board
 	 * 
 	 * @param mainClass
 	 *            The main class of this program
@@ -226,24 +273,3 @@ class Board {
 	}
 
 }
-
-// class Point {
-// int x,y;
-// Value value;
-//
-// public Point(int x, int y, Value value){
-// this.x = x;
-// this.y = y;
-// this.value = value;
-// }
-//
-// public int getX(){
-// return this.x;
-// }
-// public int getY(){
-// return this.y;
-// }
-// public Value getValue(){
-// return value;
-// }
-// }

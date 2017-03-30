@@ -8,6 +8,8 @@ import TicTacToe.TicTacToe_Model;
 import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Computer;
 import TicTacToe.Translator;
+import TicTacToe_Server.TicTacToe_H2;
+import TicTacToe_Server.TicTacToe_Server;
 import TicTacToe.Configuration;
 
 import java.io.IOException;
