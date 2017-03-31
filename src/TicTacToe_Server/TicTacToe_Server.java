@@ -5,7 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
@@ -66,9 +68,14 @@ class ConnectionHandler implements Runnable {
 	private String player;
 	private int points;
 	private int id;
+	private boolean runner = true;
 
 	public int getid() {
 		return id;
+	}
+
+	public void setRunner(boolean bool) {
+		this.runner = bool;
 	}
 
 	public ConnectionHandler(Socket socket) {
@@ -80,65 +87,140 @@ class ConnectionHandler implements Runnable {
 	// goes open and wait for a message from the client
 	@Override
 	public void run() {
-		while (true) {
+		while (runner) {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 				Object object = ois.readObject();
-				if (testObject(object) == 1) {
-					Integer[] message = (Integer[]) object;
-					printArray(message);
-					if (message.length == 2){
-						getWinInputs(message);
-						printXML(id, points, player);
-						this.safeInDB(id, player, points);
-					}
-					if (message.length == 3) {
-						getPlayInputs(message);
-					}
+				ArrayList<String> input = (ArrayList<String>) object;
+				Integer election = inputTransformer(input);
+				if (election == 1) {
+					System.out.println("Input: 1 - PlayInputs");
 				}
-				if (testObject(object) == 2) {
-					String message = (String) object;
-					out.writeObject(object);
+				if (election == 2) {
+					System.out.println("Input: 2 - WinMessage");
+				}
+				if (election == 3) {
+					String message = input.get(0);
+					ArrayList<String> outmessageChat = new ArrayList<String>();
+					outmessageChat.add("1"); //Chat
+					outmessageChat.add(message);
+					sendMessageToClient(outmessageChat);
 					System.out.println(message);
 				}
+				if (election == 4) {
+					Integer income = Integer.parseInt(input.get(0));
+					String answer = makeADBRequest(income);
+					ArrayList<String> outmessagePoints = new ArrayList<String>();
+					outmessagePoints.add("2"); //PointMessage
+					outmessagePoints.add(answer);
+					sendMessageToClient(outmessagePoints);
+				}
+				if (election == 5) {
+					String closer = input.get(0);
+					if (closer.equals(false)) {
+						this.setRunner(false);
+						run();
+					}
+				}
+				if (election == 6) {
+					System.out.println("Insert done");
+				}
+				if (election == 7) {
+					System.out.println("Delete DB");
+				}
+
 				System.out.println("Waiting for client message is...");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	/**
+	 * Send the message back to the client
+	 * @param input ArrayList<String>
+	 */
+	private void sendMessageToClient(ArrayList<String> input){
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			
+			oos.writeObject(input);
+
+			// Actualize
+			oos.flush();
+			
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private int inputTransformer(ArrayList<String> input) {
+		int transformType = Integer.parseInt(input.get(0));
+		input.remove(0);
+
+		switch (transformType) {
+
+		case 1: // Game Inputs
+			getPlayInputs(input);
+			return 1;
+		case 2: // WinInputs
+			try {
+				getWinInputs(input);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-
-	}
-
-	/**
-	 * This method controls the incomes if it a Integer-Array it must be a
-	 * Ingame-Message - two possibles: normal game message or a winner message
-	 * if it a String it must be a chat-message
-	 * 
-	 * @param value
-	 *            - the incoming Object from the object-reader
-	 * @return - 1 for ingame - 2 for chat
-	 */
-	public int testObject(Object value) {
-		if (value.getClass() == Integer[].class) {
-			return 1;
-		} else {
-			if (value.getClass() == String.class) {
-				return 2;
+			printXML(id,points,player);
+			this.safeInDB(id,points,player);
+			return 2;
+		case 3: // Chat
+			return 3;
+		case 4: // DB-Request
+			return 4;
+		case 5: // Quit Server
+			return 5;
+		case 6: // Insert Statement
+			makeAInsertDB(input);
+			return 6;
+		case 7: //deleteDB
+			deleteDB();
+			return 7;
 			}
-		}
-		return id;
+		return transformType;
 	}
 
-	private void printArray(Integer[] arr) {
-		for (Integer i : arr) {
-			System.out.println(i);
+	// method for the db-request give back the answer
+	private String makeADBRequest(Integer income) {
+		String answer = null;
+		try {
+			answer = h2.selectPreparedStatementForDisplayTheNameAndPoints(income);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return answer;
+	}
+
+	//Method for insert a new row
+	private void makeAInsertDB(ArrayList<String> input) {		
+		int id = Integer.parseInt(input.get(0));
+		String name = input.get(1);
+		try {
+			h2.insertWithPreparedStatement(id, name, 0);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
+	
+	//Method for delete the db
+	private void deleteDB() {		
+			h2.deleteDB();
+	}
+
 
 	/**
 	 * prints a XML for external
@@ -165,7 +247,7 @@ class ConnectionHandler implements Runnable {
 	 * @param player
 	 *            - the player from the model
 	 */
-	public void safeInDB(int id, String name, int points) {
+	public void safeInDB(int id, int points, String name) {
 		TicTacToe_H2 h2 = TicTacToe_H2.getDB();
 
 		try {
@@ -186,7 +268,7 @@ class ConnectionHandler implements Runnable {
 				if (id == 0) {
 					id = model.getId();
 				}
-				if(points == 0){
+				if (points == 0) {
 					points = model.getScore();
 				}
 				// create a new row in the DB
@@ -205,11 +287,11 @@ class ConnectionHandler implements Runnable {
 	 * @param arr
 	 *            - incoming Integer-Array
 	 */
-	private void getPlayInputs(Integer[] arr) {
+	private void getPlayInputs(ArrayList<String> input) {
 		Value[][] board = Board.getBoard();
-		int x = arr[0];
-		int y = arr[1];
-		valueConstructor = arr[2];
+		int x = Integer.parseInt(input.get(0));
+		int y = Integer.parseInt(input.get(1));
+		valueConstructor = Integer.parseInt(input.get(2));
 		Value value;
 
 		if (valueConstructor == 1) {
@@ -229,10 +311,10 @@ class ConnectionHandler implements Runnable {
 	 * @param arr
 	 * @throws SQLException
 	 */
-	private void getWinInputs(Integer[] arr) throws SQLException {
-		int user = arr[0];
-		int tempPoints = arr[1];
-		if (user != 879) { //Code for Computer 
+	private void getWinInputs(ArrayList<String> input) throws SQLException {
+		int user = Integer.parseInt(input.get(0));
+		int tempPoints = Integer.parseInt(input.get(1));
+		if (user != 879) { // Code for Computer
 			if (h2.isTheEntryThere(user)) {
 				player = h2.selectPreparedStatementName(user);
 				id = user;
@@ -246,7 +328,7 @@ class ConnectionHandler implements Runnable {
 			player = "computer";
 			model.setName("computer");
 			id = model.generateId(model.getName());
-			
+
 		}
 		System.out.println("User: " + player + " Points: " + points);
 	}

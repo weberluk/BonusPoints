@@ -51,38 +51,6 @@ public class Lotto_View {
 	    ServiceLocator sl = ServiceLocator.getServiceLocator();  
 	    Translator t = sl.getTranslator();
 		
-//	    //Title
-//		stage.setTitle("***Lotto***");
-//		
-//		//MenuStrings
-//		menuFile = new Menu("File");
-//		menuHelp = new Menu("Help");
-//		newGame = new MenuItem("New Game");
-//		closeGame = new MenuItem("Close");
-//		menuFileLanguage = new Menu("Language");
-//		documentation = new MenuItem("Documentation");
-//		
-//		//Other Controls
-//		superName = new Label("The super number is");
-//		nrTop = new Label("The numbers are:");		
-//		btnStart = new Button("Start");
-//		btnGetChance = new Button("My Chance");
-//
-//		//Without Text to translate
-//		regularButtons = new Button[model.LOTTOLENGTH][model.LOTTOHIGHT];
-//		superButton = new Button[model.LOTTOLENGTH];
-//		labelsForNumbers = new Label[model.LOTTOLENGTH];
-//		sLabel = new Label();
-//		superNumberButton = new Button();
-//		lottoNumbersInButton = new Button[model.LOTTOLENGTH];
-//		tbox1 = new TextField();
-//		tbox2 = new TextField();
-//		tcoupons = new TextField();
-//		
-//		//Labels
-//		lchance = new Label("         Lottotickets: ");
-//		superLabel = new Label("Supernumbers: ");
-
 		//Title
 		stage.setTitle("***Lotto***");
 		

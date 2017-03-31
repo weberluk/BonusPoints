@@ -30,12 +30,9 @@ public class Lotto_Model {
 	private ArrayList<Integer> regularNumbersLotto = new ArrayList<Integer>();
 	private int superNumber = 0;
 	
-	public int getRegularNumbersLotto(){
-		return this.regularNumbersLotto.size();
-	}
-	public int getSuperNumberCount(){
-		return superNumber;
-	}
+	/**
+	 * Clear the complete game
+	 */
 	public void clear(){
 		servicelocator.getLogger().info("Clear all");
 		this.regularNumbersLotto.clear();
@@ -62,18 +59,10 @@ public class Lotto_Model {
 		superNumber = rand.nextInt(6) + 1;
 	}
 
-	public int getRegularNumbers(int i) {
-		return regularNumbersLotto.get(i);
-	}
-
-	public int getsuperNumber() {
-		return superNumber;
-	}
-
-	public void setsuperNumber(int superNumber) {
-		this.userSuperTipp = superNumber;
-	}
-
+	/**
+	 * For check the winner in the regular buttons
+	 * @return String for how many are rights
+	 */
 	public String checkWinRegular() {
 		ArrayList<Integer> userTip = new ArrayList<Integer>();
 		for (int i = 0; i < LOTTOLENGTH; i++) {
@@ -92,7 +81,10 @@ public class Lotto_Model {
 	}
 
 	
-	//check de Regular
+	/**
+	 * Help-Methode for checking the regular buttons
+	 * @return String how many are correct
+	 */
 	private String checkHowManyRight() {
 		for (int i = 0; i < LOTTOLENGTH; i++) {
 			if (this.checkSumRegular[i] == true) {
@@ -103,49 +95,61 @@ public class Lotto_Model {
 
 		case 1:
 			servicelocator.getLogger().info("1 Choice is equal");
-			return "You have 1 correct";
+			return (t.getString("program.text.win1"));
 //			return t.getString("program.text.win1");
 		case 2:
 			servicelocator.getLogger().info("2 Choice is equal");
-			return "You have 2 correct";
+			return (t.getString("program.text.win2"));
 //			return t.getString("program.text.win2");
 		case 3:
 			servicelocator.getLogger().info("3 Choice is equal");
-			return "You have 3 correct";
+			return (t.getString("program.text.win3"));
 //			return t.getString("program.text.win3");
 		case 4:
 			servicelocator.getLogger().info("4 Choice is equal");
-			return "You have 4 correct";
+			return (t.getString("program.text.win4"));
 //			return t.getString("program.text.win4");
 		case 5:
 			servicelocator.getLogger().info("5 Choice is equal");
-			return "You have 5 correct";
+			return (t.getString("program.text.win5"));
 //			return t.getString("program.text.win5");
 		case 6:
 			servicelocator.getLogger().info("6 Choice is equal");
-			return "You have 6 correct";
+			return (t.getString("program.text.win6"));
 //			return t.getString("program.text.win6");
 		}
-		return "Nothing is correct";
-//		return t.getString("program.text.winNothing");
+		return (t.getString("program.text.winNothing"));
+		//		return t.getString("program.text.winNothing");
 
 	}
 	
-	//check the super
+	/**
+	 * Help-methode for checking the super numbers
+	 * @return String is the super-numbre correct or not
+	 */
 	private String checkSuper(){
 		servicelocator.getLogger().info("Check the SuperNumber");
 		if(this.userSuperTipp == superNumber){
-			return "The Supernumber is correct";
+			return (t.getString("program.text.superwin"));
 //			String result = " ";
 //			result += t.getString("program.text.superwin");
 //			return result;
 		}
-		return "The Supernumber is not correct";
+		return (t.getString("program.text.superwinnot"));
 	}
 	
 	    
-	// The Chance for winning - the most popular numbers - this Method is written with some help with the Internet
-    public String getChance(int coupons, int maxNumbers, int choiceNumbers)
+
+    /**
+     * Calculate the chance for winning - how many times the same number wins
+     * this method calculates with the intakes how many coupons we will buy
+     * @param coupons
+     * @param maxNumbers
+     * @param choiceNumbers
+     * @return
+     */
+	// this Method is written with some help with the Internet
+	public String getChance(int coupons, int maxNumbers, int choiceNumbers)
     {                       
         HashSet<Integer> hWinner = new HashSet<Integer>();
                  
@@ -222,4 +226,24 @@ public class Lotto_Model {
         }
         return lottos;
     }
+    
+    
+    //getter and setter
+    
+	public int getRegularNumbersLotto(){
+		return this.regularNumbersLotto.size();
+	}
+	public int getSuperNumberCount(){
+		return superNumber;
+	}
+	
+	public int getRegularNumbers(int i) {
+		return regularNumbersLotto.get(i);
+	}
+	public int getsuperNumber() {
+		return superNumber;
+	}
+	public void setsuperNumber(int superNumber) {
+		this.userSuperTipp = superNumber;
+	}
 }

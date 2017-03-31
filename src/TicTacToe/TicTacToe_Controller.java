@@ -1,6 +1,6 @@
 package TicTacToe;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import TicTacToe.TicTacToe_Model;
@@ -8,9 +8,14 @@ import TicTacToe.TicTacToe_View;
 import TicTacToe.TicTacToe_Model.HumanPlayer;
 import TicTacToe.TicTacToe_Model.Value;
 import TicTacToe_Server.TicTacToe_H2;
-import TicTacToe_Server.TicTacToe_Server;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
 import TicTacToe.ServiceLocator;
 import TicTacToe.TicTacToe_Client;
 
@@ -37,12 +42,12 @@ public class TicTacToe_Controller {
 
 		// get Points from the Database with the name in the model
 		TicTacToe_H2 h2 = TicTacToe_H2.getDB();
-		int id = model.generateId(model.getName());
-		try {
-			view.points.setText(h2.selectPreparedStatementForDisplayTheNameAndPoints(id));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		Integer id = model.generateId(model.getName());
+		ArrayList<String> messagePoints1 = new ArrayList<String>();
+		messagePoints1.add("4"); //DB-Request
+		messagePoints1.add(id.toString());
+		client.sendMessageToServer(messagePoints1);
+		sl.getLogger().info("Send to client / server a request for the DB");
 
 		// Buttons set sign for the whole board
 		view.btnComputer.setOnAction((event) -> {
@@ -82,29 +87,45 @@ public class TicTacToe_Controller {
 		view.newGame.setOnAction((event) -> {
 			sl.getLogger().info("Start a new Game");
 			cleanUp();
-			try {
-				int idRestart = model.generateId(model.getName());
-				view.points.setText(h2.selectPreparedStatementForDisplayTheNameAndPoints(idRestart));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			model.setName(model.getChatName());
+			Integer idRestart = model.generateId(model.getName());
+			ArrayList<String> messagePoints2 = new ArrayList<String>();
+			messagePoints2.add("4"); //DB-Request
+			messagePoints2.add(idRestart.toString());
+			client.sendMessageToServer(messagePoints2);
+			sl.getLogger().info("Send to client / server a request for the DB");
 		});
 		
 		//Close Game
 		view.closeGame.setOnAction((event) -> {
 			sl.getLogger().info("Application terminated");
+			ArrayList<String> messageStop = new ArrayList<String>();
+			messageStop.add("5"); //Server-Stop
+			messageStop.add("false");
+			client.sendMessageToServer(messageStop);
+			client.setCloser(false);
+			client.run();
+			sl.getLogger().info("Send to Server and client a stop");
 			view.stop();
 		});
 		
 		// Chat-Message-Button to send
 		view.btnSend.setOnAction((event) -> {
-			client.writeChatMessageToServer("\n" + model.getName() + ": " + view.input.getText());
+			ArrayList<String> message = new ArrayList<String>();
+			message.add("3"); //Chat-Message
+			message.add("\n" + model.getChatName() + ": " + view.input.getText());
+			client.sendMessageToServer(message);
 		});
 		
 		// The input-Field can also send a Chat-Message with Enter
 		view.input.setOnKeyPressed(e -> {
-			if (e.getCode() == KeyCode.ENTER)
-				client.writeChatMessageToServer("\n" + model.getName() + ": " + view.input.getText());
+			if (e.getCode() == KeyCode.ENTER){
+				ArrayList<String> message = new ArrayList<String>();
+				message.add("3"); //Chat-Message
+				message.add("\n" + model.getChatName() + ": " + view.input.getText());
+				client.sendMessageToServer(message);
+			}
+
 		});
 
 		// Menu change user for set a new user
@@ -118,14 +139,50 @@ public class TicTacToe_Controller {
 			// When you give a new Name it set a new Name and calculate a new Id for the Model
 			result.ifPresent(name -> {
 				model.setName(name);
+				model.setChatName(name);
 				model.setId(model.generateId(model.getName()));
 				//write Entry in DB
-				try {
-					h2.insertWithPreparedStatement(model.getId(), model.getName(), 0);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+				ArrayList<String> output= new ArrayList<String>();
+				output.add("6"); //Insert-Statement
+				output.add(Integer.toString(model.generateId(model.getName())));
+				output.add(model.getName());
+				client.sendMessageToServer(output);
 			});
+		});
+		
+		view.server.setOnAction((event) -> {
+			Dialog<String> dialog = new Dialog<>();
+			dialog.setTitle("Server");
+			dialog.setHeaderText("Give the inputs, please");
+			dialog.setResizable(true);
+			Label label1 = new Label("Adress (localhost for intern): ");
+			Label label2 = new Label("Port: ");
+			TextField text1 = new TextField();
+			TextField text2 = new TextField();
+			GridPane grid = new GridPane();
+			grid.add(label1, 1, 1);
+			grid.add(text1, 2, 1);
+			
+			grid.add(label2, 1, 2);
+			grid.add(text2, 2, 2);
+			dialog.getDialogPane().setContent(grid);
+			
+			ButtonType buttonTypeOk = new ButtonType("Ok", ButtonData.OK_DONE);
+			dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+			
+			Optional<String> result = dialog.showAndWait();
+			
+			result.ifPresent(input -> {
+				client.setAdress(text1.getText());
+				client.setPort(Integer.parseInt(text2.getText()));
+			});
+
+		});
+		
+		view.resetDB.setOnAction(event -> {
+			ArrayList<String> output= new ArrayList<String>();
+			output.add("7"); //Delete-Statement
+			client.sendMessageToServer(output);
 		});
 
 		// Watch the model for changing
@@ -136,12 +193,18 @@ public class TicTacToe_Controller {
 			}
 		});
 
-		// Watch the client for Message
+		// Watch the client for ChatMessage
 		client.getChatMessageProperty().addListener((obervable, oldValue, newValue) -> {
 			sl.getLogger().info("Message from Chat is arrived");
 			view.chat.setScrollLeft(Double.MAX_VALUE);
 			view.chat.appendText(client.getChatMessageInString());
 			view.input.clear();
+		});
+		
+		// Watch the client for Point
+		client.getPointMessage().addListener((obervable, oldValue, newValue) -> {
+			sl.getLogger().info("Message from PointSetter is arrived");
+			view.points.setText(newValue);
 		});
 
 	}
@@ -175,7 +238,12 @@ public class TicTacToe_Controller {
 		this.setButtonProperties(i, j);
 		model.setBoard(i, j);
 		model.setIndexForMiniMax(i, j);
-		client.writePlayMessageToServer(i, j, getValueContructor());
+		ArrayList<String> message = new ArrayList<String>();
+		message.add("1"); //Play-Message
+		message.add(Integer.toString(i));
+		message.add(Integer.toString(j));
+		message.add(Integer.toString(getValueContructor()));
+		client.sendMessageToServer(message);
 		this.winProcedure(model.checkWinner(i, j, model.getSign()));
 		this.setOtherSign();
 		this.setOtherPlayer();
@@ -231,7 +299,11 @@ public class TicTacToe_Controller {
 				model.setName("computer");
 				model.setId(model.generateId(model.getName()));
 			} 
-			client.writeWinMessageToServer(model.getId(), model.getScore());
+			ArrayList<String> message = new ArrayList<String>();
+			message.add("2"); //WinMessage
+			message.add(Integer.toString(model.getId()));
+			message.add(Integer.toString(model.getScore()));
+			client.sendMessageToServer(message);
 			view.block();
 		}
 	}

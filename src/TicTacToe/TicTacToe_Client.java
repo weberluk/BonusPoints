@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
 import TicTacToe.TicTacToe_Controller;
@@ -13,63 +15,94 @@ public class TicTacToe_Client implements Runnable {
 	private TicTacToe_Controller controller;
 	private ServiceLocator sl = ServiceLocator.getServiceLocator();
 	private Socket client;
-	
-	// SimpleBooleanProperty for overwatching the chat
+	private boolean closer = true;
+	private String adress = "localhost";
+	private int port = 5555;
+
+	// SimpleStringProperty for overwatching the chat
 	private SimpleStringProperty chatMessage = new SimpleStringProperty();
-	
+
+	private SimpleStringProperty pointMessage = new SimpleStringProperty();
+
 	public TicTacToe_Client() throws UnknownHostException, IOException {
-		client = new Socket("localhost", 5555);
-		sl.getLogger().info("Client gestartet, localhost, Port: 5555");
+		client = new Socket(adress, port);
+		sl.getLogger().info("Client gestartet, " + adress + ", Port:" + port);
 		Thread t = new Thread(this);
 		t.start();
+	}
+	
+	public void setAdress(String adress){
+		this.adress = adress;
+	}
+	public void setPort (int port){
+		this.port = port;
+	}
+	
+	public void setCloser(boolean closer) {
+		this.closer = closer;
 	}
 
 	public void setController(TicTacToe_Controller controller) {
 		this.controller = controller;
 	}
-	
-	//Get the MessageProperty from the chat
+
+	// Get the MessageProperty from the chat
 	public SimpleStringProperty getChatMessageProperty() {
 		return this.chatMessage;
 	}
-	//Get the MessageProperty from the chat
+
+	// Get the MessageProperty from the chat
 	public void setChatMessageProperty(String newValue) {
 		try {
 			this.chatMessage.setValue(newValue);
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	// transform the simpleStringProperty to a normal string to give it back to the controller and then to the view
+
+	// Get the MessageProperty from the chat
+	public SimpleStringProperty getPointMessage() {
+		return this.pointMessage;
+	}
+
+	// Get the MessageProperty from the chat
+	public void setPointMessage(String newValue) {
+		try {
+			this.pointMessage.setValue(newValue);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// transform the simpleStringProperty to a normal string to give it back to
+	// the controller and then to the view
 	public String getChatMessageInString() {
 		return chatMessage.get();
 	}
 
-	
+	// transform the simpleStringProperty to a normal string to give it back to
+	// the controller and then to the view
+	public String getPointMessageInString() {
+		return pointMessage.get();
+	}
+
 	/**
-	 * This methode sends only play-informations to the server and this hidden-board
-	 * the info goes with a Integer-Array and 3 params
-	 * @param x - for the x-coordinate
-	 * @param y - for the y-coordinate
-	 * @param valueConstructor - which value is given X / O
+	 * Send the message to the server becomes a object
+	 * 
+	 * @param object
 	 */
-	public void writePlayMessageToServer(int x, int y, int valueConstructor) {
-
+	public void sendMessageToServer(ArrayList<String> input) {
 		try {
-			// Streams
-
 			// OutputStream writing
 			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-			Integer[] message = { x, y, valueConstructor };
 
 			// ---------------------------------
-			oos.writeObject(message);
+			oos.writeObject(input);
 
 			// Actualize
 			oos.flush();
-
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -78,73 +111,52 @@ public class TicTacToe_Client implements Runnable {
 	}
 
 	/**
-	 * This methode sends a win-message to the server - this is also for the DB
-	 * the info goes with a Integer-Array and 2 params
-	 * @param user - which user is the winner
-	 * @param points - how many points for winning
-	 */
-	public void writeWinMessageToServer(int user, int points) {
-		try {
-			// Streams
-
-			// OutputStream writing
-			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-			Integer[] message = { user, points };
-			// ---------------------------------
-
-			oos.writeObject(message);
-
-			// Actualize
-			oos.flush();
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * For the chatting - send a message to the chat
-	 * This information goes with a string
-	 * @param message - normal string
-	 */
-	public void writeChatMessageToServer(String message) {
-		try {
-			// Streams
-
-			// OutputStream writing
-			ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-
-			oos.writeObject(message);
-
-			// Actualize
-			oos.flush();
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Client goes open an wait for a message back from the server to give it to a simpleStringProperty
-	 * the property is overwatching and send it to the controller and view
+	 * Client goes open an wait for a message back from the server to give it to
+	 * a simpleStringProperty the property is overwatching and send it to the
+	 * controller and view
 	 */
 	@Override
 	public void run() {
-		while (true) {
+		while (closer) {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
 				Object object = ois.readObject();
-				String chatMessage = (String) object;
-				this.chatMessage.setValue(chatMessage);
+				ArrayList<String> input = (ArrayList<String>) object;
+				Integer election = inputTransformer(input);
+				if (election == 1) {
+					sl.getLogger().info("IncomingMessage on Client Type 1 - For Chat");
+				}
+				if (election == 2) {
+					sl.getLogger().info("IncomingMessage on Client Type 2 - For Points");
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	//for check the input
+	private int inputTransformer(ArrayList<String> input) {
+		int transformType = Integer.parseInt(input.get(0));
+		input.remove(0);
+
+		switch (transformType) {
+
+		case 1: // Chat
+			String chatMessage = (String) input.get(0);
+			this.chatMessage.setValue(chatMessage);
+			return 2;
+		case 2: // PointMessage		
+			this.pointMessage.setValue(getPointMessage(input));
+			return 1;
+		}
+		return transformType;
+	}
+
+	public String getPointMessage(ArrayList<String> object) {
+		String message = object.get(0);
+		return message;
 	}
 }

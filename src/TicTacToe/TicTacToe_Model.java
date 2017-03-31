@@ -32,6 +32,7 @@ public class TicTacToe_Model {
 	
 	//Actual name - default = default
 	private String name = "default";
+	private String chatname = "not defined";
 	
 	//Actual id - default = 741 (watch calculate-Methode in Controller
 	private int Id = 741;
@@ -270,6 +271,12 @@ public class TicTacToe_Model {
 
 	public Value getSign() {
 		return this.sign;
+	}
+	public void setChatName(String name){
+		this.chatname = name;
+	}
+	public String getChatName(){
+		return this.chatname;
 	}
 	
 }

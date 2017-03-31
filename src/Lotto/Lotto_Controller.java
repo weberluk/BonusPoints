@@ -29,21 +29,6 @@ public class Lotto_Controller {
 	private int clicksSuper = 0;
 	private int superclicks = 1;
 
-	public void setXPos(int xpos) {
-		this.xPos = xpos;
-	}
-
-	public void setYPos(int ypos) {
-		this.yPos = ypos;
-	}
-
-	public int getXPos() {
-		return this.xPos;
-	}
-
-	public int getYPos() {
-		return this.yPos;
-	}
 
 	public Lotto_Controller(Lotto_Model model, Lotto_View view) {
 		this.view = view;
@@ -69,6 +54,7 @@ public class Lotto_Controller {
 			view.btnStart.setDisable(true);
 		});
 
+		// calculate the chance for winning button
 		view.btnGetChance.setOnAction((event) -> {
 			sl.getLogger().info("Calculating the chance for winning");
 			int coupons = 0;
@@ -132,8 +118,8 @@ public class Lotto_Controller {
 		});
 	}
 
-	// event.getSource();
 
+	// methode for compare the buttons
 	public void compareButton(int btnTxt) {
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
@@ -146,6 +132,7 @@ public class Lotto_Controller {
 		}
 	}
 
+	//methode for press the buttons
 	public void setButtonPressed(int i, int j) {
 		if (clicked[i][j] == false) {
 			sl.getLogger().info("New Regular Button is pressed: " + view.regularButtons[i][j].getText());
@@ -167,6 +154,7 @@ public class Lotto_Controller {
 		}
 	}
 
+	// methode for press the super-buttons
 	public void setSuperButtonPressed(int i) {
 		if (this.superclicked[i] == false) {
 			sl.getLogger().info("New Super-Button is pressed: " + view.superButton[i].getText());
@@ -186,6 +174,7 @@ public class Lotto_Controller {
 
 	}
 
+	// Set all Buttons to false
 	public void setAllButtonsFalse() {
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
 			for (int j = 0; j < model.LOTTOHIGHT; j++) {
@@ -195,14 +184,8 @@ public class Lotto_Controller {
 		}
 
 	}
-
-	public void setTextBox1(String input) {
-		view.tbox1.setText(input);
-	}
-	public void setTextBox2(String input){
-		view.tbox2.setText(input);
-	}
-
+	
+	// for clean up the game
 	public void cleanUp() {
 		sl.getLogger().info("Clean all up");
 		for (int i = 0; i < model.LOTTOLENGTH; i++) {
@@ -230,4 +213,29 @@ public class Lotto_Controller {
         	sl.getLogger().info("File cannot open");
         }
     }
+	
+	//getter and setter
+	
+	public void setTextBox1(String input) {
+		view.tbox1.setText(input);
+	}
+	public void setTextBox2(String input){
+		view.tbox2.setText(input);
+	}	
+
+	public void setXPos(int xpos) {
+		this.xPos = xpos;
+	}
+
+	public void setYPos(int ypos) {
+		this.yPos = ypos;
+	}
+
+	public int getXPos() {
+		return this.xPos;
+	}
+
+	public int getYPos() {
+		return this.yPos;
+	}
 }
