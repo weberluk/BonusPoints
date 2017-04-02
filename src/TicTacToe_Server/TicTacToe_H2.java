@@ -5,11 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.h2.tools.DeleteDbFiles;
 
 public class TicTacToe_H2 {
-	
+
 	private static TicTacToe_H2 h2;
 
 	private static final String DB_DRIVER = "org.h2.Driver";
@@ -19,12 +20,13 @@ public class TicTacToe_H2 {
 
 	// only for test the DB and show the tables
 	public static void main(String[] args) throws Exception {
-//		 deleteDB();
-//		 createTableWithPreparedStatement();
-//		 insertWithPreparedStatement(741,"default",00);
-//		 insertWithPreparedStatement(879,"computer",00);
-//		 selectPreparedStatement("select * from PERSON");
-		// updateWithPreparedStatement("update PERSON set points = 40 where id =1");
+		// deleteDB();
+		// createTableWithPreparedStatement();
+		// insertWithPreparedStatement(741,"default",00);
+		// insertWithPreparedStatement(879,"computer",00);
+		// selectPreparedStatement("select * from PERSON");
+		// updateWithPreparedStatement("update PERSON set points = 40 where id
+		// =1");
 		// if(isTheEntryThere("select * from PERSON where id = 1")){
 		// System.out.println("Yes");
 		// } else {
@@ -34,9 +36,10 @@ public class TicTacToe_H2 {
 
 	public TicTacToe_H2() {
 	}
-	
+
 	/**
 	 * Factory method for returning the singleton board
+	 * 
 	 * @param mainClass
 	 *            The main class of this program
 	 * @return The singleton resource locator
@@ -55,8 +58,8 @@ public class TicTacToe_H2 {
 		DeleteDbFiles.execute("~", "TicTacToe", true);
 		try {
 			createTableWithPreparedStatement();
-			insertWithPreparedStatement(741,"default",00);
-			insertWithPreparedStatement(879,"computer",00);
+			insertWithPreparedStatement(741, "default", 00);
+			insertWithPreparedStatement(879, "computer", 00);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,6 +67,7 @@ public class TicTacToe_H2 {
 
 	/**
 	 * generate a new Table
+	 * 
 	 * @throws SQLException
 	 */
 	public static void createTableWithPreparedStatement() throws SQLException {
@@ -91,6 +95,7 @@ public class TicTacToe_H2 {
 
 	/**
 	 * becomes a whole statement
+	 * 
 	 * @param statement
 	 * @return gives all back
 	 * @throws SQLException
@@ -129,8 +134,53 @@ public class TicTacToe_H2 {
 	}
 
 	/**
+	 * is for fill an ArrayList<String> for the XML-Writing
+	 * 
+	 * @param statement
+	 * @return gives all back
+	 * @throws SQLException
+	 */
+	public static ArrayList<Game> selectPreparedStatementForXML(String statement) throws SQLException {
+		Connection connection = getDBConnection();
+		PreparedStatement selectPreparedStatement = null;
+		String SelectQuery = statement;
+		ArrayList<Game> answer = new ArrayList<Game>();
+		int counter = 0;
+
+		try {
+			connection.setAutoCommit(false);
+
+			selectPreparedStatement = connection.prepareStatement(SelectQuery);
+			ResultSet rs = selectPreparedStatement.executeQuery();
+				while (rs.next()) {
+					System.out.println("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points "
+							+ rs.getInt("points"));
+					System.out.println("H2 Database inserted through PreparedStatementXML");
+					String id = rs.getString("id".toString());
+					String name = rs.getString("name");
+					String points = rs.getString("points".toString());
+					Game g = new Game(Integer.toString(counter),id,name,points);
+					answer.add(g);
+					counter++;
+				}
+			selectPreparedStatement.close();
+
+			connection.commit();
+		} catch (SQLException e) {
+			System.out.println("Exception Message " + e.getLocalizedMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connection.close();
+		}
+		return answer;
+	}
+
+	/**
 	 * for the display in the view
-	 * @param id - the generatet id from the model
+	 * 
+	 * @param id
+	 *            - the generatet id from the model
 	 * @return String with name and points
 	 * @throws SQLException
 	 */
@@ -167,7 +217,9 @@ public class TicTacToe_H2 {
 
 	/**
 	 * check is there an line in the DB
-	 * @param id - the generate id from the model
+	 * 
+	 * @param id
+	 *            - the generate id from the model
 	 * @return - yes or no
 	 * @throws SQLException
 	 */
@@ -183,17 +235,16 @@ public class TicTacToe_H2 {
 			selectPreparedStatement.setInt(1, id);
 			ResultSet rs = selectPreparedStatement.executeQuery();
 			String entry = null;
-			while (rs.next()){
+			while (rs.next()) {
 				entry = rs.getString("name");
 			}
-			if(entry != null){
+			if (entry != null) {
 				System.out.println("EntryThere");
 				return true;
 			}
-			
+
 			selectPreparedStatement.close();
 			connection.commit();
-
 
 		} catch (SQLException e) {
 			System.out.println("Exception Message " + e.getLocalizedMessage());
@@ -208,9 +259,13 @@ public class TicTacToe_H2 {
 
 	/**
 	 * insert a new line in the DB
-	 * @param id - generate id from the model
-	 * @param name - name that given
-	 * @param points - points that given
+	 * 
+	 * @param id
+	 *            - generate id from the model
+	 * @param name
+	 *            - name that given
+	 * @param points
+	 *            - points that given
 	 * @throws SQLException
 	 */
 	public static void insertWithPreparedStatement(int id, String name, int points) throws SQLException {
@@ -225,11 +280,10 @@ public class TicTacToe_H2 {
 			insertPreparedStatement.setInt(1, id);
 			insertPreparedStatement.setString(2, name);
 			insertPreparedStatement.setInt(3, points);
-			
+
 			System.out.println("Insert: " + id + " " + name + " " + points);
 			insertPreparedStatement.executeUpdate();
 			insertPreparedStatement.close();
-
 
 			connection.commit();
 		} catch (SQLException e) {
@@ -243,7 +297,9 @@ public class TicTacToe_H2 {
 
 	/**
 	 * update the entry in the DB
-	 * @param update - input the whole SQL-Query
+	 * 
+	 * @param update
+	 *            - input the whole SQL-Query
 	 * @throws SQLException
 	 */
 	public void updateWithPreparedStatement(String update) throws SQLException {
@@ -284,6 +340,7 @@ public class TicTacToe_H2 {
 
 	/**
 	 * H2 SQL Prepared Statement Select for Name and Points
+	 * 
 	 * @param id
 	 * @return send a String with the name and the points
 	 * @throws SQLException
@@ -322,9 +379,10 @@ public class TicTacToe_H2 {
 		}
 		return answer;
 	}
-	
+
 	/**
 	 * H2 SQL Prepared Statement Select for Points
+	 * 
 	 * @param id
 	 * @return send only the points
 	 * @throws SQLException
@@ -360,9 +418,10 @@ public class TicTacToe_H2 {
 		}
 		return answer;
 	}
-	
+
 	/**
 	 * H2 SQL Prepared Statement Select for Name
+	 * 
 	 * @param id
 	 * @return send only the points
 	 * @throws SQLException

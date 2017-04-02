@@ -27,6 +27,7 @@ public class TicTacToe_View {
 	protected MenuItem changeUser;
 	protected MenuItem resetDB;
 	protected MenuItem server;
+	protected MenuItem writeXML;
 	protected Menu menuFile;
 	protected Menu menuHelp;
     protected Menu menuFileLanguage;
@@ -63,6 +64,7 @@ public class TicTacToe_View {
 		changeUser = new MenuItem("Change User");
 		resetDB = new MenuItem("Reset DataBase");
 		server = new MenuItem("Server");
+		writeXML = new MenuItem("Write XML");
 
 		btnComputer.setPrefSize(240, 40);
 		btnSend.setPrefSize(200,40);
@@ -79,6 +81,7 @@ public class TicTacToe_View {
 		changeUser.getStyleClass().add("menu");
 		resetDB.getStyleClass().add("menu");
 		server.getStyleClass().add("menu");
+		writeXML.getStyleClass().add("menu");
 		
 		menuUser.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
@@ -87,7 +90,7 @@ public class TicTacToe_View {
 		menuBar.getMenus().addAll(menuFile, menuHelp,menuUser);
 		menuFile.getItems().addAll(newGame, closeGame,menuFileLanguage);
 		menuHelp.getItems().add(documentation);
-		menuUser.getItems().addAll(changeUser,resetDB,server);
+		menuUser.getItems().addAll(changeUser,resetDB,server,writeXML);
 
 		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();

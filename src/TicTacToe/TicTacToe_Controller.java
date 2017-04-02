@@ -179,12 +179,20 @@ public class TicTacToe_Controller {
 
 		});
 		
+		//reset the DB
 		view.resetDB.setOnAction(event -> {
 			ArrayList<String> output= new ArrayList<String>();
 			output.add("7"); //Delete-Statement
 			client.sendMessageToServer(output);
 		});
 
+		//make a new XML
+		view.writeXML.setOnAction(event -> {
+			ArrayList<String> output = new ArrayList<String>();
+			output.add("8"); //Make a XML
+			client.sendMessageToServer(output);
+		});
+		
 		// Watch the model for changing
 		model.getValueProperty().addListener((obervable, oldValue, newValue) -> {
 			sl.getLogger().info("ComputerLogicIsRunning");

@@ -128,6 +128,9 @@ class ConnectionHandler implements Runnable {
 				if (election == 7) {
 					System.out.println("Delete DB");
 				}
+				if (election == 8) {
+					System.out.println("External XML is written");
+				}
 
 				System.out.println("Waiting for client message is...");
 			} catch (IOException e) {
@@ -190,6 +193,15 @@ class ConnectionHandler implements Runnable {
 		case 7: //deleteDB
 			deleteDB();
 			return 7;
+		case 8: //write an external XML for safe the game
+			ArrayList<Game> xmlArryList = new ArrayList<Game>();
+			try {
+				xmlArryList = h2.selectPreparedStatementForXML("SELECT * FROM PERSON");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			TicTacToe_XML xml = new TicTacToe_XML(xmlArryList);
+			return 8;
 			}
 		return transformType;
 	}
@@ -331,6 +343,10 @@ class ConnectionHandler implements Runnable {
 
 		}
 		System.out.println("User: " + player + " Points: " + points);
+	}
+	
+	public void xmlBuilder(){
+		
 	}
 
 }
