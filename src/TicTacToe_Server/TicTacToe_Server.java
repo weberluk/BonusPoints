@@ -182,7 +182,6 @@ class ConnectionHandler implements Runnable {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			printXML(id, points, player);
 			this.safeInDB(id, points, player);
 			return 2;
 		case 3: // Chat
@@ -243,20 +242,6 @@ class ConnectionHandler implements Runnable {
 		h2.deleteDB();
 	}
 
-	/**
-	 * prints a XML for external
-	 * 
-	 * @param id
-	 *            - the generate id from the model
-	 * @param points
-	 *            - the points from the model
-	 * @param player
-	 *            - the player from the model
-	 */
-	public void printXML(int id, int points, String player) {
-		TicTacToe_XMLWriter xml = new TicTacToe_XMLWriter();
-		xml.writeXML(id, points, player);
-	}
 
 	/**
 	 * safes the wins in the DB for internal
