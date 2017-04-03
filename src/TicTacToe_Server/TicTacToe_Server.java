@@ -102,7 +102,7 @@ class ConnectionHandler implements Runnable {
 				if (election == 3) {
 					String message = input.get(0);
 					ArrayList<String> outmessageChat = new ArrayList<String>();
-					outmessageChat.add("1"); //Chat
+					outmessageChat.add("1"); // Chat
 					outmessageChat.add(message);
 					sendMessageToClient(outmessageChat);
 					System.out.println(message);
@@ -111,7 +111,7 @@ class ConnectionHandler implements Runnable {
 					Integer income = Integer.parseInt(input.get(0));
 					String answer = makeADBRequest(income);
 					ArrayList<String> outmessagePoints = new ArrayList<String>();
-					outmessagePoints.add("2"); //PointMessage
+					outmessagePoints.add("2"); // PointMessage
 					outmessagePoints.add(answer);
 					sendMessageToClient(outmessagePoints);
 				}
@@ -131,6 +131,9 @@ class ConnectionHandler implements Runnable {
 				if (election == 8) {
 					System.out.println("External XML is written");
 				}
+				if (election == 9) {
+					System.out.println("XML reader done");
+				}
 
 				System.out.println("Waiting for client message is...");
 			} catch (IOException e) {
@@ -141,27 +144,28 @@ class ConnectionHandler implements Runnable {
 		}
 
 	}
-	
+
 	/**
 	 * Send the message back to the client
-	 * @param input ArrayList<String>
+	 * 
+	 * @param input
+	 *            ArrayList<String>
 	 */
-	private void sendMessageToClient(ArrayList<String> input){
+	private void sendMessageToClient(ArrayList<String> input) {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			
+
 			oos.writeObject(input);
 
 			// Actualize
 			oos.flush();
-			
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 
 	private int inputTransformer(ArrayList<String> input) {
 		int transformType = Integer.parseInt(input.get(0));
@@ -178,8 +182,8 @@ class ConnectionHandler implements Runnable {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			printXML(id,points,player);
-			this.safeInDB(id,points,player);
+			printXML(id, points, player);
+			this.safeInDB(id, points, player);
 			return 2;
 		case 3: // Chat
 			return 3;
@@ -190,10 +194,10 @@ class ConnectionHandler implements Runnable {
 		case 6: // Insert Statement
 			makeAInsertDB(input);
 			return 6;
-		case 7: //deleteDB
+		case 7: // deleteDB
 			deleteDB();
 			return 7;
-		case 8: //write an external XML for safe the game
+		case 8: // write an external XML for safe the game
 			ArrayList<Game> xmlArryList = new ArrayList<Game>();
 			try {
 				xmlArryList = h2.selectPreparedStatementForXML("SELECT * FROM PERSON");
@@ -202,7 +206,13 @@ class ConnectionHandler implements Runnable {
 			}
 			TicTacToe_XML xml = new TicTacToe_XML(xmlArryList);
 			return 8;
-			}
+		case 9: // read an XML File to DB
+			TicTacToe_XMLReader reader = new TicTacToe_XMLReader();
+			ArrayList<Game> gameListFromXML = new ArrayList<Game>();
+			gameListFromXML = reader.readXML();
+			h2.insertWithInputFromXML(gameListFromXML);
+			return 9;
+		}
 		return transformType;
 	}
 
@@ -217,8 +227,8 @@ class ConnectionHandler implements Runnable {
 		return answer;
 	}
 
-	//Method for insert a new row
-	private void makeAInsertDB(ArrayList<String> input) {		
+	// Method for insert a new row
+	private void makeAInsertDB(ArrayList<String> input) {
 		int id = Integer.parseInt(input.get(0));
 		String name = input.get(1);
 		try {
@@ -227,12 +237,11 @@ class ConnectionHandler implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	//Method for delete the db
-	private void deleteDB() {		
-			h2.deleteDB();
-	}
 
+	// Method for delete the db
+	private void deleteDB() {
+		h2.deleteDB();
+	}
 
 	/**
 	 * prints a XML for external
@@ -344,9 +353,9 @@ class ConnectionHandler implements Runnable {
 		}
 		System.out.println("User: " + player + " Points: " + points);
 	}
-	
-	public void xmlBuilder(){
-		
+
+	public void xmlBuilder() {
+
 	}
 
 }

@@ -1,7 +1,9 @@
 package TicTacToe_Server;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -14,7 +16,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
@@ -45,11 +50,11 @@ public class TicTacToe_XML {
 	}
 
 	/**
-	 * Add a list of gamesafes to the list In a production system you might populate
-	 * the list from a DB
+	 * Add a list of gamesafes to the list In a production system you might
+	 * populate the list from a DB
 	 */
 	private void loadData(ArrayList<Game> inputList) {
-		for (int i = 0; i < inputList.size(); i++){
+		for (int i = 0; i < inputList.size(); i++) {
 			myData.add(inputList.get(i));
 		}
 	}
@@ -108,7 +113,7 @@ public class TicTacToe_XML {
 
 		Element Game = dom.createElement("id");
 		Game.setAttribute("Subject", g.getId());
-		
+
 		// create gameid element and gameid text node and attach it to
 		Element gameid = dom.createElement("gameid");
 		Text gameIdText = dom.createTextNode(g.getGameId());
@@ -121,8 +126,9 @@ public class TicTacToe_XML {
 		name.appendChild(gameText);
 		Game.appendChild(name);
 
-		// create points element and points text node and attach it to bookElement
-		Element titleEle = dom.createElement("poitns");
+		// create points element and points text node and attach it to
+		// bookElement
+		Element titleEle = dom.createElement("points");
 		Text titleText = dom.createTextNode(g.getPoints());
 		titleEle.appendChild(titleText);
 		Game.appendChild(titleEle);
@@ -146,7 +152,7 @@ public class TicTacToe_XML {
 
 			// to generate a file output use fileoutputstream instead of
 			// system.out
-			XMLSerializer serializer = new XMLSerializer(new FileOutputStream(new File("c:\\temp\\file.xml")), format);
+			XMLSerializer serializer = new XMLSerializer(new FileOutputStream(new File("c:\\temp\\tictactoe.xml")), format);
 
 			serializer.serialize(dom);
 
@@ -157,11 +163,21 @@ public class TicTacToe_XML {
 
 //	public static void main(String args[]) {
 //
-//		// create an instance
-//		TicTacToe_XML xce = new TicTacToe_XML();
+//		// // create an instance
+//		// TicTacToe_XML xce = new TicTacToe_XML();
+//		//
+//		// // run the example
+//		// xce.runExample();
 //
-//		// run the example
-//		xce.runExample();
+//		// read the xml
+//		try {
+//			RecursiveDOM(readFile());
+//		} catch (SAXException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (ParserConfigurationException e) {
+//			e.printStackTrace();
+//		}
 //	}
 }
-

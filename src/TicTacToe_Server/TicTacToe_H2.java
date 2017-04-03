@@ -23,8 +23,8 @@ public class TicTacToe_H2 {
 		// deleteDB();
 		// createTableWithPreparedStatement();
 		// insertWithPreparedStatement(741,"default",00);
-		// insertWithPreparedStatement(879,"computer",00);
-		// selectPreparedStatement("select * from PERSON");
+//		 insertWithPreparedStatement(879,"computer",00);
+//		 selectPreparedStatement("select * from PERSON");
 		// updateWithPreparedStatement("update PERSON set points = 40 where id
 		// =1");
 		// if(isTheEntryThere("select * from PERSON where id = 1")){
@@ -321,6 +321,28 @@ public class TicTacToe_H2 {
 			connection.close();
 		}
 	}
+	
+	public void updateFromXML(int id, int points) throws SQLException {
+		Connection connection = getDBConnection();
+		PreparedStatement updatePreparedStatement = null;
+		String update = "UPDATE PERSON SET Points = " + points  + "WHERE ID =" + id;
+
+		try {
+			connection.setAutoCommit(false);
+
+			updatePreparedStatement = connection.prepareStatement(update);
+			updatePreparedStatement.executeUpdate();
+			connection.commit();
+
+		} catch (SQLException e) {
+			System.out.println("Exception Message " + e.getLocalizedMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			connection.close();
+		}
+	}
+	
 
 	private static Connection getDBConnection() {
 		Connection dbConnection = null;
@@ -456,5 +478,43 @@ public class TicTacToe_H2 {
 			connection.close();
 		}
 		return answer;
+	}
+
+	public void insertWithInputFromXML(ArrayList<Game> gameListFromXML) {
+		Connection connection = getDBConnection();
+		PreparedStatement insertPreparedStatement = null;
+		String InsertQuery = "INSERT INTO PERSON" + "(id, name, points) values" + "(?,?,?)";
+		
+		for (Game game : gameListFromXML) {
+		
+			try {
+				connection.setAutoCommit(false);
+
+				insertPreparedStatement = connection.prepareStatement(InsertQuery);
+				insertPreparedStatement.setInt(1, Integer.parseInt(game.getGameId()));
+				insertPreparedStatement.setString(2, game.getName());
+				insertPreparedStatement.setInt(3, Integer.parseInt(game.getPoints()));
+
+				System.out.println("Insert: " + game.getGameId() + " " + game.getName() + " " + game.getPoints());
+				insertPreparedStatement.executeUpdate();
+				insertPreparedStatement.close();
+
+				connection.commit();
+			} catch (SQLException e) {
+				System.out.println("Exception Message " + e.getLocalizedMessage());
+				try {
+					this.updateFromXML(Integer.parseInt(game.getGameId()), Integer.parseInt(game.getPoints()));
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

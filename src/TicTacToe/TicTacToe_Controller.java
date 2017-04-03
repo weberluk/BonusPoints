@@ -193,6 +193,13 @@ public class TicTacToe_Controller {
 			client.sendMessageToServer(output);
 		});
 		
+		//read a XML File
+		view.readXML.setOnAction(event -> {
+			ArrayList<String> output = new ArrayList<String>();
+			output.add("9");
+			client.sendMessageToServer(output);
+		});
+		
 		// Watch the model for changing
 		model.getValueProperty().addListener((obervable, oldValue, newValue) -> {
 			sl.getLogger().info("ComputerLogicIsRunning");

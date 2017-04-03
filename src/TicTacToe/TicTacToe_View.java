@@ -28,6 +28,7 @@ public class TicTacToe_View {
 	protected MenuItem resetDB;
 	protected MenuItem server;
 	protected MenuItem writeXML;
+	protected MenuItem readXML;
 	protected Menu menuFile;
 	protected Menu menuHelp;
     protected Menu menuFileLanguage;
@@ -65,6 +66,7 @@ public class TicTacToe_View {
 		resetDB = new MenuItem("Reset DataBase");
 		server = new MenuItem("Server");
 		writeXML = new MenuItem("Write XML");
+		readXML = new MenuItem("Read XML");
 
 		btnComputer.setPrefSize(240, 40);
 		btnSend.setPrefSize(200,40);
@@ -82,6 +84,7 @@ public class TicTacToe_View {
 		resetDB.getStyleClass().add("menu");
 		server.getStyleClass().add("menu");
 		writeXML.getStyleClass().add("menu");
+		readXML.getStyleClass().add("menu");
 		
 		menuUser.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
@@ -90,7 +93,7 @@ public class TicTacToe_View {
 		menuBar.getMenus().addAll(menuFile, menuHelp,menuUser);
 		menuFile.getItems().addAll(newGame, closeGame,menuFileLanguage);
 		menuHelp.getItems().add(documentation);
-		menuUser.getItems().addAll(changeUser,resetDB,server,writeXML);
+		menuUser.getItems().addAll(changeUser,resetDB,server,writeXML,readXML);
 
 		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
@@ -214,6 +217,8 @@ public class TicTacToe_View {
 		changeUser.setText(t.getString("program.menu.changeUser"));
 		resetDB.setText(t.getString("program.menu.resetDB"));
 		server.setText(t.getString("program.menu.server"));
+		writeXML.setText(t.getString("program.menu.writeXML"));
+		readXML.setText(t.getString("program.menu.readXML"));
 		
 		//Other controls
 		btnComputer.setText(t.getString("program.button.computer"));
