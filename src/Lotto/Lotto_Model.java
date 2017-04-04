@@ -131,9 +131,6 @@ public class Lotto_Model {
 		servicelocator.getLogger().info("Check the SuperNumber");
 		if(this.userSuperTipp == superNumber){
 			return (t.getString("program.text.superwin"));
-//			String result = " ";
-//			result += t.getString("program.text.superwin");
-//			return result;
 		}
 		return (t.getString("program.text.superwinnot"));
 	}
@@ -246,4 +243,13 @@ public class Lotto_Model {
 	public void setsuperNumber(int superNumber) {
 		this.userSuperTipp = superNumber;
 	}
+	
+	//only for the testing
+	public void setRegularNumbersLotto(ArrayList<Integer> input){
+		this.regularNumbersLotto = input;
+	}
+	public void setUserTipp(ArrayList<Integer> input){
+		this.userTipp = input;
+	}
 }
+

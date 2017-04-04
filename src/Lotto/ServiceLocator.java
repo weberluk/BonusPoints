@@ -22,104 +22,103 @@ import Lotto.Translator;
  * @author Brad Richards
  */
 public class ServiceLocator {
-    private static ServiceLocator serviceLocator; // singleton
+	private static ServiceLocator serviceLocator; // singleton
 
-    // Application-global constants
-    final private Class<?> APP_CLASS = LottoStart.class;
-    final private String APP_NAME = "LottoStart";
-    
-    // Supported locales (for translations)
-    final private Locale[] locales = new Locale[] { new Locale("en"), new Locale("de") };
+	// Application-global constants
+	final private Class<?> APP_CLASS = LottoStart.class;
+	final private String APP_NAME = "LottoStart";
 
+	// Supported locales (for translations)
+	final private Locale[] locales = new Locale[] { new Locale("en"), new Locale("de") };
 
-    // Resources
-    private Logger logger;
-    private Lotto.Configuration configuration;
-    private Lotto.Translator translator;
-    
-    
-	//Logger
-    Logger configureLogging() {
-        Logger rootLogger = Logger.getLogger("");
-        rootLogger.setLevel(Level.FINEST);
+	// Resources
+	private Logger logger;
+	private Lotto.Configuration configuration;
+	private Lotto.Translator translator;
 
-        // By default there is one handler: the console
-        Handler[] defaultHandlers = Logger.getLogger("").getHandlers();
-        defaultHandlers[0].setLevel(Level.INFO);
+	// Logger
+	public Logger configureLogging() {
+		Logger rootLogger = Logger.getLogger("");
+		rootLogger.setLevel(Level.FINEST);
 
-        // Add our logger
-        Logger ourLogger = Logger.getLogger(serviceLocator.getAPP_NAME());
-        ourLogger.setLevel(Level.FINEST);
-        
-        // Add a file handler, putting the rotating files in the tmp directory
-        try {
-            Handler logHandler = new FileHandler("%h/"
-                    + serviceLocator.getAPP_NAME() + "_%u" + "_%g" + ".log",
-                    1000000, 9);
-            logHandler.setLevel(Level.FINEST);
-            ourLogger.addHandler(logHandler);
-        } catch (Exception e) { // If we are unable to create log files
-            throw new RuntimeException("Unable to initialize log files: "
-                    + e.toString());
-        }
+		// By default there is one handler: the console
+		Handler[] defaultHandlers = Logger.getLogger("").getHandlers();
+		defaultHandlers[0].setLevel(Level.INFO);
 
-        return ourLogger;
-    }
-    
+		// Add our logger
+		Logger ourLogger = Logger.getLogger(serviceLocator.getAPP_NAME());
+		ourLogger.setLevel(Level.FINEST);
 
-    /**
-     * Factory method for returning the singleton
-     * @param mainClass The main class of this program
-     * @return The singleton resource locator
-     */
-    public static ServiceLocator getServiceLocator() {
-        if (serviceLocator == null)
-            serviceLocator = new ServiceLocator();
-        return serviceLocator;
-    }
+		// Add a file handler, putting the rotating files in the tmp directory
+		try {
+			Handler logHandler = new FileHandler("%h/" + serviceLocator.getAPP_NAME() + "_%u" + "_%g" + ".log", 1000000,
+					9);
+			logHandler.setLevel(Level.FINEST);
+			ourLogger.addHandler(logHandler);
+		} catch (Exception e) { // If we are unable to create log files
+			throw new RuntimeException("Unable to initialize log files: " + e.toString());
+		}
 
-    /**
-     * Private constructor, because this class is a singleton
-     * @param appName Name of the main class of this program
-     */
-    private ServiceLocator() {
-        // Currently nothing to do here. We must define this constructor anyway,
-        // because the default constructor is public
-    }
+		return ourLogger;
+	}
 
-    public Class<?> getAPP_CLASS() {
-        return APP_CLASS;
-    }
-    
-    public String getAPP_NAME() {
-        return APP_NAME;
-    }
+	/**
+	 * Factory method for returning the singleton
+	 * 
+	 * @param mainClass
+	 *            The main class of this program
+	 * @return The singleton resource locator
+	 */
+	public static ServiceLocator getServiceLocator() {
+		if (serviceLocator == null)
+			serviceLocator = new ServiceLocator();
+		return serviceLocator;
+	}
 
-    public Logger getLogger() {
-        return logger;
-    }
+	/**
+	 * Private constructor, because this class is a singleton
+	 * 
+	 * @param appName
+	 *            Name of the main class of this program
+	 */
+	private ServiceLocator() {
+		// Currently nothing to do here. We must define this constructor anyway,
+		// because the default constructor is public
+	}
 
-    public void setLogger(Logger logger) {
-        this.logger = logger;
-    }
+	public Class<?> getAPP_CLASS() {
+		return APP_CLASS;
+	}
 
-    public Lotto.Configuration getConfiguration() {
-        return configuration;
-    }
+	public String getAPP_NAME() {
+		return APP_NAME;
+	}
 
-    public void setConfiguration(Lotto.Configuration config) {
-        this.configuration = config;
-    }
+	public Logger getLogger() {
+		return logger;
+	}
 
-    public Locale[] getLocales() {
-        return locales;
-    }
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
 
-    public Lotto.Translator getTranslator() {
-        return translator;
-    }
-    
-    public void setTranslator(Lotto.Translator translator) {
-        this.translator = translator;
-    }
+	public Lotto.Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Lotto.Configuration config) {
+		this.configuration = config;
+	}
+
+	public Locale[] getLocales() {
+		return locales;
+	}
+
+	public Lotto.Translator getTranslator() {
+		return translator;
+	}
+
+	public void setTranslator(Lotto.Translator translator) {
+		this.translator = translator;
+	}
 }
