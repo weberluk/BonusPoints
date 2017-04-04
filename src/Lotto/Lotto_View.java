@@ -26,7 +26,7 @@ public class Lotto_View {
 	protected Button btnGetChance;
 	protected MenuItem newGame;
 	protected MenuItem closeGame;
-	protected MenuItem documentation;
+	protected MenuItem QuickHelp;
 	protected Button[][] regularButtons;
 	protected Button[] superButton;
 	protected Label[] labelsForNumbers;
@@ -59,7 +59,7 @@ public class Lotto_View {
 		menuHelp = new Menu();
 		newGame = new MenuItem();
 		closeGame = new MenuItem();
-		documentation = new MenuItem();
+		QuickHelp = new MenuItem();
 		menuFileLanguage = new Menu();
 		
 		//Other Controls
@@ -88,13 +88,13 @@ public class Lotto_View {
 		MenuBar menuBar = new MenuBar();
 		menuBar.getMenus().addAll(menuFile, menuHelp);
 		menuFile.getItems().addAll(newGame, closeGame, menuFileLanguage);
-		menuHelp.getItems().add(documentation);
+		menuHelp.getItems().add(QuickHelp);
 		menuBar.getStyleClass().add("menu");
 		menuFile.getStyleClass().add("menu");
 		menuHelp.getStyleClass().add("menu");
 		newGame.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
-		documentation.getStyleClass().add("menu");
+		QuickHelp.getStyleClass().add("menu");
 		
 		//set the Menu for the language
 		 for (Locale locale : sl.getLocales()) {
@@ -264,7 +264,7 @@ public class Lotto_View {
 		menuFileLanguage.setText(t.getString("program.menu.file.language"));
 		menuHelp.setText(t.getString("program.menu.help"));
 		closeGame.setText(t.getString("program.menu.file.close"));
-		documentation.setText(t.getString("program.menu.help.documentation"));
+		QuickHelp.setText(t.getString("program.menu.help.documentation"));
 		menuFile.setText(t.getString("program.menu.file"));
 		menuHelp.setText(t.getString("program.menu.help"));
 		

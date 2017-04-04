@@ -23,7 +23,7 @@ public class TicTacToe_View {
 	protected Button[][] buttons;
 	protected MenuItem newGame;
 	protected MenuItem closeGame;
-	protected MenuItem documentation;
+	protected MenuItem QuickHelp;
 	protected MenuItem changeUser;
 	protected MenuItem resetDB;
 	protected MenuItem server;
@@ -51,7 +51,7 @@ public class TicTacToe_View {
 		buttons = new Button[model.DIMENSION][model.DIMENSION];
 		newGame = new MenuItem("new Game");
 		closeGame = new MenuItem("Close Game");
-		documentation = new MenuItem("Documentation");
+		QuickHelp = new MenuItem("Quick Help");
 		menuFile = new Menu("File");
 		menuHelp = new Menu("Help");
 		btnComputer = new Button("Computer");
@@ -88,11 +88,11 @@ public class TicTacToe_View {
 		
 		menuUser.getStyleClass().add("menu");
 		closeGame.getStyleClass().add("menu");
-		documentation.getStyleClass().add("menu");
+		QuickHelp.getStyleClass().add("menu");
 
 		menuBar.getMenus().addAll(menuFile, menuHelp,menuUser);
 		menuFile.getItems().addAll(newGame, closeGame,menuFileLanguage);
-		menuHelp.getItems().add(documentation);
+		menuHelp.getItems().add(QuickHelp);
 		menuUser.getItems().addAll(changeUser,resetDB,server,writeXML,readXML);
 
 		// Hbox for the buttons on the bottomline
@@ -209,7 +209,7 @@ public class TicTacToe_View {
 		//Menu string
 		newGame.setText(t.getString("program.menu.newGame"));
 		closeGame.setText(t.getString("program.menu.closeGame"));
-		documentation.setText(t.getString("program.menu.documentation"));
+		QuickHelp.setText(t.getString("program.menu.quickhelp"));
 		menuFile.setText(t.getString("program.menu.file"));
 		menuHelp.setText(t.getString("program.menu.help"));
 		menuFileLanguage.setText(t.getString("program.menu.language"));

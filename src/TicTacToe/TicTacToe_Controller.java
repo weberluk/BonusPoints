@@ -12,7 +12,9 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -53,6 +55,7 @@ public class TicTacToe_Controller {
 		view.btnComputer.setOnAction((event) -> {
 			changeComputer();
 			view.btnComputer.setStyle("-fx-background-color: #800000; -fx-text-fill: white");
+			view.tbox.setText("Computer stated");
 		});
 		view.buttons[0][0].setOnAction((event) -> {
 			this.checkComputerPlayBevorWorkFlow(0, 0);
@@ -147,6 +150,7 @@ public class TicTacToe_Controller {
 				output.add(Integer.toString(model.generateId(model.getName())));
 				output.add(model.getName());
 				client.sendMessageToServer(output);
+				view.tbox.setText("Your name: " + name);
 			});
 		});
 		
@@ -184,6 +188,7 @@ public class TicTacToe_Controller {
 			ArrayList<String> output= new ArrayList<String>();
 			output.add("7"); //Delete-Statement
 			client.sendMessageToServer(output);
+			view.tbox.setText("DB is reseted");
 		});
 
 		//make a new XML
@@ -191,6 +196,7 @@ public class TicTacToe_Controller {
 			ArrayList<String> output = new ArrayList<String>();
 			output.add("8"); //Make a XML
 			client.sendMessageToServer(output);
+			view.tbox.setText("XML wrote");
 		});
 		
 		//read a XML File
@@ -198,6 +204,7 @@ public class TicTacToe_Controller {
 			ArrayList<String> output = new ArrayList<String>();
 			output.add("9");
 			client.sendMessageToServer(output);
+			view.tbox.setText("XML read");
 		});
 		
 		// Watch the model for changing
@@ -222,6 +229,26 @@ public class TicTacToe_Controller {
 			view.points.setText(newValue);
 		});
 
+		//For the Quick Help
+		
+		
+		view.QuickHelp.setOnAction(event -> {
+			String helpText = "1.	Zuerst den TicTacToe_Server starten, dann das Programm TicTacToeStart";
+			helpText += "\n2.	Für den aller ersten Start muss unter User >> Reset Database die Datenbank bereit gestellt werden, das File wird im root-Verzeichnis abgelegt und heisst TicTacToe.mv.db";
+			helpText += "\n3.	Zuerst unter User >> Change User einen Namen eingeben. Sollte dieser nicht eingegeben werden wird mit dem Default-user gearbeitet";
+			helpText += "\n4.	Soll mit einem Computer-Gegner gespielt werden muss der Button Computer gedrückt werden";
+			helpText += "\n5.	Die Chatfunktion reagiert mit dem Send-Button oder mit Enter";
+			helpText += "\n6.	Der Punktestand wird jeweils mit File >> New Game angezeigt. Sollte sich der Punktestand nicht ändern und es wird ein neues Spiel gestartet wird er nicht erneut angezeigt";
+			helpText += "\n7.	Sollte die Verbindung zum Server andere Eingaben erfordern, können diese mit User >> Server geändert werden";
+			helpText += "\n8.	Wenn der Spielstand exportiert oder importiert werden will, kann dies unter User >> Write XML / Read XML getätigt werden";
+			helpText += "\n9.	Gewinnen tut wer drei gleiche Zeichen in einer Spalte, Linie, Diagonale oder Antidiagonale hat";
+			helpText += "\n10.	Das Spiel kann über File >> Close Game beendet werden";
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Quick Help");
+			alert.setHeaderText("Qick Help");
+			alert.setContentText(helpText);
+			alert.showAndWait();
+		});
 	}
 
 	// Is it a a computer-Player or a human and go to the Workflow
@@ -308,6 +335,7 @@ public class TicTacToe_Controller {
 	public void winProcedure(boolean w) {
 		if (w == true) {
 			sl.getLogger().info("We have a winner!");
+			view.tbox.setText("We have a winner");
 			view.tbox.setText("Finish");
 			// write a winMessage to the server user: 1 for human 2 for computer and also the score from the model
 			if(model.getPlayer() == HumanPlayer.Computer){

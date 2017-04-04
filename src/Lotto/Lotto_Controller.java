@@ -80,7 +80,7 @@ public class Lotto_Controller {
 			view.stop();
 		});
 		
-		view.documentation.setOnAction((event) -> {
+		view.QuickHelp.setOnAction((event) -> {
 			sl.getLogger().info("Dokumentation");
             String file = fileChooser.getInitialFileName();
 //            if (file != null) {
@@ -115,6 +115,20 @@ public class Lotto_Controller {
 		});
 		view.superButton[5].setOnAction((event) -> {
 			setSuperButtonPressed(5);
+		});
+		
+		view.QuickHelp.setOnAction(event -> {
+			String helpText = "1.	Im Nummernbereich sind 6 Nummern auszuwählen (mehr werden nicht zugelassen)";
+			helpText += "\n2.	Im Supernummerbereich ist eine Nummer auszuwählen (mehr werden nicht zugelassen)";
+			helpText += "\n3.	Start drücken";
+			helpText += "\n4.	Das Resultat der Ziehung wird angezeigt";
+			helpText += "\n5.	Über File >> Language kann die Sprache geändert werden (D/EN)";
+			helpText += "\n6.	Sollte eine Gewinnchance ausgerechnet werden muss im Feld Lottotickets die Anzahl der gekauften Lottoscheine angegeben werden und dann auf den Button „My Chance“ gedrückt werden. Es werden nun alle Durchgänge durchgerechnet und das Resultat ausgegeben mit der Gewinnchance";
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Quick Help");
+			alert.setHeaderText("Qick Help");
+			alert.setContentText(helpText);
+			alert.showAndWait();
 		});
 	}
 
