@@ -15,7 +15,7 @@ public class TicTacToe_Client implements Runnable {
 	private TicTacToe_Controller controller;
 	private ServiceLocator sl = ServiceLocator.getServiceLocator();
 	private Socket client;
-	private boolean closer = true;
+	private volatile boolean closer = true;
 	private String adress = "localhost";
 	private int port = 5555;
 

@@ -2,8 +2,8 @@ package TicTacToe;
 
 import java.util.Locale;
 
-import Lotto.ServiceLocator;
-import Lotto.Translator;
+import TicTacToe.ServiceLocator;
+import TicTacToe.Translator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -49,24 +49,24 @@ public class TicTacToe_View {
 		stage.setTitle("Tic Tac Toe");
 		
 		buttons = new Button[model.DIMENSION][model.DIMENSION];
-		newGame = new MenuItem("new Game");
-		closeGame = new MenuItem("Close Game");
-		QuickHelp = new MenuItem("Quick Help");
-		menuFile = new Menu("File");
-		menuHelp = new Menu("Help");
-		btnComputer = new Button("Computer");
+		newGame = new MenuItem();
+		closeGame = new MenuItem();
+		QuickHelp = new MenuItem();
+		menuFile = new Menu();
+		menuHelp = new Menu();
+		btnComputer = new Button();
 		tbox = new TextField();
 		points = new TextField();
 		input = new TextField();
 		chat = new TextArea();
-		btnSend = new Button("Send");
-		menuFileLanguage = new Menu("Language");
-		menuUser = new Menu("User");
-		changeUser = new MenuItem("Change User");
-		resetDB = new MenuItem("Reset DataBase");
-		server = new MenuItem("Server");
-		writeXML = new MenuItem("Write XML");
-		readXML = new MenuItem("Read XML");
+		btnSend = new Button();
+		menuFileLanguage = new Menu();
+		menuUser = new Menu();
+		changeUser = new MenuItem();
+		resetDB = new MenuItem();
+		server = new MenuItem();
+		writeXML = new MenuItem();
+		readXML = new MenuItem();
 
 		btnComputer.setPrefSize(240, 40);
 		btnSend.setPrefSize(200,40);
@@ -162,7 +162,7 @@ public class TicTacToe_View {
 		
 		
 		
-		//updateTexts();
+		updateTexts();
 	}
 
 	/**

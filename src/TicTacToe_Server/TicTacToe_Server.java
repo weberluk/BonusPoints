@@ -8,8 +8,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.swing.plaf.synth.SynthSeparatorUI;
+
 
 import Lotto.ServiceLocator;
 import TicTacToe.TicTacToe_Model;
@@ -26,9 +28,12 @@ public class TicTacToe_Server {
 
 	// socket and port
 	private ServerSocket server;
-	private int port = 5555;
+	private static int port = 5555;
+	
+	//Logger
+	Logger defaultLogger = Logger.getLogger("");
 
-	public TicTacToe_Server() {
+	public TicTacToe_Server(int port) {
 		try {
 			server = new ServerSocket(port);
 		} catch (IOException e) {
@@ -39,12 +44,12 @@ public class TicTacToe_Server {
 
 	public static void main(String[] args) {
 
-		TicTacToe_Server example = new TicTacToe_Server();
+		TicTacToe_Server example = new TicTacToe_Server(port);
 		example.handleConnection();
 	}
 
 	private void handleConnection() {
-		System.out.println("Waiting for client message got...");
+		defaultLogger.info("Waiting for client message got...");
 
 		while (true) {
 			try {
@@ -68,7 +73,10 @@ class ConnectionHandler implements Runnable {
 	private String player;
 	private int points;
 	private int id;
-	private boolean runner = true;
+	private volatile boolean runner = true;
+	
+	//Logger
+	Logger defaultLogger = Logger.getLogger("");
 
 	public int getid() {
 		return id;
@@ -94,10 +102,10 @@ class ConnectionHandler implements Runnable {
 				ArrayList<String> input = (ArrayList<String>) object;
 				Integer election = inputTransformer(input);
 				if (election == 1) {
-					System.out.println("Input: 1 - PlayInputs");
+					defaultLogger.info("Input: 1 - PlayInputs");
 				}
 				if (election == 2) {
-					System.out.println("Input: 2 - WinMessage");
+					defaultLogger.info("Input: 2 - WinMessage");
 				}
 				if (election == 3) {
 					String message = input.get(0);
@@ -117,25 +125,25 @@ class ConnectionHandler implements Runnable {
 				}
 				if (election == 5) {
 					String closer = input.get(0);
-					if (closer.equals(false)) {
+					if (closer.equals("false")) {
 						this.setRunner(false);
 						run();
 					}
 				}
 				if (election == 6) {
-					System.out.println("Insert done");
+					defaultLogger.info("Insert done");
 				}
 				if (election == 7) {
-					System.out.println("Delete DB");
+					defaultLogger.info("Delete DB");
 				}
 				if (election == 8) {
-					System.out.println("External XML is written");
+					defaultLogger.info("External XML is written");
 				}
 				if (election == 9) {
-					System.out.println("XML reader done");
+					defaultLogger.info("XML reader done");
 				}
 
-				System.out.println("Waiting for client message is...");
+				defaultLogger.info("Waiting for client message is...");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
@@ -307,7 +315,7 @@ class ConnectionHandler implements Runnable {
 		}
 
 		board[x][y] = value;
-		System.out.println("These are Inputs: " + x + " " + y + " " + value.toString());
+		defaultLogger.info("These are Inputs: " + x + " " + y + " " + value.toString());
 	}
 
 	/**
@@ -336,7 +344,7 @@ class ConnectionHandler implements Runnable {
 			id = model.generateId(model.getName());
 
 		}
-		System.out.println("User: " + player + " Points: " + points);
+		defaultLogger.info("User: " + player + " Points: " + points);
 	}
 
 	public void xmlBuilder() {
