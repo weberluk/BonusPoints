@@ -16,12 +16,17 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 import Lotto.ServiceLocator;
 import TicTacToe.TicTacToe_Model;
 
+
 enum Value {
 	Cross, Point, Empty, Danger
 };
 
 enum HumanPlayer {
 	Human, Computer
+};
+
+enum Message {
+	PlayMessage, WinMessage, ChatMessage, DBMesssage, XMLMessage, QuitMessage
 };
 
 public class TicTacToe_Server {

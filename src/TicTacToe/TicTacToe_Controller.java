@@ -114,19 +114,19 @@ public class TicTacToe_Controller {
 		
 		// Chat-Message-Button to send
 		view.btnSend.setOnAction((event) -> {
-			ArrayList<String> message = new ArrayList<String>();
-			message.add("3"); //Chat-Message
-			message.add("\n" + model.getChatName() + ": " + view.input.getText());
-			client.sendMessageToServer(message);
+			ArrayList<String> messageChat = new ArrayList<String>();
+			messageChat.add("3"); //Chat-Message
+			messageChat.add("\n" + model.getChatName() + ": " + view.input.getText());
+			client.sendMessageToServer(messageChat);
 		});
 		
 		// The input-Field can also send a Chat-Message with Enter
 		view.input.setOnKeyPressed(e -> {
 			if (e.getCode() == KeyCode.ENTER){
-				ArrayList<String> message = new ArrayList<String>();
-				message.add("3"); //Chat-Message
-				message.add("\n" + model.getChatName() + ": " + view.input.getText());
-				client.sendMessageToServer(message);
+				ArrayList<String> messageChatEnter = new ArrayList<String>();
+				messageChatEnter.add("3"); //Chat-Message
+				messageChatEnter.add("\n" + model.getChatName() + ": " + view.input.getText());
+				client.sendMessageToServer(messageChatEnter);
 			}
 
 		});
@@ -280,12 +280,12 @@ public class TicTacToe_Controller {
 		this.setButtonProperties(i, j);
 		model.setBoard(i, j);
 		model.setIndexForMiniMax(i, j);
-		ArrayList<String> message = new ArrayList<String>();
-		message.add("1"); //Play-Message
-		message.add(Integer.toString(i));
-		message.add(Integer.toString(j));
-		message.add(Integer.toString(getValueContructor()));
-		client.sendMessageToServer(message);
+		ArrayList<String> messagePlay = new ArrayList<String>();
+		messagePlay.add("1"); //Play-Message
+		messagePlay.add(Integer.toString(i));
+		messagePlay.add(Integer.toString(j));
+		messagePlay.add(Integer.toString(getValueContructor()));
+		client.sendMessageToServer(messagePlay);
 		this.winProcedure(model.checkWinner(i, j, model.getSign()));
 		this.setOtherSign();
 		this.setOtherPlayer();
@@ -342,11 +342,11 @@ public class TicTacToe_Controller {
 				model.setName("computer");
 				model.setId(model.generateId(model.getName()));
 			} 
-			ArrayList<String> message = new ArrayList<String>();
-			message.add("2"); //WinMessage
-			message.add(Integer.toString(model.getId()));
-			message.add(Integer.toString(model.getScore()));
-			client.sendMessageToServer(message);
+			ArrayList<String> messageWin = new ArrayList<String>();
+			messageWin.add("2"); //WinMessage
+			messageWin.add(Integer.toString(model.getId()));
+			messageWin.add(Integer.toString(model.getScore()));
+			client.sendMessageToServer(messageWin);
 			view.block();
 		}
 	}
