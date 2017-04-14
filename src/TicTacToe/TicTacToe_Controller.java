@@ -90,7 +90,6 @@ public class TicTacToe_Controller {
 		view.newGame.setOnAction((event) -> {
 			sl.getLogger().info("Start a new Game");
 			cleanUp();
-			model.setName(model.getChatName());
 			Integer idRestart = model.generateId(model.getName());
 			ArrayList<String> messagePoints2 = new ArrayList<String>();
 			messagePoints2.add("4"); //DB-Request
@@ -366,6 +365,11 @@ public class TicTacToe_Controller {
 				computerPlayer = false;
 				view.points.clear();
 			}
+		}
+		if(model.getName().equals("default") || model.getName().isEmpty()){
+			model.setName("default");
+		} else {
+			model.setName(model.getChatName());
 		}
 	}
 

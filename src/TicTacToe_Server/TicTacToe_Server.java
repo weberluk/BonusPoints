@@ -118,7 +118,7 @@ class ConnectionHandler implements Runnable {
 					outmessageChat.add("1"); // Chat
 					outmessageChat.add(message);
 					sendMessageToClient(outmessageChat);
-					System.out.println(message);
+					defaultLogger.info(message);
 				}
 				if (election == 4) {
 					Integer income = Integer.parseInt(input.get(0));

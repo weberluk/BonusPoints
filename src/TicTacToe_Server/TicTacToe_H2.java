@@ -6,10 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.h2.tools.DeleteDbFiles;
 
 public class TicTacToe_H2 {
+	
+	private static Logger logger = Logger.getLogger("");
 
 	private static TicTacToe_H2 h2;
 
@@ -17,6 +20,7 @@ public class TicTacToe_H2 {
 	private static final String DB_CONNECTION = "jdbc:h2:~/TicTacToe";
 	private static final String DB_USER = "";
 	private static final String DB_PASSWORD = "";
+
 
 	// only for test the DB and show the tables
 	public static void main(String[] args) throws Exception {
@@ -84,7 +88,7 @@ public class TicTacToe_H2 {
 
 			connection.commit();
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -111,10 +115,9 @@ public class TicTacToe_H2 {
 
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
 			ResultSet rs = selectPreparedStatement.executeQuery();
-			System.out.println("H2 Database inserted through PreparedStatement");
+			logger.info("H2 Database inserted through PreparedStatement");
 			while (rs.next()) {
-				System.out.println(
-						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				logger.info("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
 				answer = rs.getString("name");
 				answer += " hat ";
 				answer += rs.getString("points".toString());
@@ -124,7 +127,7 @@ public class TicTacToe_H2 {
 
 			connection.commit();
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -153,9 +156,9 @@ public class TicTacToe_H2 {
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
 			ResultSet rs = selectPreparedStatement.executeQuery();
 				while (rs.next()) {
-					System.out.println("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points "
+					logger.info("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points "
 							+ rs.getInt("points"));
-					System.out.println("H2 Database inserted through PreparedStatementXML");
+					logger.info("H2 Database inserted through PreparedStatementXML");
 					String id = rs.getString("id".toString());
 					String name = rs.getString("name");
 					String points = rs.getString("points".toString());
@@ -167,7 +170,7 @@ public class TicTacToe_H2 {
 
 			connection.commit();
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -196,17 +199,16 @@ public class TicTacToe_H2 {
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
 			selectPreparedStatement.setInt(1, id);
 			ResultSet rs = selectPreparedStatement.executeQuery();
-			System.out.println("H2 Database inserted through PreparedStatement");
+			logger.info("H2 Database inserted through PreparedStatement");
 			while (rs.next()) {
-				System.out.println(
-						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				logger.info("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
 				answer = rs.getInt("points");
 			}
 			selectPreparedStatement.close();
 
 			connection.commit();
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -239,7 +241,7 @@ public class TicTacToe_H2 {
 				entry = rs.getString("name");
 			}
 			if (entry != null) {
-				System.out.println("EntryThere");
+				logger.info("EntryThere");
 				return true;
 			}
 
@@ -247,13 +249,13 @@ public class TicTacToe_H2 {
 			connection.commit();
 
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			connection.close();
 		}
-		System.out.println("EntryNotThere");
+		logger.info("EntryNotThere");
 		return false;
 	}
 
@@ -280,14 +282,14 @@ public class TicTacToe_H2 {
 			insertPreparedStatement.setInt(1, id);
 			insertPreparedStatement.setString(2, name);
 			insertPreparedStatement.setInt(3, points);
-
-			System.out.println("Insert: " + id + " " + name + " " + points);
+			
+			logger.info("Insert: " + id + " " + name + " " + points);
 			insertPreparedStatement.executeUpdate();
 			insertPreparedStatement.close();
 
 			connection.commit();
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -314,7 +316,7 @@ public class TicTacToe_H2 {
 			connection.commit();
 
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -335,7 +337,7 @@ public class TicTacToe_H2 {
 			connection.commit();
 
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -349,13 +351,13 @@ public class TicTacToe_H2 {
 		try {
 			Class.forName(DB_DRIVER);
 		} catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
+			logger.warning(e.getMessage());
 		}
 		try {
 			dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
 			return dbConnection;
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			logger.warning(e.getMessage());
 		}
 		return dbConnection;
 	}
@@ -379,10 +381,9 @@ public class TicTacToe_H2 {
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
 			selectPreparedStatement.setInt(1, id);
 			ResultSet rs = selectPreparedStatement.executeQuery();
-			System.out.println("H2 Database inserted through PreparedStatement");
+			logger.info("H2 Database inserted through PreparedStatement");
 			while (rs.next()) {
-				System.out.println(
-						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				logger.info("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
 				answer = rs.getString("name");
 				answer += " hat ";
 				answer += rs.getString("points".toString());
@@ -393,7 +394,7 @@ public class TicTacToe_H2 {
 			connection.commit();
 
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -421,10 +422,9 @@ public class TicTacToe_H2 {
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
 			selectPreparedStatement.setInt(1, id);
 			ResultSet rs = selectPreparedStatement.executeQuery();
-			System.out.println("H2 Database inserted through PreparedStatement");
+			logger.info("H2 Database inserted through PreparedStatement");
 			while (rs.next()) {
-				System.out.println(
-						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				logger.info("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
 				answer = rs.getInt("points");
 			}
 			selectPreparedStatement.close();
@@ -432,7 +432,7 @@ public class TicTacToe_H2 {
 			connection.commit();
 
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -460,10 +460,9 @@ public class TicTacToe_H2 {
 			selectPreparedStatement = connection.prepareStatement(SelectQuery);
 			selectPreparedStatement.setInt(1, id);
 			ResultSet rs = selectPreparedStatement.executeQuery();
-			System.out.println("H2 Database select for name through PreparedStatement");
+			logger.info("H2 Database select for name through PreparedStatement");
 			while (rs.next()) {
-				System.out.println(
-						"Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
+				logger.info("Id " + rs.getInt("id") + " Name " + rs.getString("name") + "Points " + rs.getInt("points"));
 				answer = rs.getString("name");
 			}
 			selectPreparedStatement.close();
@@ -471,7 +470,7 @@ public class TicTacToe_H2 {
 			connection.commit();
 
 		} catch (SQLException e) {
-			System.out.println("Exception Message " + e.getLocalizedMessage());
+			logger.warning("Exception Message " + e.getLocalizedMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -495,13 +494,13 @@ public class TicTacToe_H2 {
 				insertPreparedStatement.setString(2, game.getName());
 				insertPreparedStatement.setInt(3, Integer.parseInt(game.getPoints()));
 
-				System.out.println("Insert: " + game.getGameId() + " " + game.getName() + " " + game.getPoints());
+				logger.info("Insert: " + game.getGameId() + " " + game.getName() + " " + game.getPoints());
 				insertPreparedStatement.executeUpdate();
 				insertPreparedStatement.close();
 
 				connection.commit();
 			} catch (SQLException e) {
-				System.out.println("Exception Message " + e.getLocalizedMessage());
+				logger.warning("Exception Message " + e.getLocalizedMessage());
 				try {
 					this.updateFromXML(Integer.parseInt(game.getGameId()), Integer.parseInt(game.getPoints()));
 				} catch (SQLException e1) {
