@@ -1,9 +1,9 @@
-package TicTacToe;
+package TicTacToe_Client;
 
 import java.util.Locale;
 
-import TicTacToe.ServiceLocator;
-import TicTacToe.Translator;
+import TicTacToe_Client.support.ServiceLocator;
+import TicTacToe_Client.support.Translator;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,7 +26,6 @@ public class TicTacToe_View {
 	protected MenuItem QuickHelp;
 	protected MenuItem changeUser;
 	protected MenuItem resetDB;
-	protected MenuItem server;
 	protected MenuItem writeXML;
 	protected MenuItem readXML;
 	protected Menu menuFile;
@@ -64,7 +63,6 @@ public class TicTacToe_View {
 		menuUser = new Menu();
 		changeUser = new MenuItem();
 		resetDB = new MenuItem();
-		server = new MenuItem();
 		writeXML = new MenuItem();
 		readXML = new MenuItem();
 
@@ -82,7 +80,6 @@ public class TicTacToe_View {
 		newGame.getStyleClass().add("menu");
 		changeUser.getStyleClass().add("menu");
 		resetDB.getStyleClass().add("menu");
-		server.getStyleClass().add("menu");
 		writeXML.getStyleClass().add("menu");
 		readXML.getStyleClass().add("menu");
 		
@@ -93,7 +90,7 @@ public class TicTacToe_View {
 		menuBar.getMenus().addAll(menuFile, menuHelp,menuUser);
 		menuFile.getItems().addAll(newGame, closeGame,menuFileLanguage);
 		menuHelp.getItems().add(QuickHelp);
-		menuUser.getItems().addAll(changeUser,resetDB,server,writeXML,readXML);
+		menuUser.getItems().addAll(changeUser,resetDB,writeXML,readXML);
 
 		// Hbox for the buttons on the bottomline
 		HBox hbox = new HBox();
@@ -216,7 +213,6 @@ public class TicTacToe_View {
 		menuUser.setText(t.getString("program.menu.user"));
 		changeUser.setText(t.getString("program.menu.changeUser"));
 		resetDB.setText(t.getString("program.menu.resetDB"));
-		server.setText(t.getString("program.menu.server"));
 		writeXML.setText(t.getString("program.menu.writeXML"));
 		readXML.setText(t.getString("program.menu.readXML"));
 		

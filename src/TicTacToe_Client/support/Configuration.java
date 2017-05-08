@@ -1,4 +1,4 @@
-package TicTacToe;
+package TicTacToe_Client.support;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Logger;
-import TicTacToe.ServiceLocator;
 
 
 /**

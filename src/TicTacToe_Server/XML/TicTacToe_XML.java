@@ -1,4 +1,5 @@
-package TicTacToe_Server;
+package TicTacToe_Server.XML;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +24,8 @@ import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+
+import TicTacToe_Server.Game;
 
 public class TicTacToe_XML {
 

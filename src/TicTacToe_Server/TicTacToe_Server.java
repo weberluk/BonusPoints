@@ -12,10 +12,11 @@ import java.util.logging.Logger;
 
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
-
-import Lotto.ServiceLocator;
-import TicTacToe.TicTacToe_Model;
-
+import TicTacToe_Client.TicTacToe_Model;
+import TicTacToe_Server.DataBase.TicTacToe_H2;
+import TicTacToe_Server.XML.TicTacToe_XML;
+import TicTacToe_Server.XML.TicTacToe_XMLReader;
+import javafx.concurrent.Task;
 
 enum Value {
 	Cross, Point, Empty, Danger
@@ -31,41 +32,45 @@ enum Message {
 
 public class TicTacToe_Server {
 
-	// socket and port
-	private ServerSocket server;
-	private static int port = 5555;
-	
-	//Logger
-	Logger defaultLogger = Logger.getLogger("");
-
-	public TicTacToe_Server(int port) {
-		try {
-			server = new ServerSocket(port);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+	public TicTacToe_Server() {
 	}
 
-	public static void main(String[] args) {
+	private Integer port;
+	private final Logger logger = Logger.getLogger("");
+	private
 
-		TicTacToe_Server example = new TicTacToe_Server(port);
-		example.handleConnection();
-	}
-
-	private void handleConnection() {
-		defaultLogger.info("Waiting for client message got...");
-
-		while (true) {
+	final Task<Void> serverTask = new Task<Void>() {
+		@Override
+		protected Void call() throws Exception {
+			ServerSocket listener = null;
 			try {
-				Socket socket = server.accept();
-				new ConnectionHandler(socket);
-			} catch (IOException e) {
-				e.printStackTrace();
+				listener = new ServerSocket(port, 10, null);
+				logger.info("Listening on port " + port);
+
+				while (true) {
+					// The "accept" method waits for a request, then creates a
+					// socket
+					// connected to the requesting client
+					Socket clientSocket = listener.accept();
+
+					ConnectionHandler client = new ConnectionHandler(clientSocket);
+				}
+			} catch (Exception e) {
+				System.err.println(e);
+			} finally {
+				if (listener != null)
+					listener.close();
 			}
-
+			return null;
 		}
+	};
 
+	/**
+	 * Called by the controller, to start the serverSocket task
+	 */
+	public void startServerSocket(Integer port) {
+		this.port = port;
+		new Thread(serverTask).start();
 	}
 
 }
@@ -79,8 +84,8 @@ class ConnectionHandler implements Runnable {
 	private int points;
 	private int id;
 	private volatile boolean runner = true;
-	
-	//Logger
+
+	// Logger
 	Logger defaultLogger = Logger.getLogger("");
 
 	public int getid() {
@@ -254,7 +259,6 @@ class ConnectionHandler implements Runnable {
 	private void deleteDB() {
 		h2.deleteDB();
 	}
-
 
 	/**
 	 * safes the wins in the DB for internal

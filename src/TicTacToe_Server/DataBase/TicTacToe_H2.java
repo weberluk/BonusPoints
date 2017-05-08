@@ -1,4 +1,5 @@
-package TicTacToe_Server;
+package TicTacToe_Server.DataBase;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.h2.tools.DeleteDbFiles;
+
+import TicTacToe_Server.Game;
 
 public class TicTacToe_H2 {
 	
@@ -23,7 +26,7 @@ public class TicTacToe_H2 {
 
 
 	// only for test the DB and show the tables
-	public static void main(String[] args) throws Exception {
+//	public static void main(String[] args) throws Exception {
 		// deleteDB();
 		// createTableWithPreparedStatement();
 		// insertWithPreparedStatement(741,"default",00);
@@ -36,7 +39,7 @@ public class TicTacToe_H2 {
 		// } else {
 		// System.out.println("no");
 		// }
-	}
+//	}
 
 	public TicTacToe_H2() {
 	}

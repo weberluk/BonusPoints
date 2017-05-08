@@ -1,11 +1,9 @@
-package TicTacToe;
+package TicTacToe_Client.support;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-
-import TicTacToe.ServiceLocator;
 
 public class Translator {
     private ServiceLocator sl = ServiceLocator.getServiceLocator();

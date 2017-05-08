@@ -1,4 +1,5 @@
-package TicTacToe_Server;
+package TicTacToe_Server.XML;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,6 +19,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import TicTacToe_Server.Game;
 
 public class TicTacToe_XMLReader {
 

@@ -1,13 +1,17 @@
-package TicTacToe;
+package TicTacToe_Client;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import TicTacToe.TicTacToe_Model;
-import TicTacToe.TicTacToe_View;
-import TicTacToe.TicTacToe_Model.HumanPlayer;
-import TicTacToe.TicTacToe_Model.Value;
-import TicTacToe_Server.TicTacToe_H2;
+import TicTacToe_Client.TicTacToe_Model;
+import TicTacToe_Client.TicTacToe_View;
+import TicTacToe_Client.Client.TicTacToe_Client;
+import TicTacToe_Client.TicTacToe_Model.HumanPlayer;
+import TicTacToe_Client.TicTacToe_Model.Value;
+import TicTacToe_Client.support.ServiceLocator;
+import TicTacToe_Server.DataBase.TicTacToe_H2;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,8 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
-import TicTacToe.ServiceLocator;
-import TicTacToe.TicTacToe_Client;
 
 public class TicTacToe_Controller {
 	final private TicTacToe_Model model;
@@ -151,35 +153,6 @@ public class TicTacToe_Controller {
 				client.sendMessageToServer(output);
 				view.tbox.setText("Your name: " + name);
 			});
-		});
-		
-		view.server.setOnAction((event) -> {
-			Dialog<String> dialog = new Dialog<>();
-			dialog.setTitle("Server");
-			dialog.setHeaderText("Give the inputs, please");
-			dialog.setResizable(true);
-			Label label1 = new Label("Adress (localhost for intern): ");
-			Label label2 = new Label("Port: ");
-			TextField text1 = new TextField();
-			TextField text2 = new TextField();
-			GridPane grid = new GridPane();
-			grid.add(label1, 1, 1);
-			grid.add(text1, 2, 1);
-			
-			grid.add(label2, 1, 2);
-			grid.add(text2, 2, 2);
-			dialog.getDialogPane().setContent(grid);
-			
-			ButtonType buttonTypeOk = new ButtonType("Ok", ButtonData.OK_DONE);
-			dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
-			
-			Optional<String> result = dialog.showAndWait();
-			
-			result.ifPresent(input -> {
-				client.setAdress(text1.getText());
-				client.setPort(Integer.parseInt(text2.getText()));
-			});
-
 		});
 		
 		//reset the DB

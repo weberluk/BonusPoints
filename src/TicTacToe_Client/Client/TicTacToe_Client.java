@@ -1,4 +1,4 @@
-package TicTacToe;
+package TicTacToe_Client.Client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,8 +8,9 @@ import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import TicTacToe_Client.TicTacToe_Controller;
+import TicTacToe_Client.support.ServiceLocator;
 import javafx.beans.property.SimpleStringProperty;
-import TicTacToe.TicTacToe_Controller;
 
 public class TicTacToe_Client implements Runnable {
 	private TicTacToe_Controller controller;
@@ -17,7 +18,7 @@ public class TicTacToe_Client implements Runnable {
 	private Socket client;
 	private volatile boolean closer = true;
 	private String adress = "localhost";
-	private int port = 5555;
+	private int port = 5100;
 
 	// SimpleStringProperty for overwatching the chat
 	private SimpleStringProperty chatMessage = new SimpleStringProperty();

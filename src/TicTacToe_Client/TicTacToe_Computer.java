@@ -1,11 +1,11 @@
-package TicTacToe;
+package TicTacToe_Client;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import TicTacToe.TicTacToe_Model;
-import TicTacToe.TicTacToe_Model.Value;
+import TicTacToe_Client.TicTacToe_Model;
+import TicTacToe_Client.TicTacToe_Model.Value;
 
 public class TicTacToe_Computer {
 	private TicTacToe_Model model;

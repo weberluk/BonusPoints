@@ -1,8 +1,9 @@
-package TicTacToe;
+package TicTacToe_Client;
 
 import java.util.Arrays;
 
-import TicTacToe_Server.TicTacToe_H2;
+import TicTacToe_Client.AI.TicTacToe_MiniMax;
+import TicTacToe_Server.DataBase.TicTacToe_H2;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 

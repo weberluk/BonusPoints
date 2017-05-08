@@ -1,6 +1,6 @@
 package SplashScreen_TicTacToe;
 
-import TicTacToe.TicTacToeStart;
+import TicTacToe_Client.TicTacToeStart;
 import javafx.concurrent.Worker;
 
 public class Splash_Controller {

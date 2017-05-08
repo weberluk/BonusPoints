@@ -1,7 +1,8 @@
-package TicTacToe;
+package TicTacToe_Client.AI;
 
 import java.util.ArrayList;
-import TicTacToe.TicTacToe_Model;
+
+import TicTacToe_Client.TicTacToe_Model;
 
 class ResultMM {
 	String[] matrix;

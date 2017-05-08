@@ -1,0 +1,53 @@
+.bigButtons{
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #f0f8ff 0%, #2f4f4f 100%),
+	#f0f8ff,
+	#2f4f4f,
+	radial-gradient(center 50% 50%, radius 100%, #f0f8ff, #2f4f4f);
+}
+
+.bigButtons:hover {
+	-fx-background-color:
+	linear-gradient(from 0% 93% to 0% 100%, #8fbc8f 0%, #008b8b 100%),
+	#8fbc8f,
+	#008b8b,
+	radial-gradient(center 50% 50%, radius 100%, #8fbc8f, #008b8b);
+	-fx-effect: dropshadow( one-pass-box, black, 2, 1.0, 1, 1);
+}
+
+.label{
+	-fx-font: "Arial Black";
+	-fx-font-size: 25;
+	-fx-font-weight: bolder;
+	-fx-text-fill: #ff7f50;
+}
+
+.pane {
+	-fx-background-image: url("switzerland-lotto.jpg");
+	-fx-background-repeat: stretch;
+	-fx-background-size: cover;
+	-fx-background-position: center, center;
+	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0,0);
+}
+
+
+.text-area {
+    -fx-font-family: Consolas;
+    -fx-font-size: 20;
+    -fx-text-fill: #000000;
+    -fx-display-caret:true;
+    -fx-font-weight: bolder;
+    -fx-alignment: center-left;
+}
+.text-areaLog {
+    -fx-font-family: Consolas;
+    -fx-font-size: 10;
+    -fx-text-fill: #000000;
+    -fx-display-caret:true;
+    -fx-font-weight: bolder;
+    -fx-alignment: center-left;
+}
+
+.text-area .content {
+    -fx-background-color: #f0e68c;
+}

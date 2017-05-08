@@ -1,10 +1,9 @@
-     package TicTacToe;
+     package TicTacToe_Client.support;
 
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import TicTacToe.Configuration;
-import TicTacToe.Translator;
+import TicTacToe_Client.TicTacToeStart;
 
 /**
  * Copyright 2015, FHNW, Prof. Dr. Brad Richards. All rights reserved. This code

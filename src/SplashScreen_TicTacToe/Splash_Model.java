@@ -5,9 +5,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import TicTacToe.Configuration;
-import TicTacToe.ServiceLocator;
-import TicTacToe.Translator;
+import TicTacToe_Client.support.Configuration;
+import TicTacToe_Client.support.ServiceLocator;
+import TicTacToe_Client.support.Translator;
 import javafx.concurrent.Task;
 
 public class Splash_Model {

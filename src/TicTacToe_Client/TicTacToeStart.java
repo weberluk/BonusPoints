@@ -1,16 +1,10 @@
-package TicTacToe;
+package TicTacToe_Client;
 
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import TicTacToe.TicTacToe_Controller;
-import TicTacToe.TicTacToe_Model;
-import TicTacToe.TicTacToe_View;
-import TicTacToe.TicTacToe_Computer;
-import TicTacToe.Translator;
-import TicTacToe_Server.TicTacToe_H2;
 import TicTacToe_Server.TicTacToe_Server;
-import TicTacToe.Configuration;
+import TicTacToe_Server.DataBase.TicTacToe_H2;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -22,7 +16,14 @@ import java.util.logging.Logger;
 import SplashScreen_TicTacToe.Splash_Controller;
 import SplashScreen_TicTacToe.Splash_Model;
 import SplashScreen_TicTacToe.Splash_View;
-import TicTacToe.ServiceLocator;
+import TicTacToe_Client.TicTacToe_Controller;
+import TicTacToe_Client.TicTacToe_Model;
+import TicTacToe_Client.TicTacToe_View;
+import TicTacToe_Client.AI.TicTacToe_MiniMax;
+import TicTacToe_Client.Client.TicTacToe_Client;
+import TicTacToe_Client.support.Configuration;
+import TicTacToe_Client.support.ServiceLocator;
+import TicTacToe_Client.support.Translator;
 
 public class TicTacToeStart extends Application {
 	// Splash
