@@ -205,13 +205,13 @@ public class TicTacToe_Controller {
 		
 		
 		view.QuickHelp.setOnAction(event -> {
-			String helpText = "1.	Zuerst den TicTacToe_Server starten, dann das Programm TicTacToeStart";
+			String helpText = "1.	Zuerst den TicTacToe_Server starten, dort den Button Go drücken, dann das Programm TicTacToeStart";
 			helpText += "\n2.	Für den aller ersten Start muss unter User >> Reset Database die Datenbank bereit gestellt werden, das File wird im root-Verzeichnis abgelegt und heisst TicTacToe.mv.db";
 			helpText += "\n3.	Zuerst unter User >> Change User einen Namen eingeben. Sollte dieser nicht eingegeben werden wird mit dem Default-user gearbeitet";
-			helpText += "\n4.	Soll mit einem Computer-Gegner gespielt werden muss der Button Computer gedrückt werden";
-			helpText += "\n5.	Die Chatfunktion reagiert mit dem Send-Button oder mit Enter";
+			helpText += "\n4.	Soll mit einem Computer-Gegner gespielt werden muss der Button Computer gedrückt werden. Dies muss nach jedem Neustart erneut gemacht werden, der Standard ist ohne Gegner";
+			helpText += "\n5.	Die Chatfunktion reagiert mit dem Send-Button oder mit Enter. Doppelte Chat-Einträge werden nicht angezeigt ";
 			helpText += "\n6.	Der Punktestand wird jeweils mit File >> New Game angezeigt. Sollte sich der Punktestand nicht ändern und es wird ein neues Spiel gestartet wird er nicht erneut angezeigt";
-			helpText += "\n7.	Sollte die Verbindung zum Server andere Eingaben erfordern, können diese mit User >> Server geändert werden";
+			helpText += "\n7.	Der hier verwendete Standard-Port ist vom Serverprogramm vorgeschlagen (5100)";
 			helpText += "\n8.	Wenn der Spielstand exportiert oder importiert werden will, kann dies unter User >> Write XML / Read XML getätigt werden";
 			helpText += "\n9.	Gewinnen tut wer drei gleiche Zeichen in einer Spalte, Linie, Diagonale oder Antidiagonale hat";
 			helpText += "\n10.	Das Spiel kann über File >> Close Game beendet werden";
